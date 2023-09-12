@@ -6,10 +6,62 @@ body {
   background-color: #5d827a12 !important;
 }
 
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="password"],
+input[type="date"],
+input[type="tel"],
+input[type="url"],
+textarea {
+  border: 2px solid transparent !important;
+}
+
 button:disabled,
 input:disabled {
   opacity: 0.6 !important;
   cursor: not-allowed !important;
+}
+
+input::placeholder,
+select::placeholder {
+  color: #adb5bd !important;
+  opacity: 1 !important;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="password"]:focus,
+input[type="date"]:focus,
+input[type="tel"]:focus,
+input[type="url"]:focus,
+select:focus {
+  border-color: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+  border-bottom: 2px solid #125b50 !important ;
+  transition: all 0.1s ease-in-out !important;
+}
+
+a:hover {
+  text-decoration: underline !important;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+input[type="radio"] {
+  margin: 0 !important;
+}
+
+.colored-border-div-top {
+  border-top: 10px solid #125b50 !important;
+}
+
+.colored-border-div-left {
+  border-left: 7px solid #125b50 !important;
 }
 
 .progress-bar {
