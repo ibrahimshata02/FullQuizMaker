@@ -2,7 +2,7 @@
 
 class FullQuizMaker
 {
-    private $version = 1.1;
+    private $version = 1.4;
 
     // Constructor for class includes all hooks
     public function __construct()
@@ -64,23 +64,48 @@ class FullQuizMaker
     public function FQM_add_admin_menu_link()
     {
         add_menu_page(
-            'FullQuizMaker',                  // the page title of Plugin
-            'FullQuizMaker',                  // the Title that appears in the menu bar
-            'manage_options',               // permissions that can see the menu (admin OR higher) => capability
-            'full-quiz-maker',             // unique menu slug
+            'FullQuizMaker',                    // the page title of Plugin
+            'FullQuizMaker',                    // the Title that appears in the menu bar
+            'manage_options',                   // permissions that can see the menu (admin OR higher) => capability
+            'full-quiz-maker',                 // unique menu slug
             array($this, 'FQM_Quizzes_callback'),    // method for output
-            'dashicons-text-page', // You can add the link of custom icon 
+            'dashicons-text-page',               // You can add the link of a custom icon 
             70
         );
+        add_submenu_page(
+            'full-quiz-maker',                 // parent menu slug
+            'Quizzes',                    // page title
+            'Quizzes',                    // menu title
+            'manage_options',                  // capability required to access
+            'quizzes',                    // menu slug
+            array($this, 'FQM_Quizzes_callback')  // callback function for the page
+        );
+        // Add a submenu page for "Add New Quiz"
+        add_submenu_page(
+            'full-quiz-maker',                 // parent menu slug
+            'Add New Quiz',                    // page title
+            'Add New Quiz',                    // menu title
+            'manage_options',                  // capability required to access
+            'add-new-quiz',                    // menu slug
+            array($this, 'FQM_addNewQuiz_callback')  // callback function for the page
+        );
 
+        // Remove the submenu page that you want to hide
         remove_submenu_page('full-quiz-maker', 'full-quiz-maker');
     }
 
-    // Callback method for the Recycle Bin page
+    // Callback method for the Quizzes page
     public function FQM_Quizzes_callback()
     {
         include 'Quizzes.php';
     }
+
+    // Callback method for the Quizzes page
+    public function FQM_addNewQuiz_callback()
+    {
+        include 'pages/add-new-quiz.php';
+    }
+
     // Add menu link in top bar (FullQuizMaker)
     public function FQM_toolbar_link($wp_admin_bar)
     {

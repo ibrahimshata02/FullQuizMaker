@@ -3,7 +3,20 @@ global $wpdb;
 $table_name = $wpdb->prefix . 'polls_psx_polls';
 $statuses = array('active', 'inactive'); // List of statuses to display
 $polls = $wpdb->get_results("SELECT * FROM $table_name WHERE status IN ('" . implode("','", $statuses) . "')");
+
+// Status color function
+function statusColor($status)
+{
+    if ($status == 'active') {
+        return 'success';
+    } elseif ($status == 'inactive') {
+        return 'warning';
+    } else {
+        return 'danger';
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,9 +43,7 @@ thead tr th {
 
 
 <body>
-
     <main class="main-content position-relative max-height-vh-100 h-100 mt-1">
-
         <div class="container-fluid py-4">
             <div class="py-4">
                 <div class="row">
@@ -43,46 +54,49 @@ thead tr th {
 
                             <div class="d-flex gap-2 align-items-center m-0 p-0">
                                 <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-add'); ?>"
-                                    class="btn btn-dark m-0">Add Quiz
+                                    class="btn btn-primary m-0">Add Quiz
                                     <i style="cursor: pointer" class="fas fa-add text-white ms-2"></i>
                                 </a>
                                 <a href="<?php echo (admin_url('admin.php?page=poll-survey-xpress-recycle')); ?>"
-                                    class="btn btn-danger m-0">Recycle Bin <i style="cursor: pointer"
+                                    class="btn btn-danger m-0">Recycle Pin <i style="cursor: pointer"
                                         class="fas fa-trash text-white ms-2"></i></a>
                             </div>
                         </div>
 
-                        <h2 class="text-white bg-primary">FAW</h2>
-
                         <div class="p-0 pt-0 border rounded-3 w-100">
                             <div class="table-responsive p-0 bg-white rounded-3">
-                                <table class="table align-items-center mb-0 col-lg-12 col-xxl-10 rounded-3">
-                                    <thead class="p-4 ">
+                                <table class="table align-items-center m-0 col-lg-12 col-xxl-10 rounded-3">
+                                    <thead>
                                         <tr>
-                                            <th class="text-uppercase text-center text-xxs p-4">
+                                            <th class="text-uppercase text-center text-xxs text-center py-4">
                                                 ID
                                             </th>
 
-                                            <th class="text-uppercase text-xxs p-4">
+                                            <th class="text-uppercase text-center text-xxs py-4">
                                                 Title
                                             </th>
 
-                                            <th class="text-uppercase text-xxs p-4">
+                                            <th class="text-uppercase text-xxs text-center py-4">
                                                 Status
                                             </th>
 
-                                            <th class=" text-uppercase text-xxs p-4">
-                                                Shortcodes
+                                            <th class="text-uppercase text-xxs text-center py-4">
+                                                Level
                                             </th>
 
-                                            <th class=" text-uppercase text-xxs p-4">
+                                            <th class="text-uppercase text-center text-xxs text-center py-4">
+                                                Participants
+                                            </th>
+
+                                            <th class="text-uppercase text-xxs text-center py-4">
+                                                Start Date
+                                            </th>
+
+                                            <th class=" text-uppercase text-xxs text-center py-4">
                                                 End Date
                                             </th>
 
-                                            <th class=" text-uppercase text-xxs p-4">
-                                                Template
-                                            </th>
-                                            <th class=" text-uppercase text-xxs p-4">
+                                            <th class=" text-uppercase text-xxs text-center py-4">
                                                 Actions
                                             </th>
                                         </tr>
@@ -91,7 +105,7 @@ thead tr th {
                                     <tbody>
                                         <?php if (empty($polls)) { ?>
                                         <tr>
-                                            <td colspan="7" class="text-xss text-center p-4">No surveys found,<a
+                                            <td colspan="7" class="text-xss text-center py-4">No surveys found,<a
                                                     class="text-primary ms-1 fw-bold"
                                                     href="<?php echo admin_url('admin.php?page=poll-survey-xpress-add'); ?>">add
                                                     new record</a></td>
@@ -104,51 +118,54 @@ thead tr th {
                                             ?>
                                         <tr data-count=<?php echo count($polls); ?> class="gray-row" id="survey_data"
                                             data-card-id=<?php echo $poll->poll_id; ?>>
-                                            <td>
-                                                <p class="text-xs mb-0 m-0 text-center align-middle ">
+                                            <td class="align-middle text-center">
+                                                <p class="text-xs m-0">
                                                     <?php echo $poll->poll_id; ?>
                                                 </p>
                                             </td>
 
-                                            <td class="align-middle">
-                                                <p title="<?php echo $poll->title; ?>" style="width: 120px;"
-                                                    class="text-xs mb-0 text-truncate">
-                                                    <?php echo $poll->title; ?>
+                                            <td style="width: 100px;" class="align-middle text-center">
+                                                <p title="<?php echo $poll->title; ?>"
+                                                    class="text-xs m-0 text-truncate">
+                                                    <?php echo  $poll->title; ?>
                                                 </p>
                                             </td>
 
-                                            <td class="align-middle">
+                                            <td class="align-middle text-center">
                                                 <span
-                                                    class="badge badge-sm bg-gradient-<?php echo ($poll->status == 'active') ? 'success' : 'danger'; ?>">
+                                                    class="badge badge-sm bg-gradient-<?php echo statusColor($poll->status) ?>">
                                                     <?php echo ucfirst($poll->status); ?>
                                                 </span>
                                             </td>
 
-                                            <td class="align-middle">
-                                                <input title="Normal Shortcode" style="width: 180px;" type="text"
-                                                    readonly
-                                                    class="pollInput form-control text-xs mb-0 border-0 bg-transparent"
-                                                    value='[<?php echo $poll->Short_Code; ?>]'>
-                                                <input title="Button Shortcode" style="width: 180px;" type="text"
-                                                    readonly
-                                                    class="pollInput form-control text-xs mb-0 border-0 bg-transparent"
-                                                    value='[<?php echo $poll->Short_Code; ?> btn]'>
+                                            <td class="align-middle text-center">
+                                                <p class="text-xs m-0">
+                                                    <?php echo $poll->template; ?>
+                                                </p>
                                             </td>
 
-                                            <td class="align-middle">
-                                                <p class="text-xs mb-0">
+                                            <td class="align-middle text-center">
+                                                <p class="text-xs m-0 text-center">
+                                                    +150
+                                                </p>
+                                            </td>
+
+                                            <td class="align-middle text-center">
+                                                <p class="text-xs m-0">
                                                     <?php echo $poll->end_date; ?>
                                                 </p>
                                             </td>
 
-                                            <td class="align-middle">
-                                                <p class="text-xs mb-0">
-                                                    <?php echo $poll->template; ?>
+                                            <td class="align-middle text-center">
+                                                <p class="text-xs m-0 ">
+                                                    <?php echo $poll->end_date; ?>
                                                 </p>
                                             </td>
+
+
                                             <!-- Other dynamic data columns here -->
 
-                                            <td class="text-center d-flex align-items-center justify-content-center px-0 p-4 gap-lg-3 gap-md-2 gap-1"
+                                            <td class="text-center d-flex align-items-center justify-content-center px-0 py-4 gap-lg-3 gap-md-2 gap-1"
                                                 style="height: 77px;">
                                                 <a
                                                     href="<?php echo admin_url('admin.php?page=poll-survey-xpress-surveys&template=' . $poll->template . '&poll_id=' . $poll->poll_id); ?>">
