@@ -33,7 +33,7 @@ class FullQuizMaker
         //enqueue Script files
         if (
             (isset($_GET['page']) && (
-                ($_GET['page'] === 'poll-survey-xpress-surveys' ||
+                ($_GET['page'] === 'add-new-quiz' ||
                     $_GET['page'] === 'poll-survey-xpress-recycle' ||
                     $_GET['page'] === 'poll-survey-xpress-add' ||
                     $_GET['page'] === 'poll-survey-xpress-settings' ||
