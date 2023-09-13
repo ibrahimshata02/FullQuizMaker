@@ -38,6 +38,8 @@ function FMQ_settings_link($links)
 
     return $links;
 }
+
+$FQM_teacher_role;
 function FMQ_add_database_tables()
 {
     global $wpdb;
@@ -84,7 +86,6 @@ function FMQ_add_database_tables()
 
     $table_studentinGroups = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}FQM_studentinGroups (
         temp_id int(11) NOT NULL AUTO_INCREMENT,
-        student_id int(11) NOT NULL,
         class_id int(11) NOT NULL,
         ID bigint(20) unsigned NOT NULL,
         FOREIGN KEY (ID) REFERENCES {$wpdb->prefix}users(ID),  -- Use uppercase ID here
@@ -118,11 +119,7 @@ function FMQ_add_database_tables()
         question_id int(11) NOT NULL AUTO_INCREMENT,
         question_text varchar(255) NOT NULL,
         question_type varchar(255) NOT NULL,
-        is_question_attachments boolean,
         question_attachments_data varchar(255) NOT NULL,
-        question_answer_seed_random varchar(255) NOT NULL,
-        quiz_id int(11) NOT NULL,
-        FOREIGN KEY (quiz_id) REFERENCES {$wpdb->prefix}FQM_Quizzes(quiz_id),
         PRIMARY KEY  (question_id)
     ) $charset_collate;";
 
@@ -131,6 +128,7 @@ function FMQ_add_database_tables()
         quiz_id int(11) NOT NULL,
         question_id int(11) NOT NULL,
         question_mark int(11) NOT NULL,
+        question_answer_seed_random int (11) NOT NULL,
         FOREIGN KEY (quiz_id) REFERENCES {$wpdb->prefix}FQM_Quizzes(quiz_id),
         FOREIGN KEY (question_id) REFERENCES {$wpdb->prefix}FQM_questions(question_id),
         PRIMARY KEY  (temp_id)
@@ -140,6 +138,7 @@ function FMQ_add_database_tables()
         answer_id int(11) NOT NULL AUTO_INCREMENT,
         answer_text varchar(255) NOT NULL,
         answer_is_correct boolean NOT NULL,
+        sequenceData varchar(255) NOT NULL,
         question_id int(11) NOT NULL,
         FOREIGN KEY (question_id) REFERENCES {$wpdb->prefix}FQM_questions(question_id),
         PRIMARY KEY  (answer_id)
@@ -185,17 +184,28 @@ function FMQ_add_database_tables()
     dbDelta($table_StudentQuizAttempts);
     dbDelta($table_StudentAnswers);
 
+   add_role('student', 'Student', array(
+        'read' => true,
+        'edit_posts' => false,
+        'delete_posts' => false,
+    ));
+
+    $FQM_teacher_role=add_role ('teacher' , 'Teacher' , array(
+        'read' => true,
+        'edit_posts' => true,
+        'delete_posts' => true,
+    )); 
+
 
 }
-
-register_activation_hook(__FILE__, 'FMQ_add_database_tables');
+ register_activation_hook(__FILE__, 'FMQ_add_database_tables'); 
 
 global $wpdb;
 $year_table = $wpdb->prefix . 'FQM_year';
 
 $allowed_to_run = true;
 
-if ($wpdb->get_var("SHOW TABLES LIKE '$year_table'") !== $year_table) {
+if ($wpdb->get_var("SHOW TABLES LIKE '$year_table'") !== $year_table || !$$FQM_teacher_role ) {
     $allowed_to_run = false;
 }
 
@@ -219,7 +229,7 @@ function FMQ_custom_after_plugin_row_content($plugin_file, $plugin_data, $status
         echo '<tr class="plugin-update-tr">
             <td colspan="3" class="plugin-update colspanchange">
                 <div class="update-message notice inline notice-info notice-alt">
-                    <p>🚨 The Plugin cannot work because the required tables were not created successfully. Please check your database privileges and then deactivate and activate the plugin again.  </p>
+                    <p>🚨 The Plugin cannot work because the required tables were not created successfully OR the plugin can`t add the roles to users table. Please check your database privileges and then deactivate and activate the plugin again.  </p>
                 </div>
             </td>
         </tr>';
