@@ -313,10 +313,118 @@
         // Initial setup
         updateQuizzes();
 
+
+        // Function to extract the quiz card values
+        function extractQuizCardValues() {
+            const quizCards = document.querySelectorAll(".quiz-card");
+
+            const quizData = [];
+
+            quizCards.forEach((card) => {
+                const cardType = card.getAttribute("data-quiz-type");
+                const cardId = card.getAttribute("data-card-id");
+                const questionTitle = card.querySelector("#questionTitle").value;
+
+                // Extract options data based on the card type
+                let options = [];
+                if (cardType === "1") { // Multiple choice or True/False
+                    card.querySelectorAll(".option-card").forEach((option) => {
+                        const optionId = option.getAttribute("data-option-id");
+                        const optionTitle = option.querySelector("input[type='text']").value;
+                        const optionValue = option.querySelector("input[type='radio']").checked;
+                        options.push({
+                            optionId,
+                            optionTitle,
+                            optionValue
+                        });
+                    });
+                } else if (cardType === "2") { // True/False
+                    card.querySelectorAll(".option-card").forEach((option) => {
+                        const optionId = option.getAttribute("data-option-id");
+                        const radioButton = option.querySelector("input[type='radio']");
+                        const optionTitle = option.querySelector("input[type='text']").value;
+
+                        let optionValue = null; // Initialize optionValue to null
+
+                        if (radioButton.checked) {
+                            // Set optionValue to the selected option's text
+                            optionValue = optionTitle;
+                            options.push({
+                                optionId,
+                                optionValue
+                            });
+                        }
+
+
+                    });
+
+                } else { // Short answer
+                    card.querySelectorAll(".option-card").forEach((option) => {
+                        const optionId = option.getAttribute("data-option-id");
+                        const shortAnswerText = option.querySelector("textarea").value;
+                        options.push({
+                            optionId,
+                            shortAnswerText
+                        });
+                    });
+                }
+
+                quizData.push({
+                    cardType,
+                    cardId,
+                    questionTitle,
+                    options,
+                });
+            });
+
+            return quizData;
+        }
+
+
+
         save_button.addEventListener("click", () => {
             // save_button.disabled = true;
             // save_button.innerHTML =
             //     '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+            // const finalArr = []
+
+            // quizCards.forEach((card) => {
+            //     const cardId = card.getAttribute("data-card-id");
+            //     const questionTitle = card.querySelector("#questionTitle").value;
+            //     const quizTypeSelect = card.querySelector("#quizTypeSelect");
+            //     const quizType = quizTypeSelect.value;
+            //     const optionsGroup = card.querySelector("#optionsGroup");
+            //     const options = optionsGroup.querySelectorAll(".option-card");
+            //     const addNewOptionContainer = card.querySelector("#addNewOptionContainer");
+
+            //     const optionsArray = [];
+            //     options.forEach((option) => {
+            //         const optionId = option.getAttribute("data-option-id");
+            //         const optionTitle = option.querySelector("input[type='text']")
+            //             .value;
+            //         const optionObject = {
+            //             optionId,
+            //             optionTitle,
+            //         };
+            //         optionsArray.push(optionObject);
+            //     });
+
+            //     const cardObject = {
+            //         cardId,
+            //         questionTitle,
+            //         quizType,
+            //         options: optionsArray,
+            //     };
+            //     finalArr.push(cardObject);
+            // })
+
+            // console.log("FinalArray", finalArr);
+
+            // Usage
+            const extractedData = extractQuizCardValues();
+            console.log(extractedData); // This will log the extracted data as an array of objects
+
+
 
 
             // if (pollsCardsArray.length > 0) {
