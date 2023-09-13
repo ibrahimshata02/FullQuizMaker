@@ -7,6 +7,7 @@
     <title>Soft UI Dashboard by Creative Tim</title>
 </head>
 
+
 <body>
     <main
         class="col-lg-8 col-md-10 col-11 mx-auto main-content position-relative max-height-vh-100 h-100 mt-4 border-radius-lg">
@@ -15,494 +16,211 @@
             <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-surveys'); ?>"
                 class="m-0 text-dark">Home</a>
             <i class="fas fa-angle-right"></i>
-            <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-add'); ?>"
-                class="m-0 text-dark">Templates</a>
-            <i class="fas fa-angle-right"></i>
-            <h6 class="font-weight-bolder mb-0 p-0 ">Multiple Choice Survey Add</h6>
+            <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-add'); ?>" class="m-0 text-dark">Add new
+                quiz</a>
         </div>
 
         <div class="d-flex flex-column justify-content-center align-items-center">
-            <div class="w-100 p-4 border-t border-t-4 border bg-white mb-4 rounded-3">
-                <input type="text" class="w-100 text-xxl p-3 rounded-1 bg-white mb-3 border-0"
-                    placeholder="Untitled quiz" id="quiz_title_value" value="" />
-                <input type="text" class="w-100 border text-lg rounded-1 p-1 rounded-1 bg-white mb-3"
-                    placeholder="Quiz description" id="quiz_description_value" value="" />
+            <div class="border colored-border-div-top w-100 p-4 border-top bg-white mb-4 rounded-3">
+                <input style="font-size: 30px;" type="text" class="w-100 mb-2 rounded-0" placeholder="Untitled quiz"
+                    id="quiz_title_value" value="" />
+                <input type="text" class="w-100 mb-3 rounded-0" placeholder="Quiz description"
+                    id="quiz_description_value" value="" />
             </div>
 
-            <div class="d-flex w-100 flex-column border rounded-3 bg-white p-4">
-                <label for="surveyTitle" class="form-label">Add question title</label>
-                <input type="text" class="form-control mb-2 border p-2" placeholder="Question title"
-                    id="questionTitle" />
+            <!-- Final output cards [Cards container] -->
+            <div id="cardsContainer" class="w-100 d-flex flex-column gap-3">
+                <div
+                    class="position-relative quiz-card d-flex w-100 flex-column border colored-border-div-left w-100 p-4 border-top bg-white mb-2 rounded-3">
+                    <div style="width: 30xp; height: 30px;"
+                        class="counter position-absolute d-flex justify-content-center align-items-center top-0 start-0 bg-primary text-white rounded-2 rounded-left-0 rounded-bottom-0 rounded-top-0 p-3">
+                    </div>
+                    <div class="d-flex align-items-center gap-4 mb-2 mt-2">
+                        <input style="font-size: 23px;" type="text" class="w-100 rounded-0"
+                            placeholder="Untitled question" id="questionTitle" value="" />
 
-                <div class="mt-2 mb-2">
-                    <label for="surveyTitle" class="form-label">Add new option</label>
+                        <div class="d-flex align-items-center gap-3 w-50">
+                            <select class="w-100 border bg-transparent p-2 " aria-label="Default select example">
+                                <option selected value="1">Multiple choice </option>
+                                <option value="2">True/False</option>
+                                <option value="3">Short answer</option>
+                            </select>
+                            <i title="Add new image" class="cursor-pointer fas fa-image fa-xl"> </i>
+                        </div>
+                    </div>
+
+
+                    <div id="optionsGroup" class="d-flex flex-column gap-2 my-3">
+                        <div class="option-card d-flex justify-content-between align-items-center gap-2">
+                            <div class="d-flex align-items-center gap-2 w-100">
+                                <input disabled type="radio">
+                                <input type="text" class="w-100 rounded-0" placeholder="Option title"
+                                    value="Option title" />
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="d-flex align-items-center gap-2">
-                        <input type="text" class="form-control border p-2" placeholder="Option title"
-                            id="optionInput" />
-                        <button id="addOption"
-                            class="text-primary border btn text-sm font-weight-bold mb-0 shadow-none d-flex justify-content-center align-items-center p-3 rounded-1">
-                            <i class="fas fa-plus text-sm" aria-hidden="true"></i>
-                        </button>
+                        <input disabled type="radio">
+                        <a id="add_new_option" class="cursor-pointer opacity-80 text-primary text-sm m-0"
+                            title="Add new option">Add new
+                            option</a>
+                    </div>
+                    <hr class="mt-4">
+                    <div class="d-flex justify-content-end gap-4 p-2">
+                        <i title="Duplicate question card"
+                            class="fa-regular fa-copy fa-md text-dark cursor-pointer"></i>
+                        <i title="Delete question card" class="fas fa-trash-can fa-md text-danger cursor-pointer"></i>
                     </div>
                 </div>
-
-                <!-- Radio Buttons group -->
-                <div id="optionsGroup"></div>
-
-                <button disabled id="createPoll"
-                    class="text-white btn bg-primary col-lg-4 col-md-6 col-7 text-sm font-weight-bold mb-0 mt-4">
-                    Create
-                    <i class="fas fa-plus text-sm ms-1" aria-hidden="true"></i>
-                </button>
-            </div>
-
-            <!-- Final output cards -->
-            <div id="cardsContainer" class="w-100 d-flex flex-column gap-3 my-5">
-                <!-- Cards will be rendered here -->
             </div>
 
             <button type="submit" id="save_button" disabled
-                class="align-self-start text-white btn bg-primary col-lg-4 col-md-6 col-7 text-sm font-weight-bold mb-5">
+                class="align-self-start text-white btn bg-primary col-lg-4 col-md-6 col-7 text-sm font-weight-bold mb-5 mt-4">
                 Save
             </button>
         </div>
     </main>
 
 
-
-
-    <!-- Fixed plugin settings ICON -->
-    <div data-bs-toggle="modal" data-bs-target="#settingsModal" style="cursor: pointer"
-        class="position-fixed bottom-4 end-2 px-3 py-2 bg-white shadow-sm rounded-circle text-dark">
-        <i class="fa fa-cog py-2"> </i>
-    </div>
-
-    <!-- Fixed Plugin settings -->
-    <div class="modal fade" id="settingsModal">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h5 class="modal-title">Survey Settings</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-
-                <!-- Modal body -->
-                <form class="modal-body card">
-                    <input type="hidden" id="my-ajax-nonce" value="<?php echo wp_create_nonce('my_ajax_nonce'); ?>" />
-                    <div>
-                        <label>Change plugin Theme</label>
-
-                        <div class="d-flex align-items-center px-2 gap-2">
-                            <span class="text-sm fw-bold"> Bg color</span>
-                            <input type="color" class="form-control form-control-color border-0 p-0 w-10 me-2"
-                                id="bg_color" value="#F00" />
-                            <span class="text-sm fw-bold"> Text color </span>
-                            <input type="color" class="form-control form-control-color border-0 p-0 w-10"
-                                id="text_color" value="#006600" />
-                        </div>
-                    </div>
-
-                    <div class="d-flex flex-column gap-2 mt-2 mb-2 px-2">
-                        <div>
-                            <label class="m-0">Starts</label>
-                            <input type="datetime-local" class="form-control" id="start_date"
-                                placeholder="Select a date" />
-                        </div>
-
-                        <div>
-                            <label class="m-0">Ends</label>
-
-                            <input type="datetime-local" class="form-control" id="end_date"
-                                placeholder="Select a date" />
-                        </div>
-                    </div>
-
-                    <div class="card-body pt-sm-3 p-0">
-                        <div class="form-group d-flex flex-column">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="active_plugin" />
-                                <label class="form-check-label" for="active_plugin">
-                                    Activate the survey
-                                </label>
-                            </div>
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="share_plugin" />
-                                <label class="form-check-label" for="share_plugin">
-                                    Share with my friends
-                                </label>
-                            </div>
-
-                            <div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="show_results" />
-                                    <label class="form-check-label" for="show_results">
-                                        Show real-time results
-                                    </label>
-                                </div>
-
-                                <input type="text" class="form-control mt-2" placeholder="Add Thank Meesage"
-                                    value="Thank You!" id="show_results_input" />
-                            </div>
-
-                            <div class="d-flex align-items-center justify-content-start gap-2 mt-3">
-                                <label class="form-check-label w-45">
-                                    Show results after</label>
-                                <input type="number" class="form-control w-55" placeholder="Number of votes"
-                                    id="min_votes_input" value="10" />
-                            </div>
-
-                            <div class="w-100 d-flex flex-column align-items-start mt-2 gap-2">
-                                <input type="text" class="form-control" placeholder="Add CTA button title"
-                                    id="cta_input" value="CTA title" />
-                                <button onclick="(e)=>e.preventDefault()" id="cta_button" type="button"
-                                    class="btn btn-dark m-0 mt-1">
-                                    CTA Title
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <script>
-    // Multiple Choice Template Add Poll
     jQuery(document).ready(function(jQuery) {
-        const ctaInput = document.getElementById("cta_input");
-        const ctaButton = document.getElementById("cta_button");
+        const cardsContainer = document.getElementById("cardsContainer");
 
-        ctaInput.addEventListener("keyup", () => {
-            if (ctaInput.value == "") {
-                ctaButton.innerText = "CTA Title";
-            } else {
-                ctaButton.innerText = ctaInput.value;
-            }
-        });
-
-        const voteCheckbox = document.getElementById("show_results");
-        const limitsInput = document.getElementById("show_results_input");
-        voteCheckbox.addEventListener("change", function() {
-            if (voteCheckbox.checked) {
-                limitsInput.disabled = true;
-            } else {
-                limitsInput.disabled = false;
-            }
-        });
-
-        // Add Poll cards variables
-        let addOptionButton = document.getElementById("addOption");
-        let optionInput = document.getElementById("optionInput");
-        let optionsGroup = document.getElementById("optionsGroup");
-        let createPollButton = document.getElementById("createPoll");
-        let questionTitle = document.getElementById("questionTitle");
-        let cardsContainer = document.getElementById("cardsContainer");
-        let quiz_title_value = document.getElementById("quiz_title_value");
-        let optionsHTMLArray = [];
-        // Data will be sent
-        let optionsArray = [];
-        let pollsCardsArray = [];
-        // Final object data
-        let finalObj = {};
-
-        let settingObj = {};
-
-        // Plugin Settings variables
-        const bg_color = document.getElementById("bg_color");
-        const text_color = document.getElementById("text_color");
-        const start_date = document.getElementById("start_date");
-        const end_date = document.getElementById("end_date");
-        const active_plugin = document.getElementById("active_plugin");
-        const share_plugin = document.getElementById("share_plugin");
-        const show_results = document.getElementById("show_results");
-        const show_results_input = document.getElementById("show_results_input");
-        const min_votes_input = document.getElementById("min_votes_input");
-        const cta_input = document.getElementById("cta_input");
-        const save_button = document.getElementById("save_button");
-        const nonce = jQuery("#my-ajax-nonce").val();
-
-        function createOption(optionTitle) {
-            const newOption = document.createElement("div");
-            newOption.innerHTML = `
-     <span>
-       ${optionTitle}
-     </span>
-   `;
-            optionsGroup.appendChild(newOption);
-            optionsArray.push(optionTitle);
-            console.log(optionsArray);
-
-            optionsHTMLArray.push(newOption);
+        // Function to generate a unique ID
+        function generateUniqueId() {
+            return new Date().toISOString() + Math.random().toString(36).substr(2, 9);
         }
 
-        optionInput.addEventListener("keydown", function(event) {
-            if (event.key === 13) {
-                createOption();
-            }
-        });
+        // Add new option event listener
+        function updateQuizzes() {
+            document.querySelectorAll(".quiz-card").forEach((card, index) => {
+                const add_new_option = card.querySelector("#add_new_option");
+                const optionsGroup = card.querySelector("#optionsGroup");
+                const counter = card.querySelector(".counter");
 
-        // Function to enable or disable the createPollButton
-        function updateCreatePollButton() {
-            const questionTitleValue = questionTitle.value.trim();
+                counter.textContent = index + 1;
 
-            const enableButton =
-                questionTitleValue !== "" && optionsHTMLArray.length >= 2;
-            createPollButton.disabled = !enableButton;
-        }
-        // Event listener for questionTitle change
-        questionTitle.addEventListener("change", updateCreatePollButton);
+                const cardId = generateUniqueId(); // Generate a unique ID for the card
+                card.setAttribute("data-card-id", cardId);
 
-        function addOption() {
-            const optionTitle = optionInput.value.trim();
-            if (optionTitle !== "") {
-                createOption(optionTitle);
-                optionInput.value = "";
-                updateCreatePollButton();
-            }
-        }
+                add_new_option.addEventListener("click", () => {
+                    const optionCard = document.createElement("div");
+                    optionCard.className =
+                        "option-card d-flex justify-content-between align-items-center gap-2"; // Add justify-content-between class
+                    const optionId = generateUniqueId(); // Generate a unique ID for the option
+                    optionCard.setAttribute("data-option-id", optionId);
+                    optionCard.innerHTML = `
+                        <div class="d-flex align-items-center gap-2 w-100">
+                            <input disabled type="radio">
+                            <input type="text" class="w-100 rounded-0" placeholder="Option title" value="Option title" />
+                        </div>
+                        <i class="cursor-pointer fa-regular fa-circle-xmark fa-lg text-danger" data-option-id="${optionId}"></i>
+                    `;
+                    optionsGroup.appendChild(optionCard);
 
-        optionInput.addEventListener("keydown", function(event) {
-            if (event.keyCode === 13) {
-                addOption();
-            }
-        });
-
-        // Event listener for addOptionButton click
-        addOptionButton.addEventListener("click", addOption);
-        const questionTitleValue = questionTitle.value.trim();
-
-        const enableButton =
-            questionTitleValue !== "" && optionsHTMLArray.length >= 2;
-        createPollButton.disabled = !enableButton;
-
-        // Event listener for questionTitle change
-        questionTitle.addEventListener("keyup", updateCreatePollButton);
-
-        // Event listener for addOptionButton click
-        addOptionButton.addEventListener("click", function() {
-            const optionTitle = optionInput.value.trim();
-            if (optionTitle !== "") {
-                createOption(optionTitle);
-                optionInput.value = "";
-                updateCreatePollButton();
-            }
-        });
-
-        function createPollCard() {
-            const newPollCard = document.createElement("div");
-            newPollCard.className =
-                "position-relative flex-column flex-wrap gap-2 border rounded-3 bg-white p-4";
-
-            const optionsContainer = document.createElement("div");
-            optionsContainer.className = "d-flex flex-column gap-1";
-
-            optionsArray.forEach((option, index) => {
-                const newInput = document.createElement("div");
-                newInput.className = "d-flex align-items-center";
-                const inputElement = document.createElement("input");
-                inputElement.type = "text";
-                inputElement.className = "form-control mb-2 border-0 w-100";
-                inputElement.id = `surveyTitle_${index}`;
-                inputElement.placeholder = `Add option #${index + 1}`;
-                inputElement.value = option;
-
-                inputElement.addEventListener("input", (event) => {
-                    const parentElement = event.target.parentNode.parentNode.parentNode;
-                    const cardId = parentElement.getAttribute("data-card-id");
-
-                    const targetCardIndex = pollsCardsArray.findIndex(
-                        (elem) => elem.id == cardId
-                    );
-
-                    if (targetCardIndex !== -1) {
-                        // Create a copy of the options array for this specific poll card
-                        const newOptionsArray = [...pollsCardsArray[targetCardIndex].options];
-                        newOptionsArray[index] = event.target
-                            .value; // Update the corresponding option
-                        pollsCardsArray[targetCardIndex].options = newOptionsArray;
-                        console.log(finalObj);
-                    }
+                    // Add event listener for deleting this option
+                    const deleteOptionIcon = optionCard.querySelector(
+                        `[data-option-id="${optionId}"]`);
+                    deleteOptionIcon.addEventListener("click", (event) => {
+                        event.stopPropagation();
+                        optionCard.remove();
+                    });
                 });
 
-                newInput.appendChild(inputElement);
-                optionsContainer.appendChild(newInput);
+                // Add event listener for deleting the card
+                const deleteCardIcon = card.querySelector(".fa-trash-can");
+                deleteCardIcon.addEventListener("click", (event) => {
+                    event.stopPropagation();
+                    card.remove();
+                    updateQuizzes()
+                });
             });
-
-            // Append the icons div to the newPollCard
-            const iconsDiv = document.createElement("div");
-            iconsDiv.className = "position-absolute bottom-4 end-2 p-0";
-
-            const deleteIcon = document.createElement("i");
-            deleteIcon.style.cursor = "pointer";
-            deleteIcon.className = "fas fa-trash text-sm ms-1 text-danger";
-            deleteIcon.setAttribute("aria-hidden", "true");
-            deleteIcon.setAttribute("data-bs-toggle", "modal");
-            deleteIcon.setAttribute("data-bs-target", "#deleteModal");
-
-            iconsDiv.appendChild(deleteIcon);
-            newPollCard.appendChild(iconsDiv);
-
-            // Add the title
-            const pollTitle = document.createElement("textarea");
-            pollTitle.className = "form-control mb-2 w-100 border-0 fw-bolder";
-            pollTitle.placeholder = "Edit the poll question title";
-
-            pollTitle.addEventListener("input", (e) => {
-                const parentElement = event.target.parentNode;
-                const cardId = parentElement.getAttribute("data-card-id");
-                const targetCardIndex = pollsCardsArray.findIndex(
-                    (elem) => elem.id == cardId
-                );
-
-                if (targetCardIndex !== -1) {
-                    pollsCardsArray[targetCardIndex].questionTitle = e.target.value;
-                }
-                if (pollsCardsArray.length <= 0) {
-                    save_button.disabled = true;
-                    createPollButton.disabled = true;
-                }
-            });
-
-            pollTitle.value = `${questionTitle.value.trim()}`;
-            newPollCard.appendChild(pollTitle);
-
-            // Append the optionsContainer
-            newPollCard.appendChild(optionsContainer);
-
-            const newPollCardObj = {
-                id: new Date().toString(),
-                questionTitle: questionTitle.value.trim(),
-                options: optionsArray,
-            };
-
-            deleteIcon.setAttribute("data-card-id", newPollCardObj.id);
-
-            deleteIcon.addEventListener("click", (event) => {
-                const cardId = event.target.getAttribute("data-card-id");
-
-                // Remove the card from the DOM
-                const cardToRemove = document.querySelector(`[data-card-id="${cardId}"]`);
-
-                if (cardToRemove) {
-                    cardToRemove.remove();
-
-                    // Find the index of the card in the pollsCardsArray
-                    const cardIndex = pollsCardsArray.findIndex(
-                        (card) => card.id === cardId
-                    );
-
-                    // If the card was found in the array, remove it
-                    if (cardIndex !== -1) {
-                        pollsCardsArray.splice(cardIndex, 1);
-                    }
-                }
-
-                // Disable button if there is no cards to send
-                if (pollsCardsArray.length <= 0) {
-                    save_button.disabled = true;
-                    createPollButton.disabled = true;
-                }
-            });
-
-            // Append the new poll card to the document
-            newPollCard.setAttribute("data-card-id", newPollCardObj.id);
-            cardsContainer.appendChild(newPollCard);
-            pollsCardsArray.push(newPollCardObj);
-            if (pollsCardsArray.length > 0) {
-                save_button.disabled = false;
-            }
-
-            // Reset Input fields
-            optionsHTMLArray = [];
-            optionsArray = [];
-            optionsGroup.innerHTML = "";
-            questionTitle.value = "";
         }
 
-        createPollButton.addEventListener("click", () => {
-            if (questionTitle.value !== "" && optionsHTMLArray.length >= 2) {
-                createPollCard();
+        // Duplication card function
+        function duplicateCard(card) {
+            const cardClone = card.cloneNode(true); // Clone the card including its children
+            const cardId = generateUniqueId(); // Generate a unique ID for the card
+            cardClone.setAttribute("data-card-id", cardId);
+            cardsContainer.appendChild(cardClone);
+
+            // Add event listeners for the cloned card's options
+            cardClone.querySelectorAll(".fa-circle-xmark").forEach((deleteOptionIcon) => {
+                const optionId = deleteOptionIcon.getAttribute("data-option-id");
+                deleteOptionIcon.addEventListener("click", (event) => {
+                    event.stopPropagation();
+                    const optionContainer = cardClone.querySelector(
+                        `[data-option-id="${optionId}"]`);
+                    if (optionContainer) {
+                        optionContainer.remove();
+                    }
+                });
+            });
+        }
+
+        // Event listener for duplicating a card
+        document.addEventListener("click", function(event) {
+            if (event.target.classList.contains("fa-copy")) {
+                const card = event.target.closest(".quiz-card"); // Find the closest card element
+                if (card) {
+                    duplicateCard(card); // Call the duplicateCard function when the icon is clicked
+                    updateQuizzes()
+                }
             }
         });
+
+        // Initial setup
+        updateQuizzes();
 
         save_button.addEventListener("click", () => {
-            save_button.disabled = true;
-            save_button.innerHTML =
-                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
-            settingObj = {
-                cta_Text: cta_input.value,
-                start_date: start_date.value || new Date().toISOString(),
-                end_date: end_date.value ||
-                    new Date(
-                        new Date().getFullYear() + 100,
-                        11,
-                        31,
-                        23,
-                        59,
-                        59
-                    ).toISOString(),
-                status: active_plugin.checked,
-                color: text_color.value,
-                bgcolor: bg_color.value,
-                sharing: share_plugin.checked,
-                real_time_result_text: show_results_input.value,
-                real_time_check: show_results.checked,
-                min_votes: min_votes_input.value,
-            };
+            // save_button.disabled = true;
+            // save_button.innerHTML =
+            //     '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
 
-            finalObj = {
-                surveyTitle: quiz_title_value.value,
-                pollCards: pollsCardsArray,
-                settings: settingObj,
-                template: "Multiple Choice",
-            };
 
-            console.log(finalObj);
+            // if (pollsCardsArray.length > 0) {
+            //     jQuery.ajax({
+            //         type: "POST",
+            //         url: my_ajax_object.ajaxurl,
+            //         data: {
+            //             action: "PSX_save_poll_Multiple_data",
+            //             nonce: nonce, // Pass the nonce
+            //             poll_data: JSON.stringify(finalObj),
+            //         },
+            //         success: function(shortcode) {
+            //             console.log("Done");
+            //             save_button.textContent = "Save";
+            //             save_button.disabled = false;
 
-            if (pollsCardsArray.length > 0) {
-                jQuery.ajax({
-                    type: "POST",
-                    url: my_ajax_object.ajaxurl,
-                    data: {
-                        action: "PSX_save_poll_Multiple_data",
-                        nonce: nonce, // Pass the nonce
-                        poll_data: JSON.stringify(finalObj),
-                    },
-                    success: function(shortcode) {
-                        console.log("Done");
-                        save_button.textContent = "Save";
-                        save_button.disabled = false;
+            //             // Create a new toast element
+            //             var toast = document.createElement("div");
+            //             toast.style = "z-index:1000; right: 10px; bottom: 10px";
+            //             toast.className =
+            //                 "position-fixed p-2 px-4 bg-success border rounded-2";
+            //             toast.innerHTML = `
+            //                     <p class="m-0 fw-bold text-xs text-white">
+            //                     New survey has been added successfully!
+            //                     </p>
+            //                 `;
+            //             // Append the toast to the document
+            //             document.body.appendChild(toast);
 
-                        // Create a new toast element
-                        var toast = document.createElement("div");
-                        toast.style = "z-index:1000; right: 10px; bottom: 10px";
-                        toast.className =
-                            "position-fixed p-2 px-4 bg-success border rounded-2";
-                        toast.innerHTML = `
-                                <p class="m-0 fw-bold text-xs text-white">
-                                New survey has been added successfully!
-                                </p>
-                            `;
-                        // Append the toast to the document
-                        document.body.appendChild(toast);
+            //             // Initialize the Bootstrap toast
+            //             var bootstrapToast = new bootstrap.Toast(toast);
+            //             bootstrapToast.show();
 
-                        // Initialize the Bootstrap toast
-                        var bootstrapToast = new bootstrap.Toast(toast);
-                        bootstrapToast.show();
-
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 500)
-                    },
-                    error: function(error) {
-                        console.error("Error:", error);
-                        save_button.textContent = "Save";
-                        save_button.disabled = false;
-                    },
-                });
-            }
+            //             setTimeout(() => {
+            //                 window.location.reload();
+            //             }, 500)
+            //         },
+            //         error: function(error) {
+            //             console.error("Error:", error);
+            //             save_button.textContent = "Save";
+            //             save_button.disabled = false;
+            //         },
+            //     });
+            // }
         });
     });
     </script>
