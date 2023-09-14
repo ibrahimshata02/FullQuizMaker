@@ -2,7 +2,7 @@
 
 class FullQuizMaker
 {
-    private $version = 1.6;
+    private $version = 1.8;
 
     // Constructor for class includes all hooks
     public function __construct()
@@ -18,6 +18,7 @@ class FullQuizMaker
 
         wp_enqueue_script('jquery');
         wp_enqueue_script('bootstrap', plugin_dir_url(__FILE__) . '/js/bootstrap.min.js', array('jquery'), $this->version, true);
+        wp_enqueue_script('popper', plugin_dir_url(__FILE__) . '/js/popper.min.js', array('jquery'), $this->version, true);
         wp_enqueue_script('plugin-custom', plugin_dir_url(__FILE__) . '/js/main.js', array('jquery'), $this->version, true);
 
         wp_localize_script('plugin-custom', 'my_ajax_object', array(
@@ -45,6 +46,7 @@ class FullQuizMaker
         ) {
             wp_enqueue_script('jquery');
             wp_enqueue_script('plugin-custom', plugin_dir_url(__FILE__) . '/js/main.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('popper', plugin_dir_url(__FILE__) . '/js/popper.min.js', array('jquery'), $this->version, true);
             wp_enqueue_script('bootstrap', plugin_dir_url(__FILE__) . '/js/bootstrap.min.js', array('jquery'), $this->version, true);
 
             // Enqueue the Font Awesome stylesheet
@@ -90,6 +92,15 @@ class FullQuizMaker
             array($this, 'FQM_addNewQuiz_callback')  // callback function for the page
         );
 
+        add_submenu_page(
+            'full-quiz-maker',                 // parent menu slug
+            'single quiz',                    // page title
+            'single quiz',                    // menu title
+            'manage_options',                  // capability required to access
+            'single-quiz.php',                    // menu slug
+            array($this, 'FQM_singleQuiz_callback')  // callback function for the page
+        );
+
         // Remove the submenu page that you want to hide
         remove_submenu_page('full-quiz-maker', 'full-quiz-maker');
     }
@@ -104,6 +115,12 @@ class FullQuizMaker
     public function FQM_addNewQuiz_callback()
     {
         include 'pages/add-new-quiz.php';
+    }
+
+    // Callback method for the Quizzes page
+    public function FQM_singleQuiz_callback()
+    {
+        include 'pages/single-quiz.php';
     }
 
     // Add menu link in top bar (FullQuizMaker)
