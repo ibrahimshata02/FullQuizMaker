@@ -12,17 +12,11 @@ class FullQuizMaker
         add_action('admin_bar_menu', array($this, 'FQM_toolbar_link'), 99);
         add_action('wp_enqueue_scripts', array($this, 'FQM_enqueue_frontend_scripts'));
         add_action('wp_ajax_FQM_add_questions', array($this, 'FQM_add_questions'));
-        add_action('wp_ajax_nopriv_FQM_add_questions', array($this, 'FQM_add_questions'));
         add_action('wp_ajax_FQM_add_quiz', array($this, 'FQM_add_quiz'));
-        add_action('wp_ajax_nopriv_FQM_add_quiz', array($this, 'FQM_add_quiz'));
         add_action('wp_ajax_FQM_archive_quiz', array($this, 'FQM_archive_quiz'));
-        add_action('wp_ajax_nopriv_FQM_archive_quiz', array($this, 'FQM_archive_quiz'));
         add_action('wp_ajax_FQM_permenent_delete_quiz', array($this, 'FQM_permenent_delete_quiz'));
-        add_action('wp_ajax_nopriv_FQM_permenent_delete_quiz', array($this, 'FQM_permenent_delete_quiz'));
         add_action('wp_ajax_FQM_restore_quiz', array($this, 'FQM_restore_quiz'));
-        add_action('wp_ajax_nopriv_FQM_restore_quiz', array($this, 'FQM_restore_quiz'));
         add_action('wp_ajax_FQM_email_students', array($this, 'FQM_email_students'));
-        add_action('wp_ajax_nopriv_FQM_email_students', array($this, 'FQM_email_students'));
     }
 
     public function FQM_enqueue_frontend_scripts()
@@ -117,6 +111,7 @@ class FullQuizMaker
     {
         include 'pages/add-new-quiz.php';
     }
+
     // Add menu link in top bar (FullQuizMaker)
     public function FQM_toolbar_link($wp_admin_bar)
     {
@@ -132,8 +127,10 @@ class FullQuizMaker
             $wp_admin_bar->add_node($link_data);
         }
     }
+
     //Add Questions to Question Bank
-    public function FQM_add_questions(){
+    public function FQM_add_questions()
+    {
         global $wpdb;
         if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'my_ajax_nonce')) {
             wp_send_json_error('Invalid nonce.');
@@ -196,8 +193,10 @@ class FullQuizMaker
         }
 
     }
+
     // Add Quiz and Questions to Quiz 
-    public function FQM_add_quiz() {
+    public function FQM_add_quiz() 
+    {
         global $wpdb;
     
         // Verify nonce
@@ -301,7 +300,8 @@ class FullQuizMaker
         }
     }
     // Archive Quiz
-    public function FQM_archive_quiz() {
+    public function FQM_archive_quiz()
+    {
         global $wpdb;
     
         // Verify nonce
@@ -324,7 +324,8 @@ class FullQuizMaker
         }
     }
     // Restore Quiz
-    public function FQM_restore_quiz() {
+    public function FQM_restore_quiz()
+    {
         global $wpdb;
     
         // Verify nonce
@@ -347,7 +348,8 @@ class FullQuizMaker
         }
     }
     // Delete Quiz
-    public function FQM_permenent_delete_quiz() {
+    public function FQM_permenent_delete_quiz() 
+    {
         global $wpdb;
     
         // Verify nonce
@@ -377,7 +379,8 @@ class FullQuizMaker
         }
     }
     // Send Email For Students in the Group with Code
-    public function FQM_email_students(){
+    public function FQM_email_students()
+    {
         global $wpdb;
         // Verify nonce
         if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'my_ajax_nonce')) {
@@ -416,7 +419,8 @@ class FullQuizMaker
         }
     }
     // ShortCode For Profile Page of Student
-    public function FQM_student_profile(){
+    public function FQM_student_profile()
+    {
         global $wpdb ;
         $user_id = get_current_user_id();
 
@@ -462,7 +466,8 @@ class FullQuizMaker
         
     }
     // ShortCode For Profile Page of Teacher
-    public function FQM_teacher_profile(){
+    public function FQM_teacher_profile()
+    {
         global $wpdb ;
         $user_id = get_current_user_id();
 
@@ -471,43 +476,6 @@ class FullQuizMaker
          
     }
 
-    // Read Student Data From Excel File And Add Them To Users Table
-
-    public function FQM_read_excel_file(){
-        global $wpdb;
-        // Check if the request method is POST 
-        if ($_SERVER["REQUEST_METHOD"] === "POST") {
-            $file = $_FILES['file']['tmp_name'];
-            $handle = fopen($file, "r");
-            $c = 0;
-            while (($filesop = fgetcsv($handle, 1000, ",")) !== false) {
-                $class_id = 'da';
-                $first_name = $filesop[0];
-                $last_name = $filesop[1];
-                $email = $filesop[2];
-                $password = $filesop[3];
-                $user_id = username_exists($email);
-                if (!$user_id and email_exists($email) == false) {
-                    $random_password = $password;
-                    $user_id = wp_create_user($email, $random_password, $email);
-                    wp_update_user(
-                        array(
-                            'ID' => $user_id,
-                            'first_name' => $first_name,
-                            'last_name' => $last_name,
-                        )
-                    );
-                    $wpdb->insert(
-                        $wpdb->prefix . 'FQM_studentinGroups',
-                        array(
-                            'ID' => $user_id,
-                            'class_id' => $class_id,
-                        )
-                    );
-                }
-            }
-        }
-    }
 }
 
 $FullQuizMaker  = new FullQuizMaker();
