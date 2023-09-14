@@ -14,7 +14,8 @@ input[type="date"],
 input[type="tel"],
 input[type="url"],
 textarea {
-  border: 2px solid transparent !important;
+  border: 1px solid transparent;
+  border-radius: 7px !important;
 }
 
 button:disabled,
@@ -41,7 +42,7 @@ select:focus {
   border-color: transparent !important;
   box-shadow: none !important;
   outline: none !important;
-  border-bottom: 2px solid #125b50 !important ;
+  border: 1px solid #125b50 !important ;
   transition: all 0.1s ease-in-out !important;
 }
 
@@ -49,7 +50,7 @@ textarea:focus {
   border-color: transparent !important;
   box-shadow: none !important;
   outline: none !important;
-  border: 2px solid #125b50 !important ;
+  border: 1px solid #125b50 !important ;
   transition: all 0.1s ease-in-out !important;
 }
 
@@ -71,38 +72,6 @@ input[type="radio"] {
 
 .colored-border-div-left {
   border-left: 7px solid #125b50 !important;
-}
-
-.progress-bar {
-  position: relative !important;
-  width: 100% !important;
-  margin: 0 !important;
-  height: 12px !important;
-}
-
-#result-container {
-  bottom: -6px !important;
-}
-
-.progress-bar p {
-  content: "" !important;
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  height: 100% !important;
-}
-
-input[type="radio"] {
-  width: 20px !important;
-  min-width: 20px !important;
-  height: 20px !important;
-  min-height: 20px !important;
-  z-index: 10;
-}
-
-.transition-progress-bar {
-  transition: width 1.2s linear !important;
-  /* Adjust duration and easing as needed */
 }
 
 @keyframes pulse {
