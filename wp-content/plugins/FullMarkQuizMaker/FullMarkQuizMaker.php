@@ -220,6 +220,8 @@ if ($wpdb->get_var("SHOW TABLES LIKE '$year_table'") !== $year_table ) {
 
 if ($allowed_to_run) {
     require_once(plugin_dir_path(__FILE__) . 'functions.php');
+    require_once 'vendor/autoload.php';
+
 
 } else {
     add_action('after_plugin_row', 'FMQ_custom_after_plugin_row_content', 10, 3);

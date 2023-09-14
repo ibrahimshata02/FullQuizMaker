@@ -17,7 +17,10 @@ class FullQuizMaker
         add_action('wp_ajax_FQM_permenent_delete_quiz', array($this, 'FQM_permenent_delete_quiz'));
         add_action('wp_ajax_FQM_restore_quiz', array($this, 'FQM_restore_quiz'));
         add_action('wp_ajax_FQM_email_students', array($this, 'FQM_email_students'));
-        require_once 'vendor/autoload.php';
+        add_action('wp_ajax_FQM_upload_file', array($this, 'FQM_upload_file'));
+        add_action('wp_ajax_nopriv_FQM_upload_file',array($this, 'FQM_upload_file'));
+        add_action('wp_ajax_RCS_GET_MEDIUM_IMG_I', array($this,'get_medium_image')) ;
+
     }
 
     public function FQM_enqueue_frontend_scripts()
@@ -55,7 +58,9 @@ class FullQuizMaker
             wp_enqueue_script('plugin-custom', plugin_dir_url(__FILE__) . '/js/main.js', array('jquery'), $this->version, true);
             wp_enqueue_script('popper', plugin_dir_url(__FILE__) . '/js/popper.min.js', array('jquery'), $this->version, true);
             wp_enqueue_script('bootstrap', plugin_dir_url(__FILE__) . '/js/bootstrap.min.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('media-upload');
 
+            wp_enqueue_media();
             // Enqueue the Font Awesome stylesheet
             wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css', array(), '6.4.0');
 
@@ -494,6 +499,37 @@ class FullQuizMaker
          
     }
 
+    function rcs_get_attachment_id_from_url($attachment_url){
+        global $wpdb;
+        $upload_dir_paths = wp_upload_dir();
+        if(strpos($attachment_url, $upload_dir_paths['baseurl']) !== false){
+            $attachment_url = preg_replace( '/-\d+x\d+(?=\.(jpg|jpeg|png|gif)$)/i', '', $attachment_url );
+            
+            $attachment_url = str_replace( $upload_dir_paths['baseurl'] . '/', '', $attachment_url );
+            
+            $attachment_id = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." wposts, ".$wpdb->postmeta." wpostmeta 
+                                                            WHERE wposts.ID = wpostmeta.post_id AND wpostmeta.meta_key = '_wp_attached_file' 
+                                                            AND wpostmeta.meta_value = '%s' AND wposts.post_type = 'attachment'", $attachment_url));
+                                                            
+            return $attachment_id;
+        }
+        return false;
+    }
+    
+    function get_medium_image(){
+        $attch_url = (isset($_POST['attch_url']))? $_POST['attch_url'] : '';
+        if(!empty($attch_url)){
+            $attch_id = self::rcs_get_attachment_id_from_url(urldecode($attch_url));
+            if($attch_id){
+                $img = wp_get_attachment_image_src($attch_id, 'medium');
+                if(empty($img[0])){
+                    $img = wp_get_attachment_image_src($attch_id, 'small');
+                }
+                echo $attch_id.'--++##++--'.$img[0];
+            }
+        }
+        die();
+    }
 }
 
 $FullQuizMaker  = new FullQuizMaker();
