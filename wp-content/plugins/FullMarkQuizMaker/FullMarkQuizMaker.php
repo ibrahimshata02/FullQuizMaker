@@ -190,12 +190,11 @@ function FMQ_add_database_tables()
         'delete_posts' => false,
     ));
 
-    $FQM_teacher_role=add_role ('teacher' , 'Teacher' , array(
+    add_role ('teacher' , 'Teacher' , array(
         'read' => true,
         'edit_posts' => true,
         'delete_posts' => true,
     )); 
-
 
 }
  register_activation_hook(__FILE__, 'FMQ_add_database_tables'); 
@@ -205,7 +204,7 @@ $year_table = $wpdb->prefix . 'FQM_year';
 
 $allowed_to_run = true;
 
-if ($wpdb->get_var("SHOW TABLES LIKE '$year_table'") !== $year_table || !$$FQM_teacher_role ) {
+if ($wpdb->get_var("SHOW TABLES LIKE '$year_table'") !== $year_table ) {
     $allowed_to_run = false;
 }
 
