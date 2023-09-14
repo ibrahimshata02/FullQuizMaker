@@ -7,27 +7,20 @@
     <title>FQM plugin</title>
 </head>
 
-<style>
-    .negative-position {
-        top: -10px;
-        left: -10px;
-    }
-</style>
-
 <body>
     <main class="col-lg-8 col-md-10 col-11 mx-auto main-content position-relative max-height-vh-100 h-100 mt-4 border-radius-lg">
 
-        <div class="d-flex align-items-center gap-2 my-4">
+        <!-- <div class="d-flex align-items-center gap-2 my-4">
             <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-surveys'); ?>" class="m-0 text-dark">Home</a>
             <i class="fas fa-angle-right"></i>
             <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-add'); ?>" class="m-0 text-dark">Add new
                 questions</a>
-        </div>
+        </div> -->
 
-        <div class="d-flex flex-column justify-content-center align-items-center">
+        <div class="d-flex flex-column justify-content-center align-items-center mt-5">
             <div class="border colored-border-div-top w-100 p-4 border-top bg-white mb-4 rounded-3">
-                <input style="font-size: 30px;" type="text" class="w-100 mb-2 rounded-0" placeholder="Untitled quiz" id="quiz_title_value" value="" />
-                <input type="text" class="w-100 mb-3 rounded-0" placeholder="Quiz description" id="quiz_description_value" value="" />
+                <input style="font-size: 30px;" type="text" class="form-control border mb-2" placeholder="Untitled quiz" id="quiz_title_value" value="" />
+                <input type="text" class="form-control border mb-3 p-2" placeholder="Quiz description" id="quiz_description_value" value="" />
             </div>
 
             <!-- Final output cards [Cards container] -->
@@ -36,7 +29,7 @@
                     <div style="width:25px; height: 25px; font-size: 13px;" class="counter position-absolute d-flex justify-content-center align-items-center top-0 start-0 bg-primary text-white rounded-full p-3">
                     </div>
                     <div class="d-flex align-items-center gap-4 mb-2 mt-4">
-                        <input style="font-size: 23px;" type="text" class="w-100 rounded-0" placeholder="Untitled question" id="questionTitle" value="" />
+                        <input style="font-size: 23px;" type="text" class="form-control border" placeholder="Untitled question" id="questionTitle" value="" />
 
                         <div class="d-flex align-items-center gap-3 w-50">
                             <select id="quizTypeSelect" class="w-100 border bg-transparent p-2 " aria-label="Default select example">
@@ -141,7 +134,7 @@
                     optionCard.setAttribute("data-option-id", optionId);
                     optionCard.innerHTML = `
                         <div class="w-100">
-                            <textarea rows="2" class="w-100 rounded-3 p-3" placeholder="Short answer text"></textarea>
+                            <textarea rows="2" class="w-100 rounded-3 p-3 border" placeholder="Short answer text"></textarea>
                         </div>
                     `;
                     optionsGroup.appendChild(optionCard);
@@ -157,7 +150,7 @@
                 optionCard.innerHTML = `
                 <div class="d-flex align-items-center gap-2 w-100">
                     <input name="option-${cardId}" type="radio" value="value-${optionId}" />
-                    <input readonly type="text" class="w-100 rounded-0 bg-transparent" placeholder="Option title" value="${optionText}" />
+                    <input readonly type="text" class="form-control border bg-transparent p-2" placeholder="Option title" value="${optionText}" />
                 </div>
                 `;
                 return optionCard;
@@ -235,7 +228,7 @@
                 optionCard.innerHTML = `
                 <div class="d-flex align-items-center gap-2 w-100">
                     <input type="radio" name="option-${cardId}" value="value-${optionId}">
-                    <input type="text" class="w-100 rounded-0" placeholder="Option title" value="Option title" />
+                    <input type="text" class="form-control border p-2" placeholder="Option title" value="Option title" />
                 </div>
                 <i class="cursor-pointer fa-regular fa-circle-xmark fa-lg text-danger" data-option-id="${optionId}"></i>
             `;
@@ -257,7 +250,7 @@
                     newCard.innerHTML = `<div class="quiz-card position-relative d-flex w-100 flex-column border colored-border-div-left w-100 p-4 border-top bg-white mb-2 rounded-3" data-quiz-type="1">
                     <div style="width:25px; height: 25px; font-size: 13px;" class="counter position-absolute d-flex justify-content-center align-items-center top-0 start-0 bg-primary text-white rounded-full p-3">1</div>
                     <div class="d-flex align-items-center gap-4 mb-2 mt-2">
-                        <input style="font-size: 23px;" type="text" class="w-100 rounded-0" placeholder="Untitled question" id="questionTitle" value="">
+                        <input style="font-size: 23px;" type="text" class="form-control border" placeholder="Untitled question" id="questionTitle" value="">
 
                         <div class="d-flex align-items-center gap-3 w-50">
                             <select id="quizTypeSelect" class="w-100 border bg-transparent p-2 " aria-label="Default select example">
