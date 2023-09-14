@@ -25,7 +25,7 @@ function FMQ_settings_link($links)
     $url = esc_url(
         add_query_arg(
             'page',
-            'poll-survey-xpress-settings',
+            'add-new-quiz',
             get_admin_url() . 'admin.php'
         )
     );
@@ -39,7 +39,6 @@ function FMQ_settings_link($links)
     return $links;
 }
 
-$FQM_teacher_role;
 function FMQ_add_database_tables()
 {
     global $wpdb;

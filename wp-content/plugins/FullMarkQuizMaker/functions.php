@@ -17,6 +17,7 @@ class FullQuizMaker
         add_action('wp_ajax_FQM_permenent_delete_quiz', array($this, 'FQM_permenent_delete_quiz'));
         add_action('wp_ajax_FQM_restore_quiz', array($this, 'FQM_restore_quiz'));
         add_action('wp_ajax_FQM_email_students', array($this, 'FQM_email_students'));
+        require_once 'vendor/autoload.php';
     }
 
     public function FQM_enqueue_frontend_scripts()
