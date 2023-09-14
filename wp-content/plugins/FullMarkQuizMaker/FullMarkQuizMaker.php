@@ -184,17 +184,28 @@ function FMQ_add_database_tables()
     dbDelta($table_StudentQuizAttempts);
     dbDelta($table_StudentAnswers);
 
-   add_role('student', 'Student', array(
-        'read' => true,
-        'edit_posts' => false,
-        'delete_posts' => false,
-    ));
+    $existing_student_role = get_role('student');
 
-    add_role ('teacher' , 'Teacher' , array(
-        'read' => true,
-        'edit_posts' => true,
-        'delete_posts' => true,
-    )); 
+    if (!$existing_student_role) {
+        // Create the 'student' role
+        add_role('student', 'Student', array(
+            'read' => true,
+            'edit_posts' => false,
+            'delete_posts' => false,
+        ));
+    }
+    
+    // Check if the 'teacher' role already exists
+    $existing_teacher_role = get_role('teacher');
+    
+    if (!$existing_teacher_role) {
+        // Create the 'teacher' role
+        add_role('teacher', 'Teacher', array(
+            'read' => true,
+            'edit_posts' => true,
+            'delete_posts' => true,
+        ));
+    }
 
 }
  register_activation_hook(__FILE__, 'FMQ_add_database_tables'); 
