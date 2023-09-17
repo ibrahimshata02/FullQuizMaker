@@ -2,7 +2,7 @@
 
 class FullQuizMaker
 {
-    private $version = 1.8;
+    private $version = 2.1;
 
     // Constructor for class includes all hooks
     public function __construct()

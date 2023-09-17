@@ -7,159 +7,562 @@
     <title>FQM plugin</title>
 </head>
 
+<style>
+    .sticky-nav {
+        position: sticky;
+        top: 30px;
+        background-color: white;
+        z-index: 1000;
+        transition: all 0.5s ease-in-out;
+    }
+</style>
+
 
 <body>
-    <main class="col-10 col-11 mx-auto main-content position-relative max-height-vh-100 h-100 mt-4 border-radius-lg">
+    <main class="col-lg-9 col-md-10 col-10 mx-auto main-content position-relative max-height-vh-100 h-100 mt-4 border-radius-lg">
 
-        <div class="d-flex align-items-center gap-2 my-4">
+        <!-- <div class="d-flex align-items-center gap-2 my-4">
             <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-surveys'); ?>" class="m-0 text-dark">Home</a>
             <i class="fas fa-angle-right"></i>
             <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-add'); ?>" class="m-0 text-dark">Add new
                 questions</a>
-        </div>
+        </div> -->
 
-        <nav>
+        <!-- Nav buttons -->
+        <nav class="sticky-nav p-0 mt-6 border-primary border-bottom shadow">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <button class="nav-link " id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Preview/edit</button>
-                <button class="nav-link" id="nav-participants-tab" data-bs-toggle="tab" data-bs-target="#nav-participants" type="button" role="tab" aria-controls="nav-participants" aria-selected="false">participants</button>
-                <button class="nav-link active" id="nav-settings-tab" data-bs-toggle="tab" data-bs-target="#nav-settings" type="button" role="tab" aria-controls="nav-settings" aria-selected="false">Settings</button>
+                <button class="nav-link active border border-right" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Preview/edit <i class="fa-regular fa-pen-to-square ms-2"></i></button>
+                <button class="nav-link border border-right" id="nav-classes-tab" data-bs-toggle="tab" data-bs-target="#nav-classes" role="tab" aria-controls="nav-classes" aria-selected="false">classes <i class="fa-solid fa-chalkboard-user ms-2"></i></button>
+                <button class="nav-link border border-right" id="nav-settings-tab" data-bs-toggle="tab" data-bs-target="#nav-settings" role="tab" aria-controls="nav-settings" aria-selected="false">Settings <i class="fa-solid fa-gears ms-2"></i></button>
             </div>
         </nav>
 
-        <div style="height: 500px;" class="tab-content bg-white p-3 border border-top-0" id="nav-tabContent">
-            <div class="tab-pane fade p-4" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">...
+        <div class="tab-content" id="nav-tabContent">
+            <!-- Preview and edit tab -->
+            <div class="tab-pane show active fade mt-5" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <h4 class="m-0 mt-3">Edit quiz</h4>
+
+                <div class="d-flex flex-column justify-content-center align-items-center mt-4">
+                    <div class="border colored-border-div-top w-100 p-4 border-top bg-white mb-4 rounded-3">
+                        <input style="font-size: 30px;" type="text" class="form-control border mb-2" placeholder="Untitled quiz" id="quiz_title_value" value="" />
+                        <input type="text" class="form-control border mb-3 p-2" placeholder="Quiz description" id="quiz_description_value" value="" />
+                    </div>
+
+                    <!-- Final output cards [Cards container] -->
+                    <div id="cardsContainer" class="w-100 d-flex flex-column gap-3">
+                        <div class="quiz-card position-relative d-flex w-100 flex-column border colored-border-div-left w-100 p-4 border-top bg-white mb-2 rounded-3" data-quiz-type="1">
+                            <div style="width:25px; height: 25px; font-size: 13px;" class="counter position-absolute d-flex justify-content-center align-items-center top-0 start-0 bg-primary text-white rounded-full p-3">
+                            </div>
+                            <div class="d-flex align-items-center gap-4 mb-2 mt-4">
+                                <input style="font-size: 23px;" type="text" class="form-control border" placeholder="Untitled question" id="questionTitle" value="" />
+
+                                <div class="d-flex align-items-center gap-3 w-50">
+                                    <select id="quizTypeSelect" class="w-100 border bg-transparent p-2 " aria-label="Default select example">
+                                        <option selected value="1">Multiple choice </option>
+                                        <option value="2">True/False</option>
+                                        <option value="3">Short answer</option>
+                                    </select>
+                                    <i title="Add new image" class="cursor-pointer fas fa-image text-dark fa-xl"> </i>
+                                </div>
+                            </div>
+
+                            <div id="image_container" class="position-relative rounded-3 mt-4 mb-2 border">
+                                <div id="image_wrapper">
+                                    <div id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" class="position-absolute cursor-pointer negative-position border d-flex justify-content-center align-items-center bg-white p-2 rounded-circle shadow-sm" style="width: 40px;height: 40px;">
+                                        <i class="fa-solid fa-ellipsis-vertical text-dark"></i>
+                                    </div>
+
+                                    <ul class="dropdown-menu border shadow-md " aria-labelledby="dropdownMenuButton1">
+                                        <li class="dropdown-item d-flex align-items-center gap-3 cursor-pointer p-2 px-3 m-0 ">
+                                            <i class="fas fa-pen"></i>
+                                            <span>Edit</span>
+                                        </li>
+                                        <li class="dropdown-item d-flex align-items-center gap-3 cursor-pointer p-2 px-3 m-0">
+                                            <i class="fas fa-trash text-danger"></i>
+                                            <span>Delete</span>
+                                        </li>
+                                    </ul>
+
+                                    <img class="rounded-3" width="100%" height="400" src="https://source.unsplash.com/random/400×400/?equation&math" alt="uploaded photo">
+                                </div>
+                            </div>
+
+                            <div id="optionsGroup" class="d-flex flex-column gap-2 my-3">
+
+                            </div>
+
+                            <div id="addNewOptionContainer" class="d-flex align-items-center gap-3">
+                                <input disabled type="radio">
+                                <a id="add_new_option" class="cursor-pointer opacity-80 text-primary text-sm m-0" title="Add new option">Add new
+                                    option</a>
+                            </div>
+
+                            <hr class="mt-4">
+
+                            <div class="d-flex justify-content-end gap-4 p-2">
+                                <i title="Add new question card" class="fa-solid fa-circle-plus fa-lg text-dark cursor-pointer"></i>
+                                <i title="Duplicate question card" class="fa-regular fa-copy fa-lg text-dark cursor-pointer"></i>
+                                <i title="Delete question card" class="fas fa-trash-can fa-lg text-danger cursor-pointer"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="save_button" class="align-self-start text-white btn bg-primary col-lg-4 col-md-6 col-7 text-sm font-weight-bold mb-5 mt-4">
+                        Save
+                    </button>
+                </div>
             </div>
-            <div class="tab-pane fade p-4" id="nav-participants" role="tabpanel" aria-labelledby="nav-participants-tab">
-                <div class="p-0 pt-0 border rounded-3 w-100">
-                    <div class="table-responsive p-0 bg-white rounded-3">
-                        <table class="table align-items-center m-0 col-lg-12 col-xxl-10 rounded-3">
-                            <thead>
-                                <tr>
-                                    <th class="text-uppercase text-center text-xxs text-center py-4">
-                                        ID
-                                    </th>
 
-                                    <th class="text-uppercase text-center text-xxs py-4">
-                                        Title
-                                    </th>
+            <!-- classes tab -->
+            <div class="tab-pane fade mt-5" id="nav-classes" role="tabpanel" aria-labelledby="nav-classes-tab">
+                <h4 class="m-0 mt-2"> Assigned classes</h4>
 
-                                    <th class="text-uppercase text-xxs text-center py-4">
-                                        Status
-                                    </th>
+                <!-- Classes row -->
+                <div class="row row-cols-1 row-cols-lg-2 g-3 mt-3">
+                    <div class="position-relative col">
+                        <i class="fa-solid fa-check fa-xl text-success position-absolute top-10 end-4 opacity-0"></i>
+                        <div class="quiz-class p-4 bg-white border-2 rounded-3 p-4 border rounded-3 cursor-pointer ">
+                            <h5>Class name</h5>
+                            <p>Find quick answers to your questions and get the most out of Font Awesome with our step-by-step docs and troubleshooting tips.</p>
+                        </div>
+                    </div>
 
-                                    <th class="text-uppercase text-xxs text-center py-4">
-                                        Level
-                                    </th>
-
-                                    <th class="text-uppercase text-center text-xxs text-center py-4">
-                                        Participants
-                                    </th>
-
-                                    <th class="text-uppercase text-xxs text-center py-4">
-                                        Start Date
-                                    </th>
-
-                                    <th class=" text-uppercase text-xxs text-center py-4">
-                                        End Date
-                                    </th>
-
-                                    <th class=" text-uppercase text-xxs text-center py-4">
-                                        Actions
-                                    </th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <?php if (empty($polls)) { ?>
-                                    <tr>
-                                        <td colspan="7" class="text-xss text-center py-4">No surveys found,<a class="text-primary ms-1 fw-bold" href="<?php echo admin_url('admin.php?page=poll-survey-xpress-add'); ?>">add
-                                                new record</a></td>
-                                    </tr>
-                                <?php } else { ?>
-                                    <?php
-                                    $index = 0; // Initialize index
-                                    $reversedPolls = array_reverse($polls);
-                                    foreach ($reversedPolls as $poll) {
-                                    ?>
-                                        <tr data-count=<?php echo count($polls); ?> class="gray-row" id="survey_data" data-card-id=<?php echo $poll->poll_id; ?>>
-                                            <td class="align-middle text-center">
-                                                <p class="text-xs m-0">
-                                                    <?php echo $poll->poll_id; ?>
-                                                </p>
-                                            </td>
-
-                                            <td style="width: 100px;" class="align-middle text-center">
-                                                <p title="<?php echo $poll->title; ?>" class="text-xs m-0 text-truncate">
-                                                    <?php echo  $poll->title; ?>
-                                                </p>
-                                            </td>
-
-                                            <td class="align-middle text-center">
-                                                <span class="badge badge-sm bg-gradient-<?php echo statusColor($poll->status) ?>">
-                                                    <?php echo ucfirst($poll->status); ?>
-                                                </span>
-                                            </td>
-
-                                            <td class="align-middle text-center">
-                                                <p class="text-xs m-0">
-                                                    <?php echo $poll->template; ?>
-                                                </p>
-                                            </td>
-
-                                            <td class="align-middle text-center">
-                                                <p class="text-xs m-0 text-center">
-                                                    +150
-                                                </p>
-                                            </td>
-
-                                            <td class="align-middle text-center">
-                                                <p class="text-xs m-0">
-                                                    <?php echo $poll->end_date; ?>
-                                                </p>
-                                            </td>
-
-                                            <td class="align-middle text-center">
-                                                <p class="text-xs m-0 ">
-                                                    <?php echo $poll->end_date; ?>
-                                                </p>
-                                            </td>
-
-
-                                            <!-- Other dynamic data columns here -->
-
-                                            <td class="text-center d-flex align-items-center justify-content-center px-0 py-4 gap-lg-3 gap-md-2 gap-1" style="height: 77px;">
-                                                <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-surveys&template=' . $poll->template . '&poll_id=' . $poll->poll_id); ?>">
-                                                    <i class="fas fa-chart-bar text-sm text-dark" style="cursor: pointer"></i>
-                                                </a>
-                                                <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-surveys&template=' . $poll->template . '&poll_id=' . $poll->poll_id . '&action=edit'); ?>">
-                                                    <i class="fas fa-gear text-sm text-dark" style="cursor: pointer"></i>
-                                                </a>
-
-                                                <i style="cursor: pointer" class="fas fa-trash text-sm text-danger archiveButton" data-bs-toggle="modal" data-bs-target="#deleteModal" data-poll-id="<?php echo $poll->poll_id; ?>"></i>
-
-                                            </td>
-                                        </tr>
-                                    <?php } ?>
-                                <?php } ?>
-                            </tbody>
-                        </table>
+                    <div class="cursor-pointer position-relative col">
+                        <i class="fa-solid fa-check fa-xl text-success position-absolute top-10 end-4 opacity-0"></i>
+                        <div class="quiz-class p-4 bg-white border-2 rounded-3 p-4 border rounded-3 cursor-pointer ">
+                            <h5>Class name</h5>
+                            <p>Find quick answers to your questions and get the most out of Font Awesome with our step-by-step docs and troubleshooting tips.</p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="tab-pane fade show active p-4" id="nav-settings" role="tabpanel" aria-labelledby="nav-settings-tab">
-                <h4 class="m-0 mt-2"> Quiz settings</h4>
-                <div class="w-100 mt-4">
-                    <input type="text" class="col-lg-6 col-12 border p-2" placeholder="Edit Quiz title" value="" />
-                    <select id="quizTypeSelect" class="col-lg-6 col-12 border bg-transparent p-2 " aria-label="Quiz type select">
-                        <option selected value="1">Active </option>
-                        <option value="2">Inactive</option>
-                    </select>
+                <!-- Classes row -->
+                <div class="row row-cols-1 row-cols-lg-2 g-3 mt-1">
+                    <div class="position-relative col">
+                        <i class="fa-solid fa-check fa-xl text-success position-absolute top-10 end-4 opacity-0"></i>
+                        <div class="quiz-class p-4 bg-white border-2 rounded-3 p-4 border rounded-3 cursor-pointer ">
+                            <h5>Class name</h5>
+                            <p>Find quick answers to your questions and get the most out of Font Awesome with our step-by-step docs and troubleshooting tips.</p>
+                        </div>
+                    </div>
+
+                    <div class="cursor-pointer position-relative col">
+                        <i class="fa-solid fa-check fa-xl text-success position-absolute top-10 end-4 opacity-0"></i>
+                        <div class="quiz-class p-4 bg-white border-2 rounded-3 p-4 border rounded-3 cursor-pointer ">
+                            <h5>Class name</h5>
+                            <p>Find quick answers to your questions and get the most out of Font Awesome with our step-by-step docs and troubleshooting tips.</p>
+                        </div>
+                    </div>
                 </div>
+
             </div>
-        </div>
 
+            <!-- Quiz Settings tab -->
+            <div class="tab-pane fade mt-5" id="nav-settings" role="tabpanel" aria-labelledby="nav-settings-tab">
+                <h4 class="m-0 mt-2"> Quiz settings</h4>
+
+                <div class="row row-cols-1 row-cols-lg-2 g-3 mt-3">
+                    <div class="col">
+                        <label class="form-label">Quiz title</label>
+                        <input type="text" class="form-control border p-2" placeholder="Edit Quiz title" value="" />
+                    </div>
+
+                    <div class="col">
+                        <label class="form-label">Quiz status</label>
+                        <select id="quizTypeSelect" class="form-control border bg-white p-2" aria-label="Quiz type select">
+                            <option selected value="1">Active </option>
+                            <option value="2">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row row-cols-1 row-cols-lg-2 g-3 mt-2">
+                    <div class="col">
+                        <label class="form-label">Start date</label>
+                        <input type="datetime-local" class="form-control border p-2" placeholder="Edit Quiz title" value="" />
+                    </div>
+
+                    <div class="col">
+                        <label class="form-label">End date</label>
+                        <input type="datetime-local" class="form-control border p-2" placeholder="Edit Quiz title" value="" />
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <label>Duration</label>
+                    <input class="form-control border p-2" type="tel" placeholder="Enter the quiz duration">
+                </div>
+
+                <div class="mt-3">
+                    <label>Questions bank</label>
+                    <input class="form-control border p-2" type="tel" placeholder="Choose questions from the question bank">
+                </div>
+
+                <button class="btn btn-primary mt-4 w-25 p-3">Save </button>
+            </div>
+
+            <!-- Edit quizzes tab -->
+            <script>
+                jQuery(document).ready(function(jQuery) {
+                    const cardsContainer = document.getElementById("cardsContainer");
+
+                    // Function to generate a unique ID
+                    function generateUniqueId() {
+                        return new Date().toISOString() + Math.random().toString(36).substr(2, 9);
+                    }
+
+                    function updateOptions(select, optionsGroup) {
+                        const selectedValue = select.value;
+                        // Clear existing options
+                        optionsGroup.innerHTML = "";
+
+
+                        if (selectedValue === "1") { // Multiple choice
+                            // Show the add new option container
+                            const card = select.closest(".quiz-card");
+                            const addNewOptionContainer = card.querySelector("#addNewOptionContainer");
+
+                            // Show the add new option container
+                            addNewOptionContainer.style.cssText = "display: flex !important;";
+
+                        } else if (selectedValue === "2") { // True/False
+                            // Hide the add new option container
+                            const card = select.closest(".quiz-card");
+                            const addNewOptionContainer = card.querySelector("#addNewOptionContainer");
+                            addNewOptionContainer.style.cssText = "display: none !important;";
+
+                            const option1 = createOption("True", card);
+                            const option2 = createOption("False", card);
+                            optionsGroup.appendChild(option1);
+                            optionsGroup.appendChild(option2);
+
+                        } else if (selectedValue === "3") { // Short answer
+                            // Hide the add new option container
+                            const card = select.closest(".quiz-card");
+                            const addNewOptionContainer = card.querySelector("#addNewOptionContainer");
+                            addNewOptionContainer.style.cssText = "display: none !important;";
+
+                            const optionCard = document.createElement("div");
+                            optionCard.className = "option-card";
+                            const optionId = generateUniqueId();
+                            optionCard.setAttribute("data-option-id", optionId);
+                            optionCard.innerHTML = `
+                        <div class="w-100">
+                            <textarea rows="2" class="w-100 rounded-3 p-3 border" placeholder="Short answer text"></textarea>
+                        </div>
+                    `;
+                            optionsGroup.appendChild(optionCard);
+                        }
+                    }
+
+                    function createOption(optionText, card) {
+                        const optionCard = document.createElement("div");
+                        optionCard.className = "option-card d-flex justify-content-between align-items-center gap-2";
+                        const cardId = card.getAttribute("data-card-id");
+                        const optionId = generateUniqueId();
+                        optionCard.setAttribute("data-option-id", optionId);
+                        optionCard.innerHTML = `
+                <div class="d-flex align-items-center gap-2 w-100">
+                    <input name="option-${cardId}" type="radio" value="value-${optionId}" />
+                    <input readonly type="text" class="form-control border bg-transparent p-2" placeholder="Option title" value="${optionText}" />
+                </div>
+                `;
+                        return optionCard;
+                    }
+
+                    // Add new option event listener
+                    function updateQuizzes() {
+                        const quiz_cards = document.querySelectorAll(".quiz-card");
+
+                        quiz_cards.forEach((card, index) => {
+                            const add_new_option = card.querySelector("#add_new_option");
+                            const optionsGroup = card.querySelector("#optionsGroup");
+                            const counter = card.querySelector(".counter");
+                            const select = card.querySelector("#quizTypeSelect")
+                            const deleteCardIcons = card.querySelectorAll(".fa-trash-can");
+
+                            deleteCardIcons.forEach((deleteCardIcon) => {
+                                if (index == 0)
+                                    deleteCardIcon.style.cssText = "display: none !important;";
+                                else deleteCardIcon.style.cssText = "display: block !important;";
+                            });
+
+                            // Remove existing event listeners to prevent duplicates
+                            select.removeEventListener("change", handleSelectChange);
+                            add_new_option.removeEventListener("click", handleAddOptionClick);
+
+                            // Add an event listener to listen for changes in the select box
+                            select.addEventListener("change", handleSelectChange);
+
+                            // Set the question number
+                            counter.textContent = index + 1;
+
+                            const cardId = generateUniqueId(); // Generate a unique ID for the card
+                            card.setAttribute("data-card-id", cardId);
+
+                            // Add event listener for adding a new option
+                            add_new_option.addEventListener("click", handleAddOptionClick);
+
+                            // Add event listener for deleting the card
+                            const deleteCardIcon = card.querySelector(".fa-trash-can");
+                            deleteCardIcon.addEventListener("click", (event) => {
+                                event.stopPropagation();
+                                card.remove();
+                                updateQuizzes();
+                            });
+                        });
+                    }
+
+                    function handleSelectChange(event) {
+                        const select = event.target;
+                        const card = select.closest(".quiz-card");
+                        const optionsGroup = card.querySelector("#optionsGroup");
+                        const selectedValue = select.value;
+
+                        // Set the data-quiz-type attribute to the selected value
+                        card.setAttribute("data-quiz-type", selectedValue);
+
+                        updateOptions(select, optionsGroup);
+                    }
+
+
+                    // Add new option event listener
+                    function handleAddOptionClick(event) {
+                        const add_new_option = event.target;
+                        const card = add_new_option.closest(".quiz-card");
+                        const optionsGroup = card.querySelector("#optionsGroup");
+
+                        const optionCard = document.createElement("div");
+                        optionCard.className =
+                            "option-card d-flex justify-content-between align-items-center gap-2"; // Add justify-content-between class
+                        const optionId = generateUniqueId(); // Generate a unique ID for the option
+                        const cardId = card.getAttribute("data-card-id"); // Get the unique card ID
+
+                        optionCard.setAttribute("data-option-id", optionId);
+                        optionCard.innerHTML = `
+                            <div class="d-flex align-items-center gap-2 w-100">
+                                <input type="radio" name="option-${cardId}" value="value-${optionId}">
+                                <input type="text" class="form-control border p-2" placeholder="Option title" value="Option title" />
+                            </div>
+                            <i class="cursor-pointer fa-regular fa-circle-xmark fa-lg text-danger" data-option-id="${optionId}"></i>
+                        `;
+                        optionsGroup.appendChild(optionCard);
+
+                        // Add event listener for deleting this option
+                        const deleteOptionIcon = optionCard.querySelector(`[data-option-id="${optionId}"]`);
+                        deleteOptionIcon.addEventListener("click", (event) => {
+                            event.stopPropagation();
+                            optionCard.remove();
+                        });
+                    }
+
+                    document.addEventListener("click", function(event) {
+                        if (event.target.classList.contains("fa-circle-plus")) {
+                            const newCard = document.createElement("div");
+                            const cardId = generateUniqueId(); // Generate a unique ID for the card
+                            newCard.setAttribute("data-card-id", cardId);
+                            newCard.innerHTML = `<div class="quiz-card position-relative d-flex w-100 flex-column border colored-border-div-left w-100 p-4 border-top bg-white mb-2 rounded-3" data-quiz-type="1">
+                    <div style="width:25px; height: 25px; font-size: 13px;" class="counter position-absolute d-flex justify-content-center align-items-center top-0 start-0 bg-primary text-white rounded-full p-3">1</div>
+                    <div class="d-flex align-items-center gap-4 mb-2 mt-2">
+                        <input style="font-size: 23px;" type="text" class="form-control border" placeholder="Untitled question" id="questionTitle" value="">
+
+                        <div class="d-flex align-items-center gap-3 w-50">
+                            <select id="quizTypeSelect" class="w-100 border bg-transparent p-2 " aria-label="Default select example">
+                                <option selected="" value="1">Multiple choice </option>
+                                <option value="2">True/False</option>
+                                <option value="3">Short answer</option>
+                            </select>
+                            <i title="Add new image" class="cursor-pointer fas fa-image text-dark fa-xl"> </i>
+                        </div>
+                    </div>
+
+                    <div id="optionsGroup" class="d-flex flex-column gap-2 my-3">
+
+                    </div>
+
+                    <div id="addNewOptionContainer" class="d-flex align-items-center gap-3">
+                        <input disabled type="radio">
+                        <a id="add_new_option" class="cursor-pointer opacity-80 text-primary text-sm m-0" title="Add new option">Add new
+                            option</a>
+                    </div>
+
+                    <hr class="mt-4">
+
+                    <div class="d-flex justify-content-end gap-4 p-2">
+                        <i title="Add new question card" class="fa-solid fa-circle-plus fa-lg text-dark cursor-pointer"></i>
+                        <i title="Duplicate question card" class="fa-regular fa-copy fa-lg text-dark cursor-pointer"></i>
+                        <i title="Delete question card" class="fas fa-trash-can fa-lg text-danger cursor-pointer"></i>
+                    </div>
+                </div>`
+                            cardsContainer.appendChild(newCard)
+                            updateQuizzes()
+                        }
+                    });
+
+                    // Duplication card function
+                    function duplicateCard(card) {
+                        const cardClone = card.cloneNode(true); // Clone the card including its children
+                        const cardId = generateUniqueId(); // Generate a unique ID for the card
+                        cardClone.setAttribute("data-card-id", cardId);
+                        cardsContainer.appendChild(cardClone);
+
+                        // Add event listeners for the cloned card's options
+                        cardClone.querySelectorAll(".fa-circle-xmark").forEach((deleteOptionIcon) => {
+                            const optionId = deleteOptionIcon.getAttribute("data-option-id");
+                            deleteOptionIcon.addEventListener("click", (event) => {
+                                event.stopPropagation();
+                                const optionContainer = cardClone.querySelector(
+                                    `[data-option-id="${optionId}"]`);
+                                if (optionContainer) {
+                                    optionContainer.remove();
+                                }
+                            });
+                        });
+                    }
+
+                    // Event listener for duplicating a card
+                    document.addEventListener("click", function(event) {
+                        if (event.target.classList.contains("fa-copy")) {
+                            const card = event.target.closest(".quiz-card"); // Find the closest card element
+                            if (card) {
+                                duplicateCard(card); // Call the duplicateCard function when the icon is clicked
+                                updateQuizzes()
+                            }
+                        }
+                    });
+
+                    // Initial setup
+                    updateQuizzes();
+
+                    // Function to extract the quiz card values
+                    function extractQuizCardValues() {
+                        const quizCards = document.querySelectorAll(".quiz-card");
+
+                        const quizData = [];
+
+                        quizCards.forEach((card) => {
+                            const cardType = card.getAttribute("data-quiz-type");
+                            const cardId = card.getAttribute("data-card-id");
+                            const questionTitle = card.querySelector("#questionTitle").value;
+
+                            // Extract options data based on the card type
+                            let options = [];
+                            if (cardType === "1") { // Multiple choice or True/False
+                                card.querySelectorAll(".option-card").forEach((option) => {
+                                    const optionId = option.getAttribute("data-option-id");
+                                    const optionTitle = option.querySelector("input[type='text']").value;
+                                    const optionValue = option.querySelector("input[type='radio']").checked;
+                                    options.push({
+                                        optionId,
+                                        optionTitle,
+                                        optionValue
+                                    });
+                                });
+                            } else if (cardType === "2") { // True/False
+                                card.querySelectorAll(".option-card").forEach((option) => {
+                                    const optionId = option.getAttribute("data-option-id");
+                                    const radioButton = option.querySelector("input[type='radio']");
+                                    const optionTitle = option.querySelector("input[type='text']").value;
+
+                                    let optionValue = null; // Initialize optionValue to null
+
+                                    if (radioButton.checked) {
+                                        // Set optionValue to the selected option's text
+                                        optionValue = optionTitle;
+                                        options.push({
+                                            optionId,
+                                            optionValue
+                                        });
+                                    }
+
+
+                                });
+
+                            } else { // Short answer
+                                card.querySelectorAll(".option-card").forEach((option) => {
+                                    const optionId = option.getAttribute("data-option-id");
+                                    const shortAnswerText = option.querySelector("textarea").value;
+                                    options.push({
+                                        optionId,
+                                        shortAnswerText
+                                    });
+                                });
+                            }
+
+                            quizData.push({
+                                cardType,
+                                cardId,
+                                questionTitle,
+                                options,
+                            });
+                        });
+
+                        return quizData;
+                    }
+
+                    save_button.addEventListener("click", () => {
+
+                        const extractedData = extractQuizCardValues();
+                        console.log(extractedData); // This will log the extracted data as an array of objects
+
+                        // if (pollsCardsArray.length > 0) {
+                        //     jQuery.ajax({
+                        //         type: "POST",
+                        //         url: my_ajax_object.ajaxurl,
+                        //         data: {
+                        //             action: "PSX_save_poll_Multiple_data",
+                        //             nonce: nonce, // Pass the nonce
+                        //             poll_data: JSON.stringify(finalObj),
+                        //         },
+                        //         success: function(shortcode) {
+                        //             console.log("Done");
+                        //             save_button.textContent = "Save";
+                        //             save_button.disabled = false;
+
+                        //             // Create a new toast element
+                        //             var toast = document.createElement("div");
+                        //             toast.style = "z-index:1000; right: 10px; bottom: 10px";
+                        //             toast.className =
+                        //                 "position-fixed p-2 px-4 bg-success border rounded-2";
+                        //             toast.innerHTML = `
+                        //                     <p class="m-0 fw-bold text-xs text-white">
+                        //                     New survey has been added successfully!
+                        //                     </p>
+                        //                 `;
+                        //             // Append the toast to the document
+                        //             document.body.appendChild(toast);
+
+                        //             // Initialize the Bootstrap toast
+                        //             var bootstrapToast = new bootstrap.Toast(toast);
+                        //             bootstrapToast.show();
+
+                        //             setTimeout(() => {
+                        //                 window.location.reload();
+                        //             }, 500)
+                        //         },
+                        //         error: function(error) {
+                        //             console.error("Error:", error);
+                        //             save_button.textContent = "Save";
+                        //             save_button.disabled = false;
+                        //         },
+                        //     });
+                        // }
+                    });
+                });
+            </script>
+
+            <script>
+                const quizClasses = document.querySelectorAll('.quiz-class');
+                quizClasses.forEach((group) => {
+                    group.addEventListener('click', () => {
+                        group.classList.toggle('active-group');
+                        if (group.classList.contains('active-group')) {
+                            group.parentNode.querySelector('i').style.cssText = 'opacity:1 !important; transition: all 0.3s ease-in-out;';
+                        } else {
+                            group.parentNode.querySelector('i').style.cssText = 'opacity:0 !important; transition: all 0.3s ease-in-out;';
+                        }
+                    })
+                })
+            </script>
     </main>
-
-
 </body>

@@ -6,16 +6,15 @@ body {
   background-color: #5d827a12 !important;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="number"],
-input[type="password"],
-input[type="date"],
-input[type="tel"],
-input[type="url"],
-textarea {
+input,
+textarea,
+select {
   border: 1px solid transparent;
   border-radius: 7px !important;
+}
+
+select {
+  max-width: none !important;
 }
 
 button:disabled,
@@ -31,13 +30,7 @@ textarea::placeholder {
   opacity: 1 !important;
 }
 
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="number"]:focus,
-input[type="password"]:focus,
-input[type="date"]:focus,
-input[type="tel"]:focus,
-input[type="url"]:focus,
+input:focus,
 select:focus {
   border-color: transparent !important;
   box-shadow: none !important;
@@ -66,12 +59,38 @@ input[type="radio"] {
   margin: 0 !important;
 }
 
+.negative-position {
+  top: -10px;
+  left: -10px;
+}
+
 .colored-border-div-top {
   border-top: 10px solid #125b50 !important;
 }
 
 .colored-border-div-left {
   border-left: 7px solid #125b50 !important;
+}
+
+.active-group {
+  border: 2px solid #125b50 !important;
+  transition: all 0.1s ease-in-out !important;
+}
+
+.nav-link:hover {
+  color: initial !important;
+}
+
+.nav-link {
+  padding: 15px !important;
+  border-radius: 0 !important;
+}
+
+.nav-link.active {
+  background-color: #125b50 !important;
+  color: #fff !important;
+  transition: all 0.1s ease-in-out !important;
+  border: 0 !important;
 }
 
 @keyframes pulse {
