@@ -10,13 +10,6 @@
 <body>
     <main class="col-lg-8 col-md-10 col-11 mx-auto main-content position-relative max-height-vh-100 h-100 mt-4 border-radius-lg">
 
-        <!-- <div class="d-flex align-items-center gap-2 my-4">
-            <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-surveys'); ?>" class="m-0 text-dark">Home</a>
-            <i class="fas fa-angle-right"></i>
-            <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-add'); ?>" class="m-0 text-dark">Add new
-                questions</a>
-        </div> -->
-
         <div class="d-flex flex-column justify-content-center align-items-center mt-5">
             <div class="border colored-border-div-top w-100 p-4 border-top bg-white mb-4 rounded-3">
                 <input style="font-size: 30px;" type="text" class="form-control border mb-2" placeholder="Untitled quiz" id="quiz_title_value" value="" />
@@ -36,43 +29,41 @@
                                 <option selected value="1">Multiple choice </option>
                                 <option value="2">True/False</option>
                                 <option value="3">Short answer</option>
-                            </select>                        
+                            </select>
+
                             <?php
-                                $name = 'Upload_Image';
+                            $name = 'Upload_Image';
 
-                                // Get the path to your plugin directory
-                                $plugin_directory = plugin_dir_path(__FILE__);
+                            // Get the path to your plugin directory
+                            $plugin_directory = plugin_dir_path(__FILE__);
 
-                                // Go up one level to the parent directory
-                                $parent_directory = dirname($plugin_directory);
+                            // Go up one level to the parent directory
+                            $parent_directory = dirname($plugin_directory);
 
-                                // Include the file from the parent directory
-                                include $parent_directory . '/media_uploader_script.php';
+                            // Include the file from the parent directory
+                            include $parent_directory . '/media_uploader_script.php';
                             ?>
                         </div>
                     </div>
 
-                    <div id="image_container" class="position-relative rounded-3 mt-4 mb-2 border">
-                        <div id="image_wrapper">
-                            <div id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" class="position-absolute cursor-pointer negative-position border d-flex justify-content-center align-items-center bg-white p-2 rounded-circle shadow-sm" style="width: 40px;height: 40px;">
-                                <i class="fa-solid fa-ellipsis-vertical text-dark"></i>
-                            </div>
-
-                            <ul class="dropdown-menu border shadow-md " aria-labelledby="dropdownMenuButton1">
-                                <li class="dropdown-item d-flex align-items-center gap-3 cursor-pointer p-2 px-3 m-0 ">
-                                    <i class="fas fa-pen"></i>
-                                    <span>Edit</span>
-                                </li>
-                                <li class="dropdown-item d-flex align-items-center gap-3 cursor-pointer p-2 px-3 m-0">
-                                    <i class="fas fa-trash text-danger"></i>
-                                    <span>Delete</span>
-                                </li>
-                            </ul>
-                            <div class="image_holder center-block" id="image_holder_<?php echo $name; ?>">
-                                <img  class="rounded-3"id="slide_image_<?php echo $name; ?>" src="https://source.unsplash.com/random/400×400/?equation&math" alt="uploaded photo">
-                            </div>
+                    <!-- <div id="image_container" class="position-relative rounded-3 mt-4 mb-2 border">
+                        <div id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" class="position-absolute cursor-pointer negative-position border d-flex justify-content-center align-items-center bg-white p-2 rounded-circle shadow-sm z-index-5" style="width: 40px;height: 40px; z-index: 10;">
+                            <i class="fa-solid fa-ellipsis-vertical text-dark"></i>
                         </div>
-                    </div>
+                        <ul class="dropdown-menu border shadow-md " aria-labelledby="dropdownMenuButton1">
+                            <li class="dropdown-item d-flex align-items-center gap-3 cursor-pointer p-2 px-3 m-0 ">
+                                <i class="fas fa-pen"></i>
+                                <span>Edit</span>
+                            </li>
+                            <li class="dropdown-item d-flex align-items-center gap-3 cursor-pointer p-2 px-3 m-0">
+                                <i class="fas fa-trash text-danger"></i>
+                                <span>Delete</span>
+                            </li>
+                        </ul>
+
+                        <div style="height: 350px;" class="position-relative" id="image_holder_<?php echo $name; ?>">
+                        </div>
+                    </div> -->
 
 
                     <div id="optionsGroup" class="d-flex flex-column gap-2 my-3">

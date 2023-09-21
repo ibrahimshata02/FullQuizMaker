@@ -5,7 +5,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class FullQuizMaker
 {
-    private $version = 2.1;
+    private $version = 2.4;
 
     // Constructor for class includes all hooks
     public function __construct()
@@ -21,12 +21,10 @@ class FullQuizMaker
         add_action('wp_ajax_FQM_restore_quiz', array($this, 'FQM_restore_quiz'));
         add_action('wp_ajax_FQM_email_students', array($this, 'FQM_email_students'));
         add_action('wp_ajax_FQM_upload_file', array($this, 'FQM_upload_file'));
-        add_action('wp_ajax_nopriv_FQM_upload_file',array($this, 'FQM_upload_file'));
-        add_action('wp_ajax_FQM_importStudentDataFromExcel',array($this, 'FQM_importStudentDataFromExcel'));
-        add_action('wp_ajax_FQM_download_default_template',array($this, 'FQM_download_default_template'));
-        add_action('wp_ajax_nopriv_FQM_importStudentDataFromExcel',array($this, 'FQM_importStudentDataFromExcel'));
-
-        
+        add_action('wp_ajax_nopriv_FQM_upload_file', array($this, 'FQM_upload_file'));
+        add_action('wp_ajax_FQM_importStudentDataFromExcel', array($this, 'FQM_importStudentDataFromExcel'));
+        add_action('wp_ajax_FQM_download_default_template', array($this, 'FQM_download_default_template'));
+        add_action('wp_ajax_nopriv_FQM_importStudentDataFromExcel', array($this, 'FQM_importStudentDataFromExcel'));
     }
 
     public function FQM_enqueue_frontend_scripts()
@@ -127,6 +125,14 @@ class FullQuizMaker
             array($this, 'FQM_Add_Partecipents_callback')  // callback function for the page
         );
 
+        add_submenu_page(
+            'full-quiz-maker',                 // parent menu slug
+            'Admin page',                    // page title
+            'Admin page',                    // menu title
+            'manage_options',                  // capability required to access
+            'Admin page',                    // menu slug
+            array($this, 'FQM_Add_AdminPage_callback')  // callback function for the page
+        );
 
         // Remove the submenu page that you want to hide
         remove_submenu_page('full-quiz-maker', 'full-quiz-maker');
@@ -137,9 +143,10 @@ class FullQuizMaker
     {
         include 'pages/Quizzes.php';
     }
-    public  function FQM_Add_Partecipents_callback(){
+    public  function FQM_Add_Partecipents_callback()
+    {
         include 'pages/Add Partecipents.php';
-    }  
+    }
 
     // Callback method for the Quizzes page
     public function FQM_addNewQuiz_callback()
@@ -151,6 +158,12 @@ class FullQuizMaker
     public function FQM_singleQuiz_callback()
     {
         include 'pages/single-quiz.php';
+    }
+
+    // Callback method for the Quizzes page
+    public function FQM_Add_AdminPage_callback()
+    {
+        include 'pages/admin-page.php';
     }
 
     // Add menu link in top bar (FullQuizMaker)
@@ -189,7 +202,6 @@ class FullQuizMaker
                 $wpdb->delete($table_answers, array("poll_id" => $question_id));
                 // Delete from  Question
                 $wpdb->delete($table_questions, array("poll_id" => $question_id));
-
             }
             $questions = $questions_data_array['questions'];
 
@@ -197,14 +209,14 @@ class FullQuizMaker
                 $question_text = $question['question_text'];
                 $question_type = $question['question_type'];
                 $question_attachments_data = $question['question_attachments_data'];
-            
+
                 // Create an array for question data
                 $question_data = array(
-                    'question_text' => sanitize_text_field ($question_text),
-                    'question_type' =>sanitize_text_field ( $question_type),
-                    'question_attachments_data' => sanitize_text_field ($question_attachments_data),
+                    'question_text' => sanitize_text_field($question_text),
+                    'question_type' => sanitize_text_field($question_type),
+                    'question_attachments_data' => sanitize_text_field($question_attachments_data),
                 );
-            
+
                 // Check if it's an Edit or Insert operation
                 if ($form_type == 'Edit') {
                     $question_id = $question['question_id']; // Assuming you have question_id in your data
@@ -215,9 +227,9 @@ class FullQuizMaker
                 }
                 $answers = $question['answers'];
                 foreach ($answers as $answer) {
-                    $answer_text = sanitize_text_field ($answer['answer_text']);
-                    $answer_is_correct = sanitize_text_field ($answer['answer_is_correct']);
-                    $sequenceData = sanitize_text_field ($answer['sequence']);
+                    $answer_text = sanitize_text_field($answer['answer_text']);
+                    $answer_is_correct = sanitize_text_field($answer['answer_is_correct']);
+                    $sequenceData = sanitize_text_field($answer['sequence']);
 
                     // Insert the answer into the FQM_defaultanswers table
                     $insert_answer_query = $wpdb->prepare(
@@ -230,26 +242,24 @@ class FullQuizMaker
                     $wpdb->query($insert_answer_query);
                 }
             }
-
         }
-
     }
 
     // Add Quiz and Questions to Quiz 
-    public function FQM_add_quiz() 
+    public function FQM_add_quiz()
     {
         global $wpdb;
-    
+
         // Verify nonce
         if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'my_ajax_nonce')) {
             wp_send_json_error('Invalid nonce.');
         }
-    
+
         // Check if the request method is POST and questions_data is set
         if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["questions_data"])) {
             $quiz_data_array = json_decode(stripslashes($_POST["quiz_data"]), true);
             $form_type = $quiz_data_array['type'];
-    
+
             // Quiz data
             $quiz_name = sanitize_text_field($quiz_data_array['quiz_name']);
             $quiz_description = sanitize_text_field($quiz_data_array['quiz_description']);
@@ -262,10 +272,10 @@ class FullQuizMaker
             $class_id = intval($quiz_data_array['class_id']);
             $year_id = intval($quiz_data_array['year_id']);
             $level_id = intval($quiz_data_array['level_id']);
-    
+
             if ($form_type == 'Edit') {
                 $quiz_id = intval($quiz_data_array['quiz_id']);
-    
+
                 // Update quiz details
                 $wpdb->update(
                     $wpdb->prefix . 'FQM_Quizzes',
@@ -307,15 +317,15 @@ class FullQuizMaker
                 );
                 $quiz_id = $wpdb->insert_id; // Get the newly inserted quiz_id
             }
-    
+
             // Quiz questions data
             $questions_in_quiz = $quiz_data_array['questions'];
-    
+
             foreach ($questions_in_quiz as $question) {
                 $question_id = intval($question['question_id']);
                 $question_mark = intval($question['question_points']);
                 $question_answer_seed_random = 5;
-    
+
                 // Check if it's an Edit or Insert operation for quiz questions
                 if ($form_type == 'Edit') {
                     //delete question from quiz
@@ -325,7 +335,7 @@ class FullQuizMaker
                             'quiz_id' => $quiz_id,
                         )
                     );
-                } 
+                }
                 // Insert new quiz question
                 $wpdb->insert(
                     $wpdb->prefix . 'FQM_quizQuestions',
@@ -336,7 +346,6 @@ class FullQuizMaker
                         'question_answer_seed_random' => $question_answer_seed_random,
                     )
                 );
-                
             }
         }
     }
@@ -344,16 +353,16 @@ class FullQuizMaker
     public function FQM_archive_quiz()
     {
         global $wpdb;
-    
+
         // Verify nonce
         if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'my_ajax_nonce')) {
             wp_send_json_error('Invalid nonce.');
         }
-    
+
         // Check if the request method is POST and quiz_id is set
         if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["quiz_id"])) {
             $quiz_id = intval($_POST["quiz_id"]);
-    
+
             // Update quiz status to archived
             $wpdb->update(
                 $wpdb->prefix . 'FQM_Quizzes',
@@ -368,16 +377,16 @@ class FullQuizMaker
     public function FQM_restore_quiz()
     {
         global $wpdb;
-    
+
         // Verify nonce
         if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'my_ajax_nonce')) {
             wp_send_json_error('Invalid nonce.');
         }
-    
+
         // Check if the request method is POST and quiz_id is set
         if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["quiz_id"])) {
             $quiz_id = intval($_POST["quiz_id"]);
-    
+
             // Update quiz status to active
             $wpdb->update(
                 $wpdb->prefix . 'FQM_Quizzes',
@@ -389,19 +398,19 @@ class FullQuizMaker
         }
     }
     // Delete Quiz
-    public function FQM_permenent_delete_quiz() 
+    public function FQM_permenent_delete_quiz()
     {
         global $wpdb;
-    
+
         // Verify nonce
         if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'my_ajax_nonce')) {
             wp_send_json_error('Invalid nonce.');
         }
-    
+
         // Check if the request method is POST and quiz_id is set
         if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["quiz_id"])) {
             $quiz_id = intval($_POST["quiz_id"]);
-        
+
             // Delete quiz questions
             $wpdb->delete(
                 $wpdb->prefix . 'FQM_quizQuestions',
@@ -416,7 +425,6 @@ class FullQuizMaker
                     'quiz_id' => $quiz_id,
                 )
             );
-
         }
     }
     // Send Email For Students in the Group with Code
@@ -446,23 +454,23 @@ class FullQuizMaker
                     )",
                 $class_id
             );
-        
+
             $student_emails = $wpdb->get_results($query);
 
 
             foreach ($student_emails as $student) {
                 $to = $student;
                 $subject = sanitize_text_field($_POST['email_subject']);
-                $body = sanitize_text_field( $_POST['email_body']);
+                $body = sanitize_text_field($_POST['email_body']);
                 $headers = array('Content-Type: text/html; charset=UTF-8');
-                wp_mail( $to, $subject, $body, $headers );
+                wp_mail($to, $subject, $body, $headers);
             }
         }
     }
     // ShortCode For Profile Page of Student
     public function FQM_student_profile()
     {
-        global $wpdb ;
+        global $wpdb;
         $user_id = get_current_user_id();
 
         $user_info = get_userdata($user_id);
@@ -503,21 +511,17 @@ class FullQuizMaker
             $output .= '</div>';
             return $output;
         }
-
-        
     }
     // ShortCode For Profile Page of Teacher
     public function FQM_teacher_profile()
     {
-        global $wpdb ;
+        global $wpdb;
         $user_id = get_current_user_id();
 
         $user_info = get_userdata($user_id);
-
-         
     }
-    
-    function excelColumnToNumber($column) 
+
+    function excelColumnToNumber($column)
     {
         $column = strtoupper($column);
         $columnNumber = 0;
@@ -566,12 +570,12 @@ class FullQuizMaker
     public function FQM_importStudentDataFromExcel()
     {
         global $wpdb;
-        
+
         // Verify nonce
         if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'my_ajax_nonce')) {
             wp_send_json_error('Invalid nonce.');
         }
-        
+
         // Check if the request method is POST and Import File is set
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             // Check if a file was uploaded
@@ -582,7 +586,7 @@ class FullQuizMaker
                 } catch (\PhpOffice\PhpSpreadsheet\Reader\Exception $e) {
                     die('Error loading the Excel file: ' . $e->getMessage());
                 }
-                
+
                 // Add the year and get the year_id
                 $year_title = sanitize_text_field($_POST['year']);
                 Self::FQM_add_year_to_database($year_title);
@@ -595,7 +599,7 @@ class FullQuizMaker
                 $type = sanitize_text_field($_POST['type']);
                 // Select the active worksheet
                 $worksheet = $spreadsheet->getActiveSheet();
-                if ($type == 'Defult'){
+                if ($type == 'Defult') {
                     // Iterate through rows and create user accounts
                     for ($row = 2; $row <= $worksheet->getHighestRow(); $row++) {
                         // Get data from columns A to D in the current row
@@ -604,19 +608,19 @@ class FullQuizMaker
                         $class_id =  $worksheet->getCell('B' . $row)->getValue(); // Column B
                         // Create a username based on reference code or any unique identifier
                         $username = 'student_' . $referenceCode;
-                        
+
                         // Check if the username already exists
                         if (username_exists($username)) {
                             // Username already exists, so skip this user or handle it as needed
                             continue;
                         }
-                        
+
                         // Create a random password
                         $password = wp_generate_password();
-                            
+
                         // Create the user account
                         $user_id = wp_create_user($username, $password, $username . '@gmail.com');
-                        
+
                         // Check if user creation was successful
                         if (!is_wp_error($user_id)) {
                             // Add the 'student' role to the user
@@ -628,11 +632,11 @@ class FullQuizMaker
                             $wpdb->insert(
                                 $table_classes,
                                 array(
-                                    'class_name' => 'Grade ' . $class_id, 
-                                    'class_description' => 'Description', 
-                                    'year_id' => $year_id, 
-                                    'level_id' => $level_id, 
-                                    'ID' => $user_id, 
+                                    'class_name' => 'Grade ' . $class_id,
+                                    'class_description' => 'Description',
+                                    'year_id' => $year_id,
+                                    'level_id' => $level_id,
+                                    'ID' => $user_id,
                                 ),
                                 array(
                                     '%s', // class_name is a string
@@ -641,22 +645,22 @@ class FullQuizMaker
                                     '%d', // level_id is an integer
                                     '%d', // ID is an integer
                                 )
-                            );      
+                            );
                             $table_studentinGroups = $wpdb->prefix . 'FQM_studentinGroups';
                             $wpdb->insert(
                                 $table_studentinGroups,
                                 array(
                                     'class_id' => $class_id,
-                                    'ID' => $user_id,      
+                                    'ID' => $user_id,
                                 ),
                                 array(
                                     '%d', // class_id is an integer
                                     '%d', // ID is an integer
-                                    )
+                                )
                             );
-                            
+
                             // Insert data into the FQM_classes table
-                            
+
                         }
                     }
                 } else {
@@ -668,19 +672,19 @@ class FullQuizMaker
                         $level_data = $worksheet->getCell('C' . $row)->getValue(); // Column J
 
                         $username = 'student_' . $referenceCode;
-                        
+
                         // Check if the username already exists
                         if (username_exists($username)) {
                             // Username already exists, so skip this user or handle it as needed
                             continue;
                         }
-                        
+
                         // Create a random password
                         $password = wp_generate_password();
-                            
+
                         // Create the user account
                         $user_id = wp_create_user($username, $password, $username . '@gmail.com');
-                        
+
                         // Check if user creation was successful
                         if (!is_wp_error($user_id)) {
                             // Add the 'student' role to the user
@@ -692,11 +696,11 @@ class FullQuizMaker
                             $wpdb->insert(
                                 $table_classes,
                                 array(
-                                    'class_name' => 'Grade ' . $class_id, 
-                                    'class_description' => 'Description', 
-                                    'year_id' => $year_id, 
-                                    'level_id' => $level_id, 
-                                    'ID' => $user_id, 
+                                    'class_name' => 'Grade ' . $class_id,
+                                    'class_description' => 'Description',
+                                    'year_id' => $year_id,
+                                    'level_id' => $level_id,
+                                    'ID' => $user_id,
                                 ),
                                 array(
                                     '%s', // class_name is a string
@@ -705,50 +709,50 @@ class FullQuizMaker
                                     '%d', // level_id is an integer
                                     '%d', // ID is an integer
                                 )
-                            );      
+                            );
                             $table_studentinGroups = $wpdb->prefix . 'FQM_studentinGroups';
                             $wpdb->insert(
                                 $table_studentinGroups,
                                 array(
                                     'class_id' => $class_id,
-                                    'ID' => $user_id,      
+                                    'ID' => $user_id,
                                 ),
                                 array(
                                     '%d', // class_id is an integer
                                     '%d', // ID is an integer
-                                    )
+                                )
                             );
-                            
+
                             // Insert data into the FQM_classes table
-                            
+
                         }
                     }
-
                 }
-          // Optional: Redirect or display a success message
+                // Optional: Redirect or display a success message
             } else {
                 echo '<p>No file uploaded.</p>';
             }
         }
     }
-    public function FQM_download_default_template() {
+    public function FQM_download_default_template()
+    {
         // Create a new spreadsheet
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-    
+
         // Set column headers
         $sheet->setCellValue('A1', 'Level');
         $sheet->setCellValue('B1', 'class_id');
         $sheet->setCellValue('C1', 'referenceCode');
         $sheet->setCellValue('D1', 'fullName');
-    
+
         // Sample data (you can replace this with your actual data retrieval logic)
         $data = [
             ['Level 1', 101, 'ABC123', 'John Doe'],
             ['Level 2', 102, 'XYZ456', 'Jane Smith'],
             // Add more rows as needed
         ];
-    
+
         // Populate the spreadsheet with data
         $row = 2;
         foreach ($data as $rowValues) {
@@ -759,30 +763,29 @@ class FullQuizMaker
             }
             $row++;
         }
-    
+
         // Create a temporary file with a specific .xlsx extension
         $tempFile = tempnam(sys_get_temp_dir(), 'exported_excel_') . '.xlsx';
         var_dump($tempFile);
 
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save($tempFile);
-    
+
         // Set appropriate headers for file download
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment; filename=Default_template.xlsx');
-        
-        
+
+
         header('Content-Length: ' . filesize($tempFile));
-    
+
         // Read and output the file content
         readfile($tempFile);
-    
+
         // Delete the temporary file
         unlink($tempFile);
-    
+
         exit();
     }
-    
 }
 
 $FullQuizMaker  = new FullQuizMaker();

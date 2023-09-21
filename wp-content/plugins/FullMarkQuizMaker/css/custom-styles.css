@@ -74,7 +74,7 @@ input[type="radio"] {
 
 .active-group {
   border: 2px solid #125b50 !important;
-  transition: all 0.1s ease-in-out !important;
+  transition: all 0.1s linear !important;
 }
 
 .nav-link:hover {
@@ -87,9 +87,9 @@ input[type="radio"] {
 }
 
 .nav-link.active {
-  background-color: #125b50 !important;
-  color: #fff !important;
-  transition: all 0.1s ease-in-out !important;
+  background-color: #ddd !important;
+  color: #125b50 !important;
+  transition: all 0.1s linear !important;
   border: 0 !important;
 }
 

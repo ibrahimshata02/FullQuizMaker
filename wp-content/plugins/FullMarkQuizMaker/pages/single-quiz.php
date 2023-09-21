@@ -8,13 +8,17 @@
 </head>
 
 <style>
-    .sticky-nav {
+    .quiz-class:hover {
+        border: 2px solid #125b50 !important;
+    }
+
+    /* .sticky-nav {
         position: sticky;
         top: 30px;
         background-color: white;
         z-index: 1000;
         transition: all 0.5s ease-in-out;
-    }
+    } */
 </style>
 
 
@@ -29,13 +33,11 @@
         </div> -->
 
         <!-- Nav buttons -->
-        <nav class="sticky-nav p-0 mt-6 border-primary border-bottom shadow">
-            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <button class="nav-link active border border-right" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Preview/edit <i class="fa-regular fa-pen-to-square ms-2"></i></button>
-                <button class="nav-link border border-right" id="nav-classes-tab" data-bs-toggle="tab" data-bs-target="#nav-classes" role="tab" aria-controls="nav-classes" aria-selected="false">classes <i class="fa-solid fa-chalkboard-user ms-2"></i></button>
-                <button class="nav-link border border-right" id="nav-settings-tab" data-bs-toggle="tab" data-bs-target="#nav-settings" role="tab" aria-controls="nav-settings" aria-selected="false">Settings <i class="fa-solid fa-gears ms-2"></i></button>
-            </div>
-        </nav>
+        <div class="position-relative bg-white d-flex align-items-center nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active border-right" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Preview/edit <i class="fa-regular fa-pen-to-square ms-2"></i></button>
+            <button class="nav-link border-right" id="nav-classes-tab" data-bs-toggle="tab" data-bs-target="#nav-classes" role="tab" aria-controls="nav-classes" aria-selected="false">classes <i class="fa-solid fa-chalkboard-user ms-2"></i></button>
+            <button class="nav-link " id="nav-settings-tab" data-bs-toggle="tab" data-bs-target="#nav-settings" role="tab" aria-controls="nav-settings" aria-selected="false">Settings <i class="fa-solid fa-gears ms-2"></i></button>
+        </div>
 
         <div class="tab-content" id="nav-tabContent">
             <!-- Preview and edit tab -->
@@ -118,7 +120,7 @@
                 <h4 class="m-0 mt-2"> Assigned classes</h4>
 
                 <!-- Classes row -->
-                <div class="row row-cols-1 row-cols-lg-2 g-3 mt-3">
+                <div class="row row-cols-1 row-cols-lg-2 card-hover g-3 mt-3">
                     <div class="position-relative col">
                         <i class="fa-solid fa-check fa-xl text-success position-absolute top-10 end-4 opacity-0"></i>
                         <div class="quiz-class p-4 bg-white border-2 rounded-3 p-4 border rounded-3 cursor-pointer ">
@@ -137,7 +139,7 @@
                 </div>
 
                 <!-- Classes row -->
-                <div class="row row-cols-1 row-cols-lg-2 g-3 mt-1">
+                <div class="row row-cols-1 row-cols-lg-2 card-hover g-3 mt-1">
                     <div class="position-relative col">
                         <i class="fa-solid fa-check fa-xl text-success position-absolute top-10 end-4 opacity-0"></i>
                         <div class="quiz-class p-4 bg-white border-2 rounded-3 p-4 border rounded-3 cursor-pointer ">
@@ -161,7 +163,7 @@
             <div class="tab-pane fade mt-5" id="nav-settings" role="tabpanel" aria-labelledby="nav-settings-tab">
                 <h4 class="m-0 mt-2"> Quiz settings</h4>
 
-                <div class="row row-cols-1 row-cols-lg-2 g-3 mt-3">
+                <div class="row row-cols-1 row-cols-lg-2 card-hover g-3 mt-3">
                     <div class="col">
                         <label class="form-label">Quiz title</label>
                         <input type="text" class="form-control border p-2" placeholder="Edit Quiz title" value="" />
@@ -176,7 +178,7 @@
                     </div>
                 </div>
 
-                <div class="row row-cols-1 row-cols-lg-2 g-3 mt-2">
+                <div class="row row-cols-1 row-cols-lg-2 card-hover g-3 mt-2">
                     <div class="col">
                         <label class="form-label">Start date</label>
                         <input type="datetime-local" class="form-control border p-2" placeholder="Edit Quiz title" value="" />
