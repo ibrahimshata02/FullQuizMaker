@@ -1,5 +1,8 @@
 <?php
 
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+
 class FullQuizMaker
 {
     private $version = 2.1;
@@ -19,8 +22,11 @@ class FullQuizMaker
         add_action('wp_ajax_FQM_email_students', array($this, 'FQM_email_students'));
         add_action('wp_ajax_FQM_upload_file', array($this, 'FQM_upload_file'));
         add_action('wp_ajax_nopriv_FQM_upload_file',array($this, 'FQM_upload_file'));
-        add_action('wp_ajax_RCS_GET_MEDIUM_IMG_I', array($this,'get_medium_image')) ;
+        add_action('wp_ajax_FQM_importStudentDataFromExcel',array($this, 'FQM_importStudentDataFromExcel'));
+        add_action('wp_ajax_FQM_download_default_template',array($this, 'FQM_download_default_template'));
+        add_action('wp_ajax_nopriv_FQM_importStudentDataFromExcel',array($this, 'FQM_importStudentDataFromExcel'));
 
+        
     }
 
     public function FQM_enqueue_frontend_scripts()
@@ -109,9 +115,18 @@ class FullQuizMaker
             'single quiz',                    // page title
             'single quiz',                    // menu title
             'manage_options',                  // capability required to access
-            'single-quiz.php',                    // menu slug
+            'single-quiz',                    // menu slug
             array($this, 'FQM_singleQuiz_callback')  // callback function for the page
         );
+        add_submenu_page(
+            'full-quiz-maker',                 // parent menu slug
+            'Add Partecipents',                    // page title
+            'Add-Partecipents',                    // menu title
+            'manage_options',                  // capability required to access
+            'Add Partecipents',                    // menu slug
+            array($this, 'FQM_Add_Partecipents_callback')  // callback function for the page
+        );
+
 
         // Remove the submenu page that you want to hide
         remove_submenu_page('full-quiz-maker', 'full-quiz-maker');
@@ -120,8 +135,11 @@ class FullQuizMaker
     // Callback method for the Quizzes page
     public function FQM_Quizzes_callback()
     {
-        include 'Quizzes.php';
+        include 'pages/Quizzes.php';
     }
+    public  function FQM_Add_Partecipents_callback(){
+        include 'pages/Add Partecipents.php';
+    }  
 
     // Callback method for the Quizzes page
     public function FQM_addNewQuiz_callback()
@@ -498,38 +516,273 @@ class FullQuizMaker
 
          
     }
-
-    function rcs_get_attachment_id_from_url($attachment_url){
-        global $wpdb;
-        $upload_dir_paths = wp_upload_dir();
-        if(strpos($attachment_url, $upload_dir_paths['baseurl']) !== false){
-            $attachment_url = preg_replace( '/-\d+x\d+(?=\.(jpg|jpeg|png|gif)$)/i', '', $attachment_url );
-            
-            $attachment_url = str_replace( $upload_dir_paths['baseurl'] . '/', '', $attachment_url );
-            
-            $attachment_id = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." wposts, ".$wpdb->postmeta." wpostmeta 
-                                                            WHERE wposts.ID = wpostmeta.post_id AND wpostmeta.meta_key = '_wp_attached_file' 
-                                                            AND wpostmeta.meta_value = '%s' AND wposts.post_type = 'attachment'", $attachment_url));
-                                                            
-            return $attachment_id;
-        }
-        return false;
-    }
     
-    function get_medium_image(){
-        $attch_url = (isset($_POST['attch_url']))? $_POST['attch_url'] : '';
-        if(!empty($attch_url)){
-            $attch_id = self::rcs_get_attachment_id_from_url(urldecode($attch_url));
-            if($attch_id){
-                $img = wp_get_attachment_image_src($attch_id, 'medium');
-                if(empty($img[0])){
-                    $img = wp_get_attachment_image_src($attch_id, 'small');
+    function excelColumnToNumber($column) 
+    {
+        $column = strtoupper($column);
+        $columnNumber = 0;
+        $length = strlen($column);
+
+        for ($i = 0; $i < $length; $i++) {
+            $char = $column[$i];
+            $columnNumber = $columnNumber * 26 + (ord($char) - 65 + 1);
+        }
+
+        return $columnNumber;
+    }
+    function numberToExcelColumn($columnNumber)
+    {
+        if ($columnNumber <= 0) {
+            return ''; // Return an empty string for non-positive column numbers
+        }
+
+        $excelColumn = '';
+
+        while ($columnNumber > 0) {
+            $remainder = ($columnNumber - 1) % 26; // Subtract 1 for 0-based indexing
+            $excelColumn = chr(65 + $remainder) . $excelColumn; // Convert to letter
+            $columnNumber = floor(($columnNumber - $remainder) / 26);
+        }
+
+        return $excelColumn;
+    }
+
+    // Function to add the year
+    function FQM_add_year_to_database($year_title)
+    {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'FQM_year';
+        $wpdb->insert($table_name, array('year_title' => $year_title));
+    }
+
+    // Function to add the level
+    function FQM_add_level_to_database($level, $year_id)
+    {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'FQM_level';
+        $wpdb->insert($table_name, array('level' => $level, 'year_id' => $year_id));
+    }
+
+    public function FQM_importStudentDataFromExcel()
+    {
+        global $wpdb;
+        
+        // Verify nonce
+        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'my_ajax_nonce')) {
+            wp_send_json_error('Invalid nonce.');
+        }
+        
+        // Check if the request method is POST and Import File is set
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            // Check if a file was uploaded
+            if (!empty($_FILES['file']['tmp_name'])) {
+                // Load the Excel file
+                try {
+                    $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($_FILES['file']['tmp_name']);
+                } catch (\PhpOffice\PhpSpreadsheet\Reader\Exception $e) {
+                    die('Error loading the Excel file: ' . $e->getMessage());
                 }
-                echo $attch_id.'--++##++--'.$img[0];
+                
+                // Add the year and get the year_id
+                $year_title = sanitize_text_field($_POST['year']);
+                Self::FQM_add_year_to_database($year_title);
+                $year_id = $wpdb->insert_id;
+
+                // Add the level and get the level_id
+                $level = sanitize_text_field($_POST['level']);
+                Self::FQM_add_level_to_database($level, $year_id);
+                $level_id = $wpdb->insert_id;
+                $type = sanitize_text_field($_POST['type']);
+                // Select the active worksheet
+                $worksheet = $spreadsheet->getActiveSheet();
+                if ($type == 'Defult'){
+                    // Iterate through rows and create user accounts
+                    for ($row = 2; $row <= $worksheet->getHighestRow(); $row++) {
+                        // Get data from columns A to D in the current row
+                        $referenceCode = $worksheet->getCell('C' . $row)->getValue(); // Column A
+                        $fullName = $worksheet->getCell('D' . $row)->getValue(); // Column D
+                        $class_id =  $worksheet->getCell('B' . $row)->getValue(); // Column B
+                        // Create a username based on reference code or any unique identifier
+                        $username = 'student_' . $referenceCode;
+                        
+                        // Check if the username already exists
+                        if (username_exists($username)) {
+                            // Username already exists, so skip this user or handle it as needed
+                            continue;
+                        }
+                        
+                        // Create a random password
+                        $password = wp_generate_password();
+                            
+                        // Create the user account
+                        $user_id = wp_create_user($username, $password, $username . '@gmail.com');
+                        
+                        // Check if user creation was successful
+                        if (!is_wp_error($user_id)) {
+                            // Add the 'student' role to the user
+                            $user = new WP_User($user_id);
+                            $user->add_role('student');
+                            $user->remove_role('subscriber');
+
+                            $table_classes = $wpdb->prefix . 'FQM_classes';
+                            $wpdb->insert(
+                                $table_classes,
+                                array(
+                                    'class_name' => 'Grade ' . $class_id, 
+                                    'class_description' => 'Description', 
+                                    'year_id' => $year_id, 
+                                    'level_id' => $level_id, 
+                                    'ID' => $user_id, 
+                                ),
+                                array(
+                                    '%s', // class_name is a string
+                                    '%s', // class_description is a string
+                                    '%d', // year_id is an integer
+                                    '%d', // level_id is an integer
+                                    '%d', // ID is an integer
+                                )
+                            );      
+                            $table_studentinGroups = $wpdb->prefix . 'FQM_studentinGroups';
+                            $wpdb->insert(
+                                $table_studentinGroups,
+                                array(
+                                    'class_id' => $class_id,
+                                    'ID' => $user_id,      
+                                ),
+                                array(
+                                    '%d', // class_id is an integer
+                                    '%d', // ID is an integer
+                                    )
+                            );
+                            
+                            // Insert data into the FQM_classes table
+                            
+                        }
+                    }
+                } else {
+                    for ($row = 2; $row <= $worksheet->getHighestRow(); $row++) {
+                        // Get data from columns A to D in the current row
+                        $referenceCode = $worksheet->getCell('F' . $row)->getValue(); // Column F
+                        $fullName = $worksheet->getCell('J' . $row)->getValue(); // Column D
+                        $class_id = $worksheet->getCell('D' . $row)->getValue(); // Column F
+                        $level_data = $worksheet->getCell('C' . $row)->getValue(); // Column J
+
+                        $username = 'student_' . $referenceCode;
+                        
+                        // Check if the username already exists
+                        if (username_exists($username)) {
+                            // Username already exists, so skip this user or handle it as needed
+                            continue;
+                        }
+                        
+                        // Create a random password
+                        $password = wp_generate_password();
+                            
+                        // Create the user account
+                        $user_id = wp_create_user($username, $password, $username . '@gmail.com');
+                        
+                        // Check if user creation was successful
+                        if (!is_wp_error($user_id)) {
+                            // Add the 'student' role to the user
+                            $user = new WP_User($user_id);
+                            $user->add_role('student');
+                            $user->remove_role('subscriber');
+
+                            $table_classes = $wpdb->prefix . 'FQM_classes';
+                            $wpdb->insert(
+                                $table_classes,
+                                array(
+                                    'class_name' => 'Grade ' . $class_id, 
+                                    'class_description' => 'Description', 
+                                    'year_id' => $year_id, 
+                                    'level_id' => $level_id, 
+                                    'ID' => $user_id, 
+                                ),
+                                array(
+                                    '%s', // class_name is a string
+                                    '%s', // class_description is a string
+                                    '%d', // year_id is an integer
+                                    '%d', // level_id is an integer
+                                    '%d', // ID is an integer
+                                )
+                            );      
+                            $table_studentinGroups = $wpdb->prefix . 'FQM_studentinGroups';
+                            $wpdb->insert(
+                                $table_studentinGroups,
+                                array(
+                                    'class_id' => $class_id,
+                                    'ID' => $user_id,      
+                                ),
+                                array(
+                                    '%d', // class_id is an integer
+                                    '%d', // ID is an integer
+                                    )
+                            );
+                            
+                            // Insert data into the FQM_classes table
+                            
+                        }
+                    }
+
+                }
+          // Optional: Redirect or display a success message
+            } else {
+                echo '<p>No file uploaded.</p>';
             }
         }
-        die();
     }
+    public function FQM_download_default_template() {
+        // Create a new spreadsheet
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+    
+        // Set column headers
+        $sheet->setCellValue('A1', 'Level');
+        $sheet->setCellValue('B1', 'class_id');
+        $sheet->setCellValue('C1', 'referenceCode');
+        $sheet->setCellValue('D1', 'fullName');
+    
+        // Sample data (you can replace this with your actual data retrieval logic)
+        $data = [
+            ['Level 1', 101, 'ABC123', 'John Doe'],
+            ['Level 2', 102, 'XYZ456', 'Jane Smith'],
+            // Add more rows as needed
+        ];
+    
+        // Populate the spreadsheet with data
+        $row = 2;
+        foreach ($data as $rowValues) {
+            $column = 'A';
+            foreach ($rowValues as $value) {
+                $sheet->setCellValue($column . $row, $value);
+                $column++;
+            }
+            $row++;
+        }
+    
+        // Create a temporary file with a specific .xlsx extension
+        $tempFile = tempnam(sys_get_temp_dir(), 'exported_excel_') . '.xlsx';
+        var_dump($tempFile);
+
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save($tempFile);
+    
+        // Set appropriate headers for file download
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename=Default_template.xlsx');
+        
+        
+        header('Content-Length: ' . filesize($tempFile));
+    
+        // Read and output the file content
+        readfile($tempFile);
+    
+        // Delete the temporary file
+        unlink($tempFile);
+    
+        exit();
+    }
+    
 }
 
 $FullQuizMaker  = new FullQuizMaker();

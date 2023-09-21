@@ -90,17 +90,7 @@ function rcs_addLargeImage(attch_url){
   margin-left: auto;
   margin-right: auto;
 }
-#image_holder_dw_logo > img {
-    border: 1px solid #f2f2f2;
-    border-radius: 6px;
-    height: auto;
-    margin: auto;
-    max-height: 79px;
-    max-width: 180px;
-    padding: 4px;
-    vertical-align: middle;
-    width: auto;
-}
+
 input[type="text"], input[type="search"], input[type="radio"], input[type="tel"], input[type="time"], input[type="url"], input[type="week"], input[type="password"], input[type="checkbox"], input[type="color"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="email"], input[type="month"], input[type="number"], select2, select, textarea {
     box-shadow: none !important;
 	font-size: 13px;
@@ -111,19 +101,12 @@ input[type="text"], input[type="search"], input[type="radio"], input[type="tel"]
 	<div class="align-items-center row">
 	<div class="col-8">
 	<div class="input-group form-row">
-    <?php
-			echo "<input style=\"float: left; width:85%;\" type=\"text\" placeholder=\"Choose a png transparent image\" class=\"form-control textbox_custom\" name=\"$name\" id=\"$name\"   size=\"25\">";
-			?>
+
 			<div class="input-group-prepend">
-				<button style="float: left;margin: 4px;" type="button" class="button-secondary" id="add_image_<?php echo $name; ?>" onclick="rcs_addImage_<?php echo $name; ?>(this.id)"><?php _e('Fuck!', 'rc_slider') ?></button>
+				<button style="float: left;margin: 4px;" type="button" class="button-secondary" id="add_image_<?php echo $name; ?>" onclick="rcs_addImage_<?php echo $name; ?>(this.id)"><?php echo "<i title=\"Add new image\" class=\"cursor-pointer fas fa-image text-dark fa-xl\" 
+			name=\"$name\" id=\"$name\"   size=\"25\"></i>" ?></button>
 			</div>
 	</div>
-	</div>
-	
-	<div class="col-4" style="padding-bottom: 5px;">
-		<div class="image_holder center-block" id="image_holder_<?php echo $name; ?>">
-			<img id="slide_image_<?php echo $name; ?>" src="Fuck121">
-		</div>
 	</div>
 	</div>
 </div>

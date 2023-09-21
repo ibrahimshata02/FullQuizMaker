@@ -62,9 +62,7 @@ thead tr th {
                                         class="fas fa-trash text-white ms-2"></i></a>
                             </div>
                         </div>  
-                        <?php 	$name = 'Fuck';
-                        
-                        include 'media_uploader_script.php'; ?>
+
                         <div class="p-0 pt-0 border rounded-3 w-100">
                             <div class="table-responsive p-0 bg-white rounded-3">
                                 <table class="table align-items-center m-0 col-lg-12 col-xxl-10 rounded-3">

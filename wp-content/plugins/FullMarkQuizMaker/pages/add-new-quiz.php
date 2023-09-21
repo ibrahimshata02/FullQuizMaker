@@ -36,8 +36,19 @@
                                 <option selected value="1">Multiple choice </option>
                                 <option value="2">True/False</option>
                                 <option value="3">Short answer</option>
-                            </select>
-                            <i title="Add new image" class="cursor-pointer fas fa-image text-dark fa-xl"> </i>
+                            </select>                        
+                            <?php
+                                $name = 'Upload_Image';
+
+                                // Get the path to your plugin directory
+                                $plugin_directory = plugin_dir_path(__FILE__);
+
+                                // Go up one level to the parent directory
+                                $parent_directory = dirname($plugin_directory);
+
+                                // Include the file from the parent directory
+                                include $parent_directory . '/media_uploader_script.php';
+                            ?>
                         </div>
                     </div>
 
@@ -57,10 +68,12 @@
                                     <span>Delete</span>
                                 </li>
                             </ul>
-
-                            <img class="rounded-3" width="100%" height="400" src="https://source.unsplash.com/random/400×400/?equation&math" alt="uploaded photo">
+                            <div class="image_holder center-block" id="image_holder_<?php echo $name; ?>">
+                                <img  class="rounded-3"id="slide_image_<?php echo $name; ?>" src="https://source.unsplash.com/random/400×400/?equation&math" alt="uploaded photo">
+                            </div>
                         </div>
                     </div>
+
 
                     <div id="optionsGroup" class="d-flex flex-column gap-2 my-3">
 

@@ -208,13 +208,12 @@ function FMQ_add_database_tables()
 
 }
  register_activation_hook(__FILE__, 'FMQ_add_database_tables'); 
-
 global $wpdb;
 $year_table = $wpdb->prefix . 'FQM_year';
 
 $allowed_to_run = true;
 
-if ($wpdb->get_var("SHOW TABLES LIKE '$year_table'") !== $year_table ) {
+if ($wpdb->get_var("SHOW TABLES LIKE '$year_table'") !== $year_table) {
     $allowed_to_run = false;
 }
 
