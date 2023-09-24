@@ -78,11 +78,22 @@
 
                     <hr class="mt-4">
 
-                    <div class="d-flex justify-content-end gap-4 p-2">
-                        <i title="Add new question card" class="fa-solid fa-circle-plus fa-lg text-dark cursor-pointer"></i>
-                        <i title="Duplicate question card" class="fa-regular fa-copy fa-lg text-dark cursor-pointer"></i>
-                        <i title="Delete question card" class="fas fa-trash-can fa-lg text-danger cursor-pointer"></i>
+                    <div class="d-flex justify-content-between p-2">
+                        <div class="difficulty-container d-flex flex-column gap-1">
+                            <label for="difficulty" class="form-label m-0 mb-1">Difficulty</label>
+                            <div class="d-flex flex-row align-items-center gap-2 ">
+                                <input type="range" class="form-range" value="0" min="0" max="10" step="1" id="difficulty">
+                                <p id="range_text" class="m-0 fw-bolder" style="font-size: 15px;">0/10</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-3">
+                            <i title="Add new question card" class="fa-solid fa-circle-plus fa-lg text-dark cursor-pointer"></i>
+                            <i title="Duplicate question card" class="fa-regular fa-copy fa-lg text-dark cursor-pointer"></i>
+                            <i title="Delete question card" class="fas fa-trash-can fa-lg text-danger cursor-pointer"></i>
+                        </div>
                     </div>
+
                 </div>
             </div>
 
@@ -91,6 +102,19 @@
             </button>
         </div>
     </main>
+    <!-- 
+    <script>
+        const difficulty_containers = document.querySelectorAll(".difficulty-container");
+        difficulty_containers.forEach((elem) => {
+            const difficulty = elem.querySelector("#difficulty");
+            const range_text = elem.querySelector("#range_text");
+
+            difficulty.addEventListener("input", (event) => {
+                const value = event.target.value;
+                range_text.textContent = value + "/10";
+            });
+        });
+    </script> -->
 
     <script>
         jQuery(document).ready(function(jQuery) {
@@ -175,7 +199,7 @@
                         if (index == 0)
                             deleteCardIcon.style.cssText = "display: none !important;";
                         else deleteCardIcon.style.cssText = "display: block !important;";
-                    });
+                    })
 
                     // Remove existing event listeners to prevent duplicates
                     select.removeEventListener("change", handleSelectChange);
@@ -364,10 +388,7 @@
                                     optionValue
                                 });
                             }
-
-
                         });
-
                     } else { // Short answer
                         card.querySelectorAll(".option-card").forEach((option) => {
                             const optionId = option.getAttribute("data-option-id");

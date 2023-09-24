@@ -7,8 +7,6 @@
     <title>FQM plugin</title>
 </head>
 
-
-
 <body>
     <main class="col-lg-7 col-md-8 col-11 main-content position-relative max-height-vh-100 h-100 mt-4 border-radius-lg">
         <h3 class="mb-4">Add Students</h3>
@@ -22,6 +20,7 @@
                     <option selected value="1">A </option>
                     <option value="2">B</option>
                 </select>
+                <span class="error_message fw-bold text-danger d-none"></span>
             </div>
 
             <div class="col mt-3">
@@ -30,16 +29,20 @@
                     <option value="Defult">Defult</option>
                     <option value="Unrwa">Unrwa</option>
                 </select>
+                <span class="error_message fw-bold text-danger d-none"></span>
+
             </div>
 
             <div class="mt-3 col-6">
                 <label for="file">Add students using File</label>
-                <input class="form-control border p-2" type="file" name="file" accept=".xlsx, .xls" required>
+                <input class="form-control border p-2" type="file" name="file" accept=".xlsx, .xls">
+                <span class="error_message fw-bold text-danger d-none"></span>
+
             </div>
 
 
             <div class="d-flex flex-row  align-items-center gap-3 mt-4">
-                <button class="btn btn-white shadow-none border m-0" id="submit" type="button" name="import_data">
+                <button class="btn btn-dark shadow-none border m-0" id="import_data" type="button" name="import_data">
                     Import data
                     <i class="fa-solid fa-file-import fa-xl ms-2"></i>
                 </button>
@@ -48,15 +51,23 @@
                     or you can just <a class="text-primary fw-bolder" id="download" type="button" name="import_data">download</a> the Excel file template
                 </div>
             </div>
-            <button class="btn btn-primary mt-6 w-25 p-3">Save </button>
+            <button id="save_button" class="btn btn-primary mt-6 w-25 p-3">Save </button>
         </form>
 
-
         <script>
-            var nonce = jQuery("#my-ajax-nonce").val();
-            var button = jQuery("#submit");
-            var download = jQuery("#download");
-            download.click(function() {
+            const nonce = document.querySelector("#my-ajax-nonce").value;
+            const form = document.querySelector("form");
+            const save_button = document.getElementById("save_button");
+            const download = document.getElementById("download");
+            const import_data_button = document.getElementById("import_data");
+
+            form.addEventListener("submit", (e) => {
+                e.preventDefault(); // Prevent the default form submission behavior
+                // Add your form validation logic here
+            });
+
+            save_button.addEventListener("click", (e) => {
+                e.preventDefault();
                 var formData = new FormData();
                 formData.append("action", "FQM_download_default_template");
                 jQuery.ajax({
@@ -69,8 +80,11 @@
                         console.log(response);
                     },
                 });
-            });
-            button.click(function() {
+            })
+
+
+
+            save_button.click(function() {
                 var formData = new FormData();
                 formData.append("action", "FQM_importStudentDataFromExcel");
                 formData.append("nonce", nonce);

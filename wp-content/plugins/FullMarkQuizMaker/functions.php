@@ -134,6 +134,24 @@ class FullQuizMaker
             array($this, 'FQM_Add_AdminPage_callback')  // callback function for the page
         );
 
+        add_submenu_page(
+            'full-quiz-maker',                 // parent menu slug
+            'Teacher page',                    // page title
+            'Teacher page',                    // menu title
+            'manage_options',                  // capability required to access
+            'Teacher page',                    // menu slug
+            array($this, 'FQM_Add_TeacherPage_callback')  // callback function for the page
+        );
+
+        add_submenu_page(
+            'full-quiz-maker',                 // parent menu slug
+            'Class page',                    // page title
+            'Class page',                    // menu title
+            'manage_options',                  // capability required to access
+            'Class page',                    // menu slug
+            array($this, 'FQM_Add_ClassPage_callback')  // callback function for the page
+        );
+
         // Remove the submenu page that you want to hide
         remove_submenu_page('full-quiz-maker', 'full-quiz-maker');
     }
@@ -164,6 +182,18 @@ class FullQuizMaker
     public function FQM_Add_AdminPage_callback()
     {
         include 'pages/admin-page.php';
+    }
+
+    // Callback method for the Quizzes page
+    public function FQM_Add_TeacherPage_callback()
+    {
+        include 'pages/teacher-page.php';
+    }
+
+    // Callback method for the Quizzes page
+    public function FQM_Add_ClassPage_callback()
+    {
+        include 'pages/class-page.php';
     }
 
     // Add menu link in top bar (FullQuizMaker)

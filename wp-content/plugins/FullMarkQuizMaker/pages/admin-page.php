@@ -76,23 +76,16 @@
         <!-- Modal -->
         <div class="modal fade " id="add-teacher-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Add new teacher</h5>
-                    </div>
+                <div class="modal-content p-4">
+                    <i class="fa-solid fa-book-bookmark text-center text-dark" style="font-size:35px"></i>
+                    <h4 class="modal-title text-center mt-2" id="exampleModalLabel">Add new teacher</h4>
 
-                    <div class="modal-body border-none">
-                        <input type="text" class="form-control border p-2" placeholder="Enter the teacher email" />
-                    </div>
+                    <input type="text" class="form-control border p-2 mt-4" placeholder="Enter the teacher email" />
 
-                    <div class="modal-footer border-none">
-                        <button type="button" class="btn btn-primary w-100">ADD <i class="fas fa-add fa-md ms-1"></i> </button>
-                    </div>
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-primary w-100 mt-2">ADD <i class="fas fa-add fa-md ms-1"></i> </button>
                 </div>
-
             </div>
         </div>
-
 
         <script>
             const study_level_input = document.getElementById("study_level_input");
