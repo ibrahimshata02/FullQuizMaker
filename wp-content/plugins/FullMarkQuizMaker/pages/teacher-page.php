@@ -26,9 +26,14 @@
         </div>
 
         <div class="tab-content" id="nav-tabContent">
-            <!-- Preview and edit tab -->
+            <!-- Recent Quizzes -->
             <div class="tab-pane fade mt-5" id="nav-quizzes" role="tabpanel" aria-labelledby="nav-quizzes-tab">
-                <h4 class="m-0 mt-2">Recent quizzes</h4>
+                <div class="d-flex justify-content-between align-items-center mt-2 mb-4">
+                    <h4 class="m-0">Recent quizzes</h4>
+                    <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-add'); ?>" class="btn btn-primary m-0">New Quiz
+                        <i style="cursor: pointer" class="fas fa-add text-white ms-2"></i>
+                    </a>
+                </div>
 
                 <div class="table-responsive p-0 bg-white mt-3 rounded-3">
                     <table class="table align-items-center m-0 w-100">
@@ -124,7 +129,7 @@
                                         </td>
 
                                         <!-- Other dynamic data columns here -->
-                                        <td class="text-center d-flex align-items-center justify-content-center px-0 py-4 gap-lg-3 gap-md-2 gap-1" style="height: 77px;">
+                                        <td class="text-center d-flex align-items-center justify-content-center px-0 py-4 gap-lg-3 gap-md-2 gap-1" style="height: 70px;">
                                             <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-surveys&template=' . $poll->template . '&poll_id=' . $poll->poll_id); ?>">
                                                 <i class="fas fa-chart-bar text-sm text-dark" style="cursor: pointer"></i>
                                             </a>

@@ -11,6 +11,21 @@
     .quiz-class:hover {
         border: 2px solid #125b50 !important;
     }
+
+    /* Hide the file input */
+    #formFile {
+        display: none;
+    }
+
+    /* Style the label to look like the icon */
+    .file-input-label {
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .file-input-label i {
+        font-size: 25px !important;
+    }
 </style>
 
 
@@ -49,30 +64,32 @@
                                         <option value="2">True/False</option>
                                         <option value="3">Short answer</option>
                                     </select>
-                                    <i title="Add new image" class="cursor-pointer fas fa-image text-dark fa-xl"> </i>
+
+                                    <label for="formFile" class="file-input-label cursor-pointer m-0">
+                                        <i title="Add new image" class="cursor-pointer fas fa-image text-dark fa-xl"></i>
+                                        <input class="m-0" type="file" id="formFile" onchange="preview()">
+                                    </label>
                                 </div>
                             </div>
 
                             <div id="image_container" class="position-relative rounded-3 mt-4 mb-2 border">
-                                <div id="image_wrapper">
-                                    <div id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" class="position-absolute cursor-pointer negative-position border d-flex justify-content-center align-items-center bg-white p-2 rounded-circle shadow-sm" style="width: 40px;height: 40px;">
-                                        <i class="fa-solid fa-ellipsis-vertical text-dark"></i>
-                                    </div>
-
-                                    <ul class="dropdown-menu border shadow-md " aria-labelledby="dropdownMenuButton1">
-                                        <li class="dropdown-item d-flex align-items-center gap-3 cursor-pointer p-2 px-3 m-0 ">
-                                            <i class="fas fa-pen"></i>
-                                            <span>Edit</span>
-                                        </li>
-                                        <li class="dropdown-item d-flex align-items-center gap-3 cursor-pointer p-2 px-3 m-0">
-                                            <i class="fas fa-trash text-danger"></i>
-                                            <span>Delete</span>
-                                        </li>
-                                    </ul>
-
-                                    <img class="rounded-3" width="100%" height="400" src="https://source.unsplash.com/random/400×400/?equation&math" alt="uploaded photo">
+                                <div id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" class="position-absolute cursor-pointer negative-position border d-flex justify-content-center align-items-center bg-white p-2 rounded-circle shadow-sm z-index-5" style="width: 40px;height: 40px; z-index: 10;">
+                                    <i class="fa-solid fa-ellipsis-vertical text-dark"></i>
                                 </div>
+                                <ul class="dropdown-menu border shadow-md " aria-labelledby="dropdownMenuButton1">
+                                    <li class="dropdown-item d-flex align-items-center gap-3 cursor-pointer p-2 px-3 m-0 ">
+                                        <i class="fas fa-pen"></i>
+                                        <span>Edit</span>
+                                    </li>
+                                    <li onclick="clearImage()" class="dropdown-item d-flex align-items-center gap-3 cursor-pointer p-2 px-3 m-0">
+                                        <i class="fas fa-trash text-danger"></i>
+                                        <span>Delete</span>
+                                    </li>
+                                </ul>
+
+                                <img id="frame" style="height: 350px;" class="w-100 rounded-3" />
                             </div>
+
 
                             <div id="optionsGroup" class="d-flex flex-column gap-2 my-3">
 
@@ -235,10 +252,10 @@
                             const optionId = generateUniqueId();
                             optionCard.setAttribute("data-option-id", optionId);
                             optionCard.innerHTML = `
-                        <div class="w-100">
-                            <textarea rows="2" class="w-100 rounded-3 p-3 border" placeholder="Short answer text"></textarea>
-                        </div>
-                    `;
+                                <div class="w-100">
+                                    <textarea rows="2" class="w-100 rounded-3 p-3 border" placeholder="Short answer text"></textarea>
+                                </div>
+                            `;
                             optionsGroup.appendChild(optionCard);
                         }
                     }
@@ -250,11 +267,11 @@
                         const optionId = generateUniqueId();
                         optionCard.setAttribute("data-option-id", optionId);
                         optionCard.innerHTML = `
-                <div class="d-flex align-items-center gap-2 w-100">
-                    <input name="option-${cardId}" type="radio" value="value-${optionId}" />
-                    <input readonly type="text" class="form-control border bg-transparent p-2" placeholder="Option title" value="${optionText}" />
-                </div>
-                `;
+                        <div class="d-flex align-items-center gap-2 w-100">
+                            <input name="option-${cardId}" type="radio" value="value-${optionId}" />
+                            <input readonly type="text" class="form-control border bg-transparent p-2" placeholder="Option title" value="${optionText}" />
+                        </div>
+                        `;
                         return optionCard;
                     }
 
@@ -537,6 +554,18 @@
                         // }
                     });
                 });
+            </script>
+
+            <!-- Image upload handler -->
+            <script>
+                function preview() {
+                    frame.src = URL.createObjectURL(event.target.files[0]);
+                }
+
+                function clearImage() {
+                    document.getElementById('formFile').value = null;
+                    frame.src = "";
+                }
             </script>
 
             <script>

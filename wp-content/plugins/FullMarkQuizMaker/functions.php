@@ -5,7 +5,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class FullQuizMaker
 {
-    private $version = 2.4;
+    private $version = 2.5;
 
     // Constructor for class includes all hooks
     public function __construct()
@@ -152,6 +152,15 @@ class FullQuizMaker
             array($this, 'FQM_Add_ClassPage_callback')  // callback function for the page
         );
 
+        add_submenu_page(
+            'full-quiz-maker',                 // parent menu slug
+            'Student page',                    // page title
+            'Student page',                    // menu title
+            'manage_options',                  // capability required to access
+            'Student page',                    // menu slug
+            array($this, 'FQM_Add_StudentPage_callback')  // callback function for the page
+        );
+
         // Remove the submenu page that you want to hide
         remove_submenu_page('full-quiz-maker', 'full-quiz-maker');
     }
@@ -161,39 +170,46 @@ class FullQuizMaker
     {
         include 'pages/Quizzes.php';
     }
+
     public  function FQM_Add_Partecipents_callback()
     {
         include 'pages/Add Partecipents.php';
     }
 
-    // Callback method for the Quizzes page
+    // Callback method for the add new quiz page
     public function FQM_addNewQuiz_callback()
     {
         include 'pages/add-new-quiz.php';
     }
 
-    // Callback method for the Quizzes page
+    // Callback method for the single quiz page
     public function FQM_singleQuiz_callback()
     {
         include 'pages/single-quiz.php';
     }
 
-    // Callback method for the Quizzes page
+    // Callback method for the admin page
     public function FQM_Add_AdminPage_callback()
     {
         include 'pages/admin-page.php';
     }
 
-    // Callback method for the Quizzes page
+    // Callback method for the teacher page
     public function FQM_Add_TeacherPage_callback()
     {
         include 'pages/teacher-page.php';
     }
 
-    // Callback method for the Quizzes page
+    // Callback method for the class page
     public function FQM_Add_ClassPage_callback()
     {
         include 'pages/class-page.php';
+    }
+
+    // Callback method for the Quizzes page
+    public function FQM_Add_StudentPage_callback()
+    {
+        include 'pages/student-page.php';
     }
 
     // Add menu link in top bar (FullQuizMaker)

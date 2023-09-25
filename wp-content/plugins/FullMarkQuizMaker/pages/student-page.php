@@ -49,16 +49,7 @@ function statusColor($status)
                 <div class="row">
                     <div class="col-lg-12 col-xxl-10">
 
-                        <div class=" w-100 pb-0 d-flex align-items-center justify-content-between mb-4">
-                            <h4 class="fw-bolder col-4 m-0 p-0">Class students</h4>
-
-                            <div class="d-flex gap-2 align-items-center m-0 p-0">
-                                <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-add'); ?>" class="btn btn-primary m-0">Export data
-                                    <i class="fa-solid fa-download fa-lg text-white ms-2"></i>
-                                </a>
-                                <a href="<?php echo (admin_url('admin.php?page=poll-survey-xpress-recycle')); ?>" class="btn btn-dark m-0">Import data <i class="fa-solid fa-file-arrow-up fa-lg text-white ms-2"></i> </a>
-                            </div>
-                        </div>
+                        <h4 class="fw-bolder col-4 m-0 p-0 mb-4">My quizzes</h4>
 
                         <div class="p-0 pt-0 border rounded-3 w-100">
                             <div class="table-responsive p-0 bg-white rounded-3">
@@ -70,19 +61,19 @@ function statusColor($status)
                                             </th>
 
                                             <th class="text-uppercase text-center text-xxs py-4">
-                                                Name
+                                                Title
                                             </th>
 
                                             <th class="text-uppercase text-xxs text-center py-4">
-                                                Level
+                                                Assign date
                                             </th>
 
                                             <th class="text-uppercase text-xxs text-center py-4">
-                                                Email
+                                                Grade
                                             </th>
 
-                                            <th class=" text-uppercase text-xxs text-center py-4">
-                                                Actions
+                                            <th class="text-uppercase text-xxs text-center py-4">
+                                                Notes
                                             </th>
                                         </tr>
                                     </thead>
@@ -112,24 +103,18 @@ function statusColor($status)
                                                     </td>
 
                                                     <td class="align-middle text-center text-xs">
-                                                        Seventh
+                                                        <!-- print the date of today -->
+                                                        <?php echo date('Y-m-d'); ?>
                                                     </td>
 
-                                                    <td class="align-middle text-center text-xs">
-                                                        example@gmail.com
+                                                    <td class="align-middle text-center text-sm fw-bolder text-dark">
+                                                        6.5 /10 <span class="text-gray fw-normal text-xs ms-1">(65%)</span>
                                                     </td>
 
-                                                    <!-- Other dynamic data columns here -->
-                                                    <td class="text-center d-flex align-items-center justify-content-center px-0 py-4 gap-3" style="height: 70px;">
-                                                        <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-surveys&template=' . $poll->template . '&poll_id=' . $poll->poll_id); ?>" title="Show student details">
-                                                            <i class="fas fa-eye text-sm" style="cursor: pointer"></i>
-                                                        </a>
-
-                                                        <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-surveys&template=' . $poll->template . '&poll_id=' . $poll->poll_id); ?>" title="Print student report">
-                                                            <i class="fa-solid fa-print text-sm" style="cursor: pointer"></i>
-                                                        </a>
-
-                                                        <i style="cursor: pointer" class="fas fa-trash text-sm text-danger archiveButton" data-bs-toggle="modal" data-bs-target="#deleteModal" data-poll-id="<?php echo $poll->poll_id; ?>" title="Remove student"></i>
+                                                    <td class="align-middle text-center text-sm " style="height: 70px; max-width: 100px; ">
+                                                        <p class="text-truncate m-0 text-xs">
+                                                            notes here Other dynamic data columns here Other dynamic data columns here
+                                                        </p>
                                                     </td>
                                                 </tr>
                                             <?php } ?>
@@ -137,7 +122,7 @@ function statusColor($status)
                                     </tbody>
                                 </table>
                             </div>
-                        </div </div>
+                        </div>
 
                         <div class="d-flex align-items-center mt-4 gap-2" id="pagination">
                             <button class="btn bg-white text-primary shadow-none m-0 border" id="prevPage">Previous</button>

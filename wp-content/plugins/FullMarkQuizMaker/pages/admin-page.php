@@ -82,7 +82,7 @@
 
                     <input type="text" class="form-control border p-2 mt-4" placeholder="Enter the teacher email" />
 
-                    <button type="button" data-bs-dismiss="modal" class="btn btn-primary w-100 mt-2">ADD <i class="fas fa-add fa-md ms-1"></i> </button>
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-primary w-100 mt-2">ADD <i class="fas fa-add fa-md ms-1 text-white"></i> </button>
                 </div>
             </div>
         </div>

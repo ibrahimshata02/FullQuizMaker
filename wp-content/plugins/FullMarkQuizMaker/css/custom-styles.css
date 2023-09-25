@@ -6,6 +6,10 @@ body {
   background-color: #5d827a12 !important;
 }
 
+i {
+  color: #2c3e50 !important;
+}
+
 input,
 textarea,
 select {
