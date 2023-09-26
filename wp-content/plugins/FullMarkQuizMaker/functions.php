@@ -5,7 +5,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class FullQuizMaker
 {
-    private $version = 2.5;
+    private $version = 2.6;
 
     // Constructor for class includes all hooks
     public function __construct()
@@ -161,6 +161,15 @@ class FullQuizMaker
             array($this, 'FQM_Add_StudentPage_callback')  // callback function for the page
         );
 
+        add_submenu_page(
+            'full-quiz-maker',                 // parent menu slug
+            'RecentQuizzes page',                    // page title
+            'RecentQuizzes page',                    // menu title
+            'manage_options',                  // capability required to access
+            'RecentQuizzes page',                    // menu slug
+            array($this, 'FQM_Add_RecentQuizzesPage_callback')  // callback function for the page
+        );
+
         // Remove the submenu page that you want to hide
         remove_submenu_page('full-quiz-maker', 'full-quiz-maker');
     }
@@ -210,6 +219,12 @@ class FullQuizMaker
     public function FQM_Add_StudentPage_callback()
     {
         include 'pages/student-page.php';
+    }
+
+    // Callback method for the Quizzes page
+    public function FQM_Add_RecentQuizzesPage_callback()
+    {
+        include 'pages/recent-quizzes.php';
     }
 
     // Add menu link in top bar (FullQuizMaker)

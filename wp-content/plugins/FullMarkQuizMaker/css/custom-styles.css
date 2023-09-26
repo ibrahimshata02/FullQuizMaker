@@ -10,6 +10,21 @@ i {
   color: #2c3e50 !important;
 }
 
+/* Hide the file input */
+.upload-image-input {
+  display: none;
+}
+
+/* Style the label to look like the icon */
+.file-input-label {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.file-input-label i {
+  font-size: 25px !important;
+}
+
 input,
 textarea,
 select {

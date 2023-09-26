@@ -45,95 +45,87 @@ function statusColor($status)
 <body>
     <main class="position-relative container-fluid">
         <div class="col-lg-12 col-xxl-10 py-6">
-            <div class="position-relative d-flex flex-column align-items-center justify-content-center p-5 bg-white border rounded-3 mb-6  col-12 mx-auto">
-                <img class="rounded-circle border shadow-sm" src="https://source.unsplash.com/featured/300x201" width="100" height="100" alt="">
-                <h3 class="m-0 mt-3">Yousef Abu Aisha</h3>
-                <p style="font-size: 14px;" class="m-0">yousef.aboesha@hotmail.com</p>
-                <h5 class="m-0 mt-2">Level 3</h5>
-            </div>
 
+            <h4 class="fw-bolder col-4 m-0 p-0 mb-4">My recent quizzes</h4>
 
-            <div class="mb-6">
+            <div class="p-0 pt-0 border rounded-3 w-100">
+                <div class="table-responsive p-0 bg-white rounded-3">
+                    <table class="table align-items-center m-0 col-lg-12 col-xxl-10 rounded-3">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase text-center text-xxs text-center py-4">
+                                    ID
+                                </th>
 
-                <div class=" w-100 pb-0 d-flex align-items-center justify-content-between mb-4">
-                    <h4 class="fw-bolder col-4 m-0 p-0 ">Upcoming quizzes</h4>
-                    <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-add'); ?>" class="btn btn-dark m-0 p-3">Recent quizzes
-                        <i style="cursor: pointer" class="fa-solid fa-share text-white ms-2"></i>
-                    </a>
-                </div>
+                                <th class="text-uppercase text-center text-xxs py-4">
+                                    Title
+                                </th>
 
-                <div class="row row row-cols-1 row-cols-lg-2 g-2">
-                    <!-- Quiz card -->
-                    <div class="col">
-                        <div class="bg-white d-flex flex-column border rounded-3 p-4 gap-1">
-                            <h4>Math Quiz</h4>
-                            <p class="m-0">A random question is not a question type as such, but is a way of inserting a randomly-chosen question from a specified category into a quiz.This means that different students are likely to get a different selection of questions, and when a quiz allows multiple attempts then each attempt is likely to contain a new selection of questions. </p>
+                                <th class="text-uppercase text-xxs text-center py-4">
+                                    Assign date
+                                </th>
 
-                            <div style="font-size: 15px;" class="d-flex flex-column gap-1 mt-3 fw-bold text-dark">
-                                <div class="d-flex align-items-center fw-bold gap-2 ">
-                                    <span>Duration:</span>
-                                    <span> 15 mins <i class="fa-regular fa-clock ms-2 fa-md text-unset"></i> </span>
-                                </div>
+                                <th class="text-uppercase text-xxs text-center py-4">
+                                    Grade
+                                </th>
 
-                                <div class="d-flex align-items-center fw-bold gap-2 ">
-                                    <span>Number of questions:</span>
-                                    <span> 20 <i class="fa-regular fa-circle-question ms-2 fa-md"></i> </span>
-                                </div>
+                                <th class="text-uppercase text-xxs text-center py-4">
+                                    Notes
+                                </th>
+                            </tr>
+                        </thead>
 
-                                <div class="d-flex align-items-center gap-2 ">
-                                    <span>Starts:</span>
-                                    <span class="text-success"> <?php echo date("d,M Y - H:i:s") ?> </span>
-                                </div>
+                        <tbody>
+                            <?php if (empty($polls)) { ?>
+                                <tr>
+                                    <td colspan="7" class="text-xss text-center py-4">No surveys found,<a class="text-primary ms-1 fw-bold" href="<?php echo admin_url('admin.php?page=poll-survey-xpress-add'); ?>">add new record</a></td>
+                                </tr>
+                            <?php } else { ?>
+                                <?php
+                                $index = 0; // Initialize index
+                                $reversedPolls = array_reverse($polls);
+                                foreach ($reversedPolls as $poll) {
+                                ?>
+                                    <tr data-count=<?php echo count($polls); ?> class="gray-row" id="survey_data" data-card-id=<?php echo $poll->poll_id; ?>>
+                                        <td class="align-middle text-center">
+                                            <p class="text-xs m-0">
+                                                <?php echo $poll->poll_id; ?>
+                                            </p>
+                                        </td>
 
-                                <div class="d-flex align-items-center gap-2 ">
-                                    <span>Ends:</span>
-                                    <span class="text-danger"> <?php echo date("d,M Y - H:i:s") ?> </span>
-                                </div>
-                            </div>
+                                        <td class="align-middle text-center">
+                                            <p title="<?php echo $poll->title; ?>" class="text-xs m-0 text-truncate">
+                                                <?php echo  $poll->title; ?>
+                                            </p>
+                                        </td>
 
-                            <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-add'); ?>" class="btn btn-primary p-3 m-0 mt-4">Attempt Now
-                                <i class="fa-solid fa-arrow-right text-white ms-2 fa-lg"></i>
-                            </a>
-                        </div>
-                    </div>
+                                        <td class="align-middle text-center text-xs">
+                                            <!-- print the date of today -->
+                                            <?php echo date('Y-m-d'); ?>
+                                        </td>
 
-                    <!-- Quiz card -->
-                    <div class="col">
-                        <div class="bg-white d-flex flex-column border rounded-3 p-4 gap-1">
-                            <h4>Science Quiz</h4>
-                            <p class="m-0">A random question is not a question type as such, but is a way of inserting a randomly-chosen question from a specified category into a quiz.This means that different students are likely to get a different selection of questions, and when a quiz allows multiple attempts then each attempt is likely to contain a new selection of questions. </p>
+                                        <td class="align-middle text-center text-sm fw-bolder text-dark">
+                                            6.5 /10 <span class="text-gray fw-normal text-xs ms-1">(65%)</span>
+                                        </td>
 
-                            <div style="font-size: 15px;" class="d-flex flex-column gap-1 mt-3 fw-bold text-dark">
-                                <div class="d-flex align-items-center fw-bold gap-2 ">
-                                    <span>Duration:</span>
-                                    <span> 15 mins <i class="fa-regular fa-clock ms-2 fa-md text-unset"></i> </span>
-                                </div>
-
-                                <div class="d-flex align-items-center fw-bold gap-2 ">
-                                    <span>Number of questions:</span>
-                                    <span> 20 <i class="fa-regular fa-circle-question ms-2 fa-md"></i> </span>
-                                </div>
-
-                                <div class="d-flex align-items-center gap-2 ">
-                                    <span>Starts:</span>
-                                    <span class="text-success"> <?php echo date("d,M Y - H:i:s") ?> </span>
-                                </div>
-
-                                <div class="d-flex align-items-center gap-2 ">
-                                    <span>Ends:</span>
-                                    <span class="text-danger"> <?php echo date("d,M Y - H:i:s") ?> </span>
-                                </div>
-                            </div>
-
-                            <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-add'); ?>" class="btn btn-primary p-3 m-0 mt-4">Attempt Now
-                                <i class="fa-solid fa-arrow-right text-white ms-2 fa-lg"></i>
-                            </a>
-                        </div>
-                    </div>
-
+                                        <td class="align-middle text-center text-sm " style="height: 70px; max-width: 100px; ">
+                                            <p class="text-truncate m-0 text-xs">
+                                                notes here Other dynamic data columns here Other dynamic data columns here
+                                            </p>
+                                        </td>
+                                    </tr>
+                                <?php } ?>
+                            <?php } ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
+
+            <div class="d-flex align-items-center mt-4 gap-2" id="pagination">
+                <button class="btn bg-white text-primary shadow-none m-0 border" id="prevPage">Previous</button>
+                <span class="m-0 p-0" id="currentPage">Page 1</span>
+                <button class="btn btn-white text-primary shadow-none m-0 border" id="nextPage">Next</button>
+            </div>
     </main>
 
     <!-- Copy shortcode -->

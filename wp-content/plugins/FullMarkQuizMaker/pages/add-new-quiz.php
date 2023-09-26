@@ -7,23 +7,6 @@
     <title>FQM plugin</title>
 </head>
 
-<style>
-    /* Hide the file input */
-    .upload-image-input {
-        display: none;
-    }
-
-    /* Style the label to look like the icon */
-    .file-input-label {
-        display: inline-block;
-        cursor: pointer;
-    }
-
-    .file-input-label i {
-        font-size: 25px !important;
-    }
-</style>
-
 <body>
     <main class="col-lg-8 col-md-10 col-11 mx-auto main-content position-relative max-height-vh-100 h-100 mt-4 border-radius-lg">
         <div class="d-flex flex-column justify-content-center align-items-center mt-5">
