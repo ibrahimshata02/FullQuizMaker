@@ -181,13 +181,13 @@
                     const image_container = card.querySelector('.image-container');
 
                     upload_image_input.addEventListener("change", (event) => {
-                        image_container.className = "image-container position-relative my-3"
+                        image_container.className = "image-container position-relative my-3 rounded-3"
                         image_container.innerHTML = `
                         <div id="dropdownMenuButton1" data-bs-toggle="dropdown" class="position-absolute cursor-pointer negative-position border d-flex justify-content-center align-items-center bg-white p-2 rounded-circle shadow-sm z-index-5" style="width: 40px;height: 40px; z-index: 10;">
                             <i class="fa-solid fa-ellipsis-vertical text-dark"></i>
                         </div>
                         <ul class="dropdown-menu border shadow-md" aria-labelledby="dropdownMenuButton1">
-                            <li class="dropdown-item d-flex align-items-center gap-3 cursor-pointer p-2 px-3 m-0">
+                            <li class="change-image dropdown-item d-flex align-items-center gap-3 cursor-pointer p-2 px-3 m-0">
                                 <i class="fas fa-pen"></i>
                                 <span>Edit</span>
                             </li>
@@ -196,11 +196,12 @@
                                 <span>Delete</span>
                             </li>
                         </ul>
-                        <img id="frame" style="height: 350px;" class="w-100" src="${URL.createObjectURL(event.target.files[0])}" />
+                        <img id="frame" style="height: 350px;" class="w-100 rounded-3" src="${URL.createObjectURL(event.target.files[0])}" />
                     `;
                         updateQuizzes()
                     });
 
+                    // Remove Image function
                     const removeImageIcon = card.querySelector('.remove-image');
                     if (removeImageIcon != null) {
                         removeImageIcon.addEventListener("click", () => {
@@ -210,6 +211,14 @@
                         })
                     }
 
+                    // Change Image function    
+                    const changeImageIcon = card.querySelector('.change-image');
+                    if (changeImageIcon != null) {
+                        changeImageIcon.addEventListener("click", () => {
+                            upload_image_input.click();
+                            updateQuizzes()
+                        })
+                    }
 
                     range.addEventListener("input", () => {
                         const range_text = card.querySelector(".range_text");
@@ -316,11 +325,11 @@
 
                     </div>
 
-                    <div id="optionsGroup" class="d-flex flex-column gap-2 my-3">
+                    <div class="optionsGroup d-flex flex-column gap-2 my-3">
 
                     </div>
 
-                    <div id="addNewOptionContainer" class="d-flex align-items-center gap-3">
+                    <div class="addNewOptionContainer d-flex align-items-center gap-3">
                         <input disabled type="radio">
                         <a class="add_new_option cursor-pointer opacity-80 text-primary text-sm m-0" title="Add new option">Add new option</a>
                     </div>
