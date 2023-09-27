@@ -5,7 +5,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class FullQuizMaker
 {
-    private $version = 2.6;
+    private $version = 3.3;
 
     // Constructor for class includes all hooks
     public function __construct()
@@ -48,7 +48,7 @@ class FullQuizMaker
         //enqueue Script files
         if (
             (isset($_GET['page']) && (
-                ($_GET['page'] === 'add-new-quiz' ||
+                ($_GET['page'] === 'add-quiz-questions' ||
                     $_GET['page'] === 'poll-survey-xpress-recycle' ||
                     $_GET['page'] === 'poll-survey-xpress-add' ||
                     $_GET['page'] === 'poll-survey-xpress-settings' ||
@@ -101,11 +101,11 @@ class FullQuizMaker
         // Add a submenu page for "Add New Quiz"
         add_submenu_page(
             'full-quiz-maker',                 // parent menu slug
-            'Add New Quiz',                    // page title
-            'Add New Quiz',                    // menu title
+            'Add Quiz Questions',                    // page title
+            'Add Quiz Questions',                    // menu title
             'manage_options',                  // capability required to access
-            'add-new-quiz',                    // menu slug
-            array($this, 'FQM_addNewQuiz_callback')  // callback function for the page
+            'add-quiz-questions',                    // menu slug
+            array($this, 'FQM_addQuizQuestions_callback')  // callback function for the page
         );
 
         add_submenu_page(
@@ -170,6 +170,24 @@ class FullQuizMaker
             array($this, 'FQM_Add_RecentQuizzesPage_callback')  // callback function for the page
         );
 
+        add_submenu_page(
+            'full-quiz-maker',                 // parent menu slug
+            'AddNewQuiz page',                    // page title
+            'AddNewQuiz page',                    // menu title
+            'manage_options',                  // capability required to access
+            'add-new-quiz',                    // menu slug
+            array($this, 'FQM_Add_AddNewQuiz_callback')  // callback function for the page
+        );
+
+        add_submenu_page(
+            'full-quiz-maker',                 // parent menu slug
+            'AttemptQuiz page',                    // page title
+            'AttemptQuiz page',                    // menu title
+            'manage_options',                  // capability required to access
+            'attempt-quiz',                    // menu slug
+            array($this, 'FQM_Add_AttemptQuiz_callback')  // callback function for the page
+        );
+
         // Remove the submenu page that you want to hide
         remove_submenu_page('full-quiz-maker', 'full-quiz-maker');
     }
@@ -186,9 +204,9 @@ class FullQuizMaker
     }
 
     // Callback method for the add new quiz page
-    public function FQM_addNewQuiz_callback()
+    public function FQM_addQuizQuestions_callback()
     {
-        include 'pages/add-new-quiz.php';
+        include 'pages/add-quiz-questions.php';
     }
 
     // Callback method for the single quiz page
@@ -221,10 +239,22 @@ class FullQuizMaker
         include 'pages/student-page.php';
     }
 
-    // Callback method for the Quizzes page
+    // Callback method for the Recent Quizzes page
     public function FQM_Add_RecentQuizzesPage_callback()
     {
         include 'pages/recent-quizzes.php';
+    }
+
+    // Callback method for the Quizzes page
+    public function FQM_Add_AddNewQuiz_callback()
+    {
+        include 'pages/add-new-quiz.php';
+    }
+
+    // Callback method for the Quizzes page
+    public function FQM_Add_AttemptQuiz_callback()
+    {
+        include 'pages/attempt-quiz.php';
     }
 
     // Add menu link in top bar (FullQuizMaker)

@@ -44,7 +44,7 @@
             <div class="d-flex flex-row  align-items-center gap-3 mt-4">
                 <button class="btn btn-dark shadow-none border m-0" id="import_data" type="button" name="import_data">
                     Import data
-                    <i class="fa-solid fa-file-import fa-xl ms-2"></i>
+                    <i class="fa-solid fa-file-import fa-lg ms-2 text-white"></i>
                 </button>
 
                 <div class="d-flex flex-row align-items-center gap-2">

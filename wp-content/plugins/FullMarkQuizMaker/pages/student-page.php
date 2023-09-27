@@ -4,17 +4,6 @@ $table_name = $wpdb->prefix . 'polls_psx_polls';
 $statuses = array('active', 'inactive'); // List of statuses to display
 $polls = $wpdb->get_results("SELECT * FROM $table_name WHERE status IN ('" . implode("','", $statuses) . "')");
 
-// Status color function
-function statusColor($status)
-{
-    if ($status == 'active') {
-        return 'success';
-    } elseif ($status == 'inactive') {
-        return 'warning';
-    } else {
-        return 'danger';
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -46,7 +35,7 @@ function statusColor($status)
     <main class="position-relative container-fluid">
         <div class="col-lg-12 col-xxl-10 py-6">
             <div class="position-relative d-flex flex-column align-items-center justify-content-center p-5 bg-white border rounded-3 mb-6  col-12 mx-auto">
-                <img class="rounded-circle border shadow-sm" src="https://source.unsplash.com/featured/300x201" width="100" height="100" alt="">
+                <img class="rounded-circle border shadow-sm" src="https://source.unsplash.com/featured/300x201" width="130" height="130" alt="">
                 <h3 class="m-0 mt-3">Yousef Abu Aisha</h3>
                 <p style="font-size: 14px;" class="m-0">yousef.aboesha@hotmail.com</p>
                 <h5 class="m-0 mt-2">Level 3</h5>
@@ -54,10 +43,9 @@ function statusColor($status)
 
 
             <div class="mb-6">
-
-                <div class=" w-100 pb-0 d-flex align-items-center justify-content-between mb-4">
-                    <h4 class="fw-bolder col-4 m-0 p-0 ">Upcoming quizzes</h4>
-                    <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-add'); ?>" class="btn btn-dark m-0 p-3">Recent quizzes
+                <div class="w-100 pb-0 d-flex align-items-center justify-content-between mb-4">
+                    <h4 class="fw-bolder m-0 p-0 ">Upcoming quizzes</h4>
+                    <a href="<?php echo admin_url('admin.php?page=RecentQuizzes+page'); ?>" class="btn btn-dark m-0 p-3">Recent quizzes
                         <i style="cursor: pointer" class="fa-solid fa-share text-white ms-2"></i>
                     </a>
                 </div>

@@ -19,18 +19,17 @@
 
         <!-- Nav buttons -->
         <div class="position-relative bg-white d-flex align-items-center nav nav-tabs" id="nav-tab" role="tablist">
-            <button class="nav-link border-right" id="nav-quizzes-tab" data-bs-toggle="tab" data-bs-target="#nav-quizzes" role="tab" aria-controls="nav-quizzes" aria-selected="true">My Quizzes <i class="fa-regular fa-pen-to-square ms-2"></i></button>
-            <button class="nav-link border-right active" id="nav-classes-tab" data-bs-toggle="tab" data-bs-target="#nav-classes" role="tab" aria-controls="nav-classes" aria-selected="false">My Classes <i class="fa-solid fa-chalkboard-user ms-2"></i></button>
+            <button class="active nav-link border-right" id="nav-quizzes-tab" data-bs-toggle="tab" data-bs-target="#nav-quizzes" role="tab" aria-controls="nav-quizzes" aria-selected="true">My Quizzes <i class="fa-regular fa-pen-to-square ms-2"></i></button>
+            <button class="nav-link border-right " id="nav-classes-tab" data-bs-toggle="tab" data-bs-target="#nav-classes" role="tab" aria-controls="nav-classes" aria-selected="false">My Classes <i class="fa-solid fa-chalkboard-user ms-2"></i></button>
             <button class="nav-link border-right" id="nav-newQuiz-tab" data-bs-toggle="tab" data-bs-target="#nav-newQuiz" role="tab" aria-controls="nav-newQuiz" aria-selected="false">New quiz <i class="fa-solid fa-plus ms-2"></i></button>
-            <button class="nav-link " id="nav-settings-tab" data-bs-toggle="tab" data-bs-target="#nav-settings" role="tab" aria-controls="nav-settings" aria-selected="false">Settings <i class="fa-solid fa-gears ms-2"></i></button>
         </div>
 
         <div class="tab-content" id="nav-tabContent">
             <!-- Recent Quizzes -->
-            <div class="tab-pane fade mt-5" id="nav-quizzes" role="tabpanel" aria-labelledby="nav-quizzes-tab">
+            <div class="tab-pane show active fade mt-5" id="nav-quizzes" role="tabpanel" aria-labelledby="nav-quizzes-tab">
                 <div class="d-flex justify-content-between align-items-center mt-2 mb-4">
                     <h4 class="m-0">Recent quizzes</h4>
-                    <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-add'); ?>" class="btn btn-primary m-0">New Quiz
+                    <a href="<?php echo admin_url('admin.php?page=add-new-quiz'); ?>" class="btn btn-primary m-0">New Quiz
                         <i style="cursor: pointer" class="fas fa-add text-white ms-2"></i>
                     </a>
                 </div>
@@ -148,87 +147,95 @@
             </div>
 
             <!-- classes tab -->
-            <div class="tab-pane show active fade mt-5" id="nav-classes" role="tabpanel" aria-labelledby="nav-classes-tab">
+            <div class="tab-pane fade mt-5" id="nav-classes" role="tabpanel" aria-labelledby="nav-classes-tab">
                 <h4 class="m-0 mt-2">Assigned classes</h4>
 
                 <!-- Classes row -->
-                <div class="row row-cols-1 row-cols-lg-2 card-hover g-3 mt-3">
+                <div class="row row-cols-1 row-cols-lg-2 g-3 mt-3">
                     <div class="position-relative col">
-                        <div class="quiz-class p-4 bg-white border-2 rounded-3 p-4 border rounded-3 cursor-pointer ">
-                            <h5>Class name</h5>
-                            <p>Find quick answers to your questions and get the most out of Font Awesome with our step-by-step docs and troubleshooting tips.</p>
+                        <a href="<?php echo admin_url('admin.php?page=Class+page'); ?>">
+                            <div class="quiz-class p-4 bg-white border-2 rounded-3 p-4 border rounded-3 cursor-pointer ">
+                                <h5>Class name</h5>
+                                <p>Find quick answers to your questions and get the most out of Font Awesome with our step-by-step docs and troubleshooting tips.</p>
 
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="d-flex text-primary align-items-center gap-2">
-                                    <i class="fa-regular fa-user fa-sm"></i>
-                                    <p class="m-0" style="font-size: 13px;"> +187</p>
-                                </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="d-flex text-primary align-items-center gap-2">
+                                        <i class="fa-regular fa-user fa-sm"></i>
+                                        <p class="m-0" style="font-size: 13px;"> +187</p>
+                                    </div>
 
-                                <div class="d-flex text-primary align-items-center gap-2">
-                                    <i class="fa-solid fa-award"></i>
-                                    <p class="m-0" style="font-size: 13px;">Excellent</p>
+                                    <div class="d-flex text-primary align-items-center gap-2">
+                                        <i class="fa-solid fa-award"></i>
+                                        <p class="m-0" style="font-size: 13px;">Excellent</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
 
                     <div class="position-relative col">
-                        <div class="quiz-class p-4 bg-white border-2 rounded-3 p-4 border rounded-3 cursor-pointer ">
-                            <h5>Class name</h5>
-                            <p>Find quick answers to your questions and get the most out of Font Awesome with our step-by-step docs and troubleshooting tips.</p>
+                        <a href="<?php echo admin_url('admin.php?page=Class+page'); ?>">
+                            <div class="quiz-class p-4 bg-white border-2 rounded-3 p-4 border rounded-3 cursor-pointer ">
+                                <h5>Class name</h5>
+                                <p>Find quick answers to your questions and get the most out of Font Awesome with our step-by-step docs and troubleshooting tips.</p>
 
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="d-flex text-primary align-items-center gap-2">
-                                    <i class="fa-regular fa-user fa-sm"></i>
-                                    <p class="m-0" style="font-size: 13px;"> +187</p>
-                                </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="d-flex text-primary align-items-center gap-2">
+                                        <i class="fa-regular fa-user fa-sm"></i>
+                                        <p class="m-0" style="font-size: 13px;"> +187</p>
+                                    </div>
 
-                                <div class="d-flex text-primary align-items-center gap-2">
-                                    <i class="fa-solid fa-award"></i>
-                                    <p class="m-0" style="font-size: 13px;">Excellent</p>
+                                    <div class="d-flex text-primary align-items-center gap-2">
+                                        <i class="fa-solid fa-award"></i>
+                                        <p class="m-0" style="font-size: 13px;">Excellent</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
 
-                <div class="row row-cols-1 row-cols-lg-2 card-hover g-3 mt-1">
+                <div class="row row-cols-1 row-cols-lg-2 g-3 mt-1">
                     <div class="position-relative col">
-                        <div class="quiz-class p-4 bg-white border-2 rounded-3 p-4 border rounded-3 cursor-pointer ">
-                            <h5>Class name</h5>
-                            <p>Find quick answers to your questions and get the most out of Font Awesome with our step-by-step docs and troubleshooting tips.</p>
+                        <a href="<?php echo admin_url('admin.php?page=Class+page'); ?>">
+                            <div class="quiz-class p-4 bg-white border-2 rounded-3 p-4 border rounded-3 cursor-pointer ">
+                                <h5>Class name</h5>
+                                <p>Find quick answers to your questions and get the most out of Font Awesome with our step-by-step docs and troubleshooting tips.</p>
 
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="d-flex text-primary align-items-center gap-2">
-                                    <i class="fa-regular fa-user fa-sm"></i>
-                                    <p class="m-0" style="font-size: 13px;"> +187</p>
-                                </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="d-flex text-primary align-items-center gap-2">
+                                        <i class="fa-regular fa-user fa-sm"></i>
+                                        <p class="m-0" style="font-size: 13px;"> +187</p>
+                                    </div>
 
-                                <div class="d-flex text-primary align-items-center gap-2">
-                                    <i class="fa-solid fa-award"></i>
-                                    <p class="m-0" style="font-size: 13px;">Excellent</p>
+                                    <div class="d-flex text-primary align-items-center gap-2">
+                                        <i class="fa-solid fa-award"></i>
+                                        <p class="m-0" style="font-size: 13px;">Excellent</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
 
                     <div class="position-relative col">
-                        <div class="quiz-class p-4 bg-white border-2 rounded-3 p-4 border rounded-3 cursor-pointer ">
-                            <h5>Class name</h5>
-                            <p>Find quick answers to your questions and get the most out of Font Awesome with our step-by-step docs and troubleshooting tips.</p>
+                        <a href="<?php echo admin_url('admin.php?page=Class+page'); ?>">
+                            <div class="quiz-class p-4 bg-white border-2 rounded-3 p-4 border rounded-3 cursor-pointer ">
+                                <h5>Class name</h5>
+                                <p>Find quick answers to your questions and get the most out of Font Awesome with our step-by-step docs and troubleshooting tips.</p>
 
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="d-flex text-primary align-items-center gap-2">
-                                    <i class="fa-regular fa-user fa-sm"></i>
-                                    <p class="m-0" style="font-size: 13px;"> +187</p>
-                                </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="d-flex text-primary align-items-center gap-2">
+                                        <i class="fa-regular fa-user fa-sm"></i>
+                                        <p class="m-0" style="font-size: 13px;"> +187</p>
+                                    </div>
 
-                                <div class="d-flex text-primary align-items-center gap-2">
-                                    <i class="fa-solid fa-award"></i>
-                                    <p class="m-0" style="font-size: 13px;">Excellent</p>
+                                    <div class="d-flex text-primary align-items-center gap-2">
+                                        <i class="fa-solid fa-award"></i>
+                                        <p class="m-0" style="font-size: 13px;">Excellent</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -237,7 +244,7 @@
             <div class="tab-pane fade mt-5" id="nav-newQuiz" role="tabpanel" aria-labelledby="nav-newQuiz-tab">
                 <h4 class="m-0 mt-2"> Add new quiz</h4>
 
-                <div class="row row-cols-1 row-cols-lg-2 card-hover g-3 mt-3">
+                <div class="row row-cols-1 row-cols-lg-2 g-3 mt-3">
                     <div class="col">
                         <label class="form-label">Quiz title</label>
                         <input type="text" class="form-control border p-2" placeholder="Edit Quiz title" value="" />
@@ -252,7 +259,7 @@
                     </div>
                 </div>
 
-                <div class="row row-cols-1 row-cols-lg-2 card-hover g-3 mt-2">
+                <div class="row row-cols-1 row-cols-lg-2 g-3 mt-2">
                     <div class="col">
                         <label class="form-label">Start date</label>
                         <input type="datetime-local" class="form-control border p-2" placeholder="Edit Quiz title" value="" />
@@ -273,13 +280,6 @@
                     <label>Questions bank</label>
                     <input class="form-control border p-2" type="tel" placeholder="Choose questions from the question bank">
                 </div>
-
-                <button class="btn btn-primary mt-4 w-25 p-3">Save </button>
-            </div>
-
-            <!-- Quiz Settings tab -->
-            <div class="tab-pane fade mt-5" id="nav-settings" role="tabpanel" aria-labelledby="nav-settings-tab">
-                <h4 class="m-0 mt-2"> Quiz settings</h4>
 
                 <button class="btn btn-primary mt-4 w-25 p-3">Save </button>
             </div>

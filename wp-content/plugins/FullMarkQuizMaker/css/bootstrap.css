@@ -226,11 +226,6 @@ a {
   text-decoration: none;
 }
 
-a:hover {
-  color: #830866;
-  text-decoration: none;
-}
-
 a:not([href]):not([class]),
 a:not([href]):not([class]):hover {
   color: inherit;
@@ -5291,11 +5286,6 @@ fieldset:disabled .btn {
   color: #2c3e50;
 }
 
-.navbar-light .navbar-text a,
-.navbar-light .navbar-text a:hover,
-.navbar-light .navbar-text a:focus {
-  color: rgba(52, 71, 103, 0.9);
-}
 
 .navbar-dark .navbar-brand {
   color: #fff;
@@ -5337,11 +5327,6 @@ fieldset:disabled .btn {
   color: rgba(255, 255, 255, 0.85);
 }
 
-.navbar-dark .navbar-text a,
-.navbar-dark .navbar-text a:hover,
-.navbar-dark .navbar-text a:focus {
-  color: #fff;
-}
 
 .card {
   position: relative;
@@ -19364,9 +19349,6 @@ fieldset:disabled .btn {
   color: #f8f9fa;
 }
 
-.breadcrumb-dark .breadcrumb-item a:hover {
-  color: #fff;
-}
 
 .breadcrumb-dark .breadcrumb-item + .breadcrumb-item::before {
   color: #adb5bd;
@@ -20020,7 +20002,7 @@ fieldset:disabled .btn {
 }
 
 .form-check-label {
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 400;
 }
 

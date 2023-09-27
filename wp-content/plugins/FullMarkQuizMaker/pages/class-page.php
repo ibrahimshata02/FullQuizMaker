@@ -53,10 +53,10 @@ function statusColor($status)
                             <h4 class="fw-bolder col-4 m-0 p-0">Class students</h4>
 
                             <div class="d-flex gap-2 align-items-center m-0 p-0">
-                                <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-add'); ?>" class="btn btn-primary m-0">Export data
+                                <button class="btn btn-primary m-0">Export data
                                     <i class="fa-solid fa-download fa-lg text-white ms-2"></i>
-                                </a>
-                                <a href="<?php echo (admin_url('admin.php?page=poll-survey-xpress-recycle')); ?>" class="btn btn-dark m-0">Import data <i class="fa-solid fa-file-arrow-up fa-lg text-white ms-2"></i> </a>
+                                </button>
+                                <a href="<?php echo (admin_url('admin.php?page=Add+Partecipents')); ?>" class="btn btn-dark m-0">Import data <i class="fa-solid fa-file-arrow-up fa-lg text-white ms-2"></i> </a>
                             </div>
                         </div>
 

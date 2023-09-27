@@ -41,7 +41,7 @@ $polls = $wpdb->get_results("SELECT * FROM $table_name WHERE status IN ('" . imp
                         <div class=" w-100 pb-0 d-flex align-items-center justify-content-between mb-4">
                             <h4 class="fw-bolder col-4 m-0 p-0">Recent Quizzes</h4>
                             <div class="d-flex gap-2 align-items-center m-0 p-0">
-                                <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-add'); ?>" class="btn btn-primary m-0">Add Quiz
+                                <a href="<?php echo admin_url('admin.php?page=add-quiz-questions'); ?>" class="btn btn-primary m-0">Add Quiz
                                     <i style="cursor: pointer" class="fas fa-add text-white ms-2"></i>
                                 </a>
                                 <a href="<?php echo (admin_url('admin.php?page=poll-survey-xpress-recycle')); ?>" class="btn btn-danger m-0">Recycle Pin <i style="cursor: pointer" class="fas fa-trash text-white ms-2"></i></a>
@@ -148,11 +148,8 @@ $polls = $wpdb->get_results("SELECT * FROM $table_name WHERE status IN ('" . imp
                                                     <!-- Other dynamic data columns here -->
 
                                                     <td class="text-center d-flex align-items-center justify-content-center px-0 py-4 gap-lg-3 gap-md-2 gap-1" style="height: 70px;">
-                                                        <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-surveys&template=' . $poll->template . '&poll_id=' . $poll->poll_id); ?>">
-                                                            <i class="fas fa-chart-bar text-sm" style="cursor: pointer"></i>
-                                                        </a>
-                                                        <a href="<?php echo admin_url('admin.php?page=poll-survey-xpress-surveys&template=' . $poll->template . '&poll_id=' . $poll->poll_id . '&action=edit'); ?>">
-                                                            <i class="fas fa-gear text-sm" style="cursor: pointer"></i>
+                                                        <a href="<?php echo admin_url('admin.php?page=single-quiz'); ?>">
+                                                            <i class="fas fa-eye text-sm" style="cursor: pointer"></i>
                                                         </a>
 
                                                         <i style="cursor: pointer" class="fas fa-trash text-sm text-danger archiveButton" data-bs-toggle="modal" data-bs-target="#deleteModal" data-poll-id="<?php echo $poll->poll_id; ?>"></i>

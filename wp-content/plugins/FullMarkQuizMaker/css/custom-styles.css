@@ -3,11 +3,34 @@
 }
 
 body {
-  background-color: #5d827a12 !important;
+  background-color: #5d822a12 !important;
 }
 
 i {
   color: #2c3e50 !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+p {
+  word-wrap: break-word !important;
+}
+
+input[type="radio"] {
+  margin: 0 !important;
+  border-radius: 50% !important;
+}
+
+.abs-center {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
 }
 
 /* Hide the file input */
@@ -29,7 +52,7 @@ input,
 textarea,
 select {
   border: 1px solid transparent;
-  border-radius: 7px !important;
+  border-radius: 2px !important;
 }
 
 select {
@@ -66,8 +89,13 @@ textarea:focus {
   transition: all 0.1s ease-in-out !important;
 }
 
-a:hover {
-  text-decoration: underline !important;
+a {
+  text-decoration: none !important;
+}
+
+a:hover,
+a:hover p {
+  text-decoration: none !important;
 }
 
 .cursor-pointer {
@@ -88,7 +116,7 @@ input[type="radio"] {
 }
 
 .colored-border-div-left {
-  border-left: 7px solid #125b50 !important;
+  border-left: 10px solid #125b50 !important;
 }
 
 .active-group {
@@ -131,23 +159,23 @@ input[type="radio"] {
 
   10%,
   90% {
-    transform: translateY(-7px);
+    transform: translateY(-2px);
   }
 
   20%,
   80% {
-    transform: translateY(7px);
+    transform: translateY(2px);
   }
 
   30%,
   50%,
-  70% {
-    transform: translateY(-7px);
+  20% {
+    transform: translateY(-2px);
   }
 
   40%,
   60% {
-    transform: translateY(7px);
+    transform: translateY(2px);
   }
 
   100% {
@@ -157,7 +185,7 @@ input[type="radio"] {
 
 /* Apply the animation to the element with the "shake" class */
 .shake {
-  animation: shake 5s infinite !important;
+  animation: shake 1s 3 linear !important;
 }
 
 /* Apply the animation to the element with the "pulse" class */
