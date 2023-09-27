@@ -115,24 +115,32 @@
                     const optionId_2 = generateUniqueId();
 
                     trueFalseContainer.innerHTML = `
-                        <div data-option-id="${optionId_1}" class="true-false-option d-flex align-items-center justify-content-center p-2 px-4 border rounded-1 cursor-pointer">True</div>
-                        <div data-option-id="${optionId_2}" class="true-false-option d-flex align-items-center justify-content-center p-2 px-4 border rounded-1 cursor-pointer">False</div>
+                        <div data-option-id="${optionId_1}" class="true-false-option d-flex align-items-center justify-content-center p-3 border border-2 rounded-1 cursor-pointer"> <i class="fa-solid fa-check fa-lg text-success"></i> </div>
+                        <div data-option-id="${optionId_2}" class="true-false-option d-flex align-items-center justify-content-center p-3 border border-2 rounded-1 cursor-pointer"><i class="fa-solid fa-xmark fa-lg text-danger"></i></div>
                     `;
 
                     optionsGroup.appendChild(trueFalseContainer);
 
                     const trueFalseOptions = trueFalseContainer.querySelectorAll(".true-false-option");
                     trueFalseOptions.forEach((option) => {
+
                         option.addEventListener("click", () => {
-                            trueFalseContainer.setAttribute("data-trueFalse-answer", option.textContent);
+                            const icon = option.querySelector("i");
+                            if (icon.classList.contains("fa-check")) {
+                                trueFalseContainer.setAttribute("data-trueFalse-answer", "True");
+                            } else {
+                                trueFalseContainer.setAttribute("data-trueFalse-answer", "False");
+                            }
+
                             const trueFalseAnswer = trueFalseContainer.getAttribute("data-trueFalse-answer");
+
                             console.log(trueFalseAnswer);
                             if (trueFalseAnswer == "True") {
-                                trueFalseOptions[0].classList.add("bg-success", "text-white");
-                                trueFalseOptions[1].classList.remove("bg-danger", "text-white");
+                                trueFalseOptions[0].classList.add("text-success", "border-success");
+                                trueFalseOptions[1].classList.remove("text-danger", "text-dark", "border-danger");
                             } else {
-                                trueFalseOptions[1].classList.add("bg-danger", "text-white");
-                                trueFalseOptions[0].classList.remove("bg-success", "text-white");
+                                trueFalseOptions[1].classList.add("text-danger", "border-danger");
+                                trueFalseOptions[0].classList.remove("text-success", "text-dark", "border-success");
                             }
                         });
                     });
@@ -493,7 +501,7 @@
                 //             var toast = document.createElement("div");
                 //             toast.style = "z-index:1000; right: 10px; bottom: 10px";
                 //             toast.className =
-                //                 "position-fixed p-2 px-4 bg-success border rounded-2";
+                //                 "position-fixed p-4 bg-success border rounded-2";
                 //             toast.innerHTML = `
                 //                     <p class="m-0 fw-bold text-xs text-white">
                 //                     New survey has been added successfully!
