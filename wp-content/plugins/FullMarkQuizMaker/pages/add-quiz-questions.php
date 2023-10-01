@@ -18,8 +18,6 @@
             <!-- Final output cards [Cards container] -->
             <div id="cardsContainer" class="w-100 d-flex flex-column gap-3">
                 <div class="quiz-card position-relative d-flex w-100 flex-column border colored-border-div-left w-100 p-4 border-top bg-white mb-2 rounded-3" data-quiz-type="1">
-                    <!-- <div style="width:25px; height: 25px; font-size: 13px;" class="counter position-absolute d-flex justify-content-center align-items-center top-0 start-0 bg-primary text-white rounded-full p-3">
-                    </div> -->
                     <div class="d-flex align-items-center gap-4 mb-2 mt-4">
                         <input style="font-size: 23px;" type="text" class="questionTitle form-control border" placeholder="Untitled question" value="" />
 
@@ -55,10 +53,10 @@
 
                     <div class="d-flex justify-content-between p-2">
                         <div class="difficulty-container d-flex flex-column gap-1">
-                            <label for="difficulty" class="form-label m-0">Difficulty</label>
+                            <label for="difficulty" class="difficulty-text form-label m-0">Very easy</label>
                             <div class="d-flex flex-row align-items-center gap-2 ">
-                                <input type="range" class="difficulty form-range" value="1" min="1" max="5" step="1">
-                                <p class="range_text m-0 fw-bolder" style="font-size: 15px;">1/5</p>
+                                <input type="range" class="difficulty form-range" value="1" min="1" max="10" step="1">
+                                <p class="range_text m-0 fw-bolder" style="font-size: 15px;">1/10</p>
                             </div>
                         </div>
 
@@ -81,7 +79,35 @@
 
     <script>
         jQuery(document).ready(function(jQuery) {
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-right',
+                iconColor: 'white',
+                customClass: {
+                    popup: 'colored-toast'
+                },
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true
+            })
+
             const cardsContainer = document.getElementById("cardsContainer");
+
+            // Difficulty function to change the text according to the range value
+            function getDifficultyText(rangeValue) {
+                if (rangeValue <= 2) {
+                    return "Very easy"
+                } else if (rangeValue <= 4) {
+                    return "Easy"
+                } else if (rangeValue <= 6) {
+                    return "Medium"
+                } else if (rangeValue <= 8) {
+                    return "Hard"
+                } else {
+                    return "Very hard"
+                }
+            }
 
             // Function to generate a unique ID
             function generateUniqueId() {
@@ -238,7 +264,9 @@
 
                     range.addEventListener("input", () => {
                         const range_text = card.querySelector(".range_text");
-                        range_text.textContent = `${range.value}/5`;
+                        const difficultyText = card.querySelector(".difficulty-text");
+                        range_text.textContent = `${range.value}/10`;
+                        difficultyText.textContent = getDifficultyText(range.value);
                     })
 
                     deleteCardIcons.forEach((deleteCardIcon) => {
@@ -254,9 +282,6 @@
                     // Add an event listener to listen for changes in the select box
                     select.addEventListener("change", handleSelectChange);
 
-                    // Set the question number
-                    // counter.textContent = index + 1;
-
                     const cardId = generateUniqueId(); // Generate a unique ID for the card
                     card.setAttribute("data-card-id", cardId);
 
@@ -268,6 +293,10 @@
                     deleteCardIcon.addEventListener("click", (event) => {
                         event.stopPropagation();
                         card.remove();
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Error'
+                        })
                         updateQuizzes();
                     });
                 });
@@ -354,10 +383,10 @@
 
                         <div class="d-flex justify-content-between p-2">
                         <div class="difficulty-container d-flex flex-column gap-1">
-                            <label for="difficulty" class="form-label m-0">Difficulty</label>
+                            <label for="difficulty" class="form-label difficulty-text m-0">Difficulty</label>
                             <div class="d-flex flex-row align-items-center gap-2 ">
-                                <input type="range" class="difficulty form-range" value="1" min="1" max="5" step="1">
-                                <p class="range_text m-0 fw-bolder" style="font-size: 15px;">1/5</p>
+                                <input type="range" class="difficulty form-range" value="1" min="1" max="10" step="1">
+                                <p class="range_text m-0 fw-bolder" style="font-size: 15px;">1/10</p>
                             </div>
                         </div>
 
@@ -371,6 +400,8 @@
 
                     cardsContainer.appendChild(newCard)
                     updateQuizzes()
+                    // scroll into the screen to show the new card  
+                    window.scrollTo(0, document.body.scrollHeight);
                 }
             });
 
@@ -414,7 +445,9 @@
                     const card = event.target.closest(".quiz-card"); // Find the closest card element
                     if (card) {
                         duplicateCard(card); // Call the duplicateCard function when the icon is clicked
-                        updateQuizzes()
+                        updateQuizzes();
+                        // scroll into the screen to show the new card  
+                        window.scrollTo(0, document.body.scrollHeight);
                     }
                 }
             });
@@ -479,7 +512,6 @@
             }
 
             save_button.addEventListener("click", () => {
-
                 const extractedData = extractQuizCardValues();
                 console.log(extractedData); // This will log the extracted data as an array of objects
 

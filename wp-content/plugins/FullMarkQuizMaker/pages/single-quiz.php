@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
     <title>FQM plugin</title>
 </head>
 
@@ -53,8 +54,6 @@
                     <!-- Final output cards [Cards container] -->
                     <div id="cardsContainer" class="w-100 d-flex flex-column gap-3">
                         <div class="quiz-card position-relative d-flex w-100 flex-column border colored-border-div-left w-100 p-4 border-top bg-white mb-2 rounded-3" data-quiz-type="1">
-                            <!-- <div style="width:25px; height: 25px; font-size: 13px;" class="counter position-absolute d-flex justify-content-center align-items-center top-0 start-0 bg-primary text-white rounded-full p-3">
-                    </div> -->
                             <div class="d-flex align-items-center gap-4 mb-2 mt-4">
                                 <input style="font-size: 23px;" type="text" class="questionTitle form-control border" placeholder="Untitled question" value="" />
 
@@ -90,10 +89,10 @@
 
                             <div class="d-flex justify-content-between p-2">
                                 <div class="difficulty-container d-flex flex-column gap-1">
-                                    <label for="difficulty" class="form-label m-0">Difficulty</label>
+                                    <label for="difficulty" class="difficulty-text form-label m-0">Very easy</label>
                                     <div class="d-flex flex-row align-items-center gap-2 ">
-                                        <input type="range" class="difficulty form-range" value="1" min="1" max="5" step="1">
-                                        <p class="range_text m-0 fw-bolder" style="font-size: 15px;">1/5</p>
+                                        <input type="range" class="difficulty form-range" value="1" min="1" max="10" step="1">
+                                        <p class="range_text m-0 fw-bolder" style="font-size: 15px;">1/10</p>
                                     </div>
                                 </div>
 
@@ -103,7 +102,6 @@
                                     <i title="Delete question card" class="fas fa-trash-can fa-lg text-danger cursor-pointer"></i>
                                 </div>
                             </div>
-
                         </div>
                     </div>
 
@@ -204,7 +202,35 @@
 
             <script>
                 jQuery(document).ready(function(jQuery) {
+
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-right',
+                        iconColor: 'white',
+                        customClass: {
+                            popup: 'colored-toast'
+                        },
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true
+                    })
+
                     const cardsContainer = document.getElementById("cardsContainer");
+
+                    // Difficulty function to change the text according to the range value
+                    function getDifficultyText(rangeValue) {
+                        if (rangeValue <= 2) {
+                            return "Very easy"
+                        } else if (rangeValue <= 4) {
+                            return "Easy"
+                        } else if (rangeValue <= 6) {
+                            return "Medium"
+                        } else if (rangeValue <= 8) {
+                            return "Hard"
+                        } else {
+                            return "Very hard"
+                        }
+                    }
 
                     // Function to generate a unique ID
                     function generateUniqueId() {
@@ -230,10 +256,43 @@
                             const addNewOptionContainer = card.querySelector(".addNewOptionContainer");
                             addNewOptionContainer.style.cssText = "display: none !important;";
 
-                            const option1 = createOption("True", card);
-                            const option2 = createOption("False", card);
-                            optionsGroup.appendChild(option1);
-                            optionsGroup.appendChild(option2);
+                            const trueFalseContainer = document.createElement("div");
+                            trueFalseContainer.className = "option-card d-flex align-items-center gap-2 "
+                            trueFalseContainer.setAttribute("data-trueFalse-answer", "");
+
+                            const optionId_1 = generateUniqueId();
+                            const optionId_2 = generateUniqueId();
+
+                            trueFalseContainer.innerHTML = `
+                                <div data-option-id="${optionId_1}" class="true-false-option d-flex align-items-center justify-content-center p-3 border border-2 rounded-1 cursor-pointer"> <i class="fa-solid fa-check fa-lg text-success"></i> </div>
+                                <div data-option-id="${optionId_2}" class="true-false-option d-flex align-items-center justify-content-center p-3 border border-2 rounded-1 cursor-pointer"><i class="fa-solid fa-xmark fa-lg text-danger"></i></div>
+                            `;
+
+                            optionsGroup.appendChild(trueFalseContainer);
+
+                            const trueFalseOptions = trueFalseContainer.querySelectorAll(".true-false-option");
+                            trueFalseOptions.forEach((option) => {
+
+                                option.addEventListener("click", () => {
+                                    const icon = option.querySelector("i");
+                                    if (icon.classList.contains("fa-check")) {
+                                        trueFalseContainer.setAttribute("data-trueFalse-answer", "True");
+                                    } else {
+                                        trueFalseContainer.setAttribute("data-trueFalse-answer", "False");
+                                    }
+
+                                    const trueFalseAnswer = trueFalseContainer.getAttribute("data-trueFalse-answer");
+
+                                    console.log(trueFalseAnswer);
+                                    if (trueFalseAnswer == "True") {
+                                        trueFalseOptions[0].classList.add("text-success", "border-success");
+                                        trueFalseOptions[1].classList.remove("text-danger", "text-dark", "border-danger");
+                                    } else {
+                                        trueFalseOptions[1].classList.add("text-danger", "border-danger");
+                                        trueFalseOptions[0].classList.remove("text-success", "text-dark", "border-success");
+                                    }
+                                });
+                            });
 
                         } else if (selectedValue === "3") { // Short answer
                             // Hide the add new option container
@@ -261,11 +320,11 @@
                         const optionId = generateUniqueId();
                         optionCard.setAttribute("data-option-id", optionId);
                         optionCard.innerHTML = `
-                <div class="d-flex align-items-center gap-2 w-100">
-                    <input name="option-${cardId}" type="radio" value="value-${optionId}" />
-                    <input readonly type="text" class="form-control border bg-transparent p-2" placeholder="Option title" value="${optionText}" />
-                </div>
-                `;
+                        <div class="d-flex align-items-center gap-2 w-100">
+                            <input name="option-${cardId}" type="radio" value="value-${optionId}" />
+                            <input readonly type="text" class="form-control border bg-transparent p-2" placeholder="Option title" value="${optionText}" />
+                        </div>
+                        `;
                         return optionCard;
                     }
 
@@ -328,7 +387,9 @@
 
                             range.addEventListener("input", () => {
                                 const range_text = card.querySelector(".range_text");
-                                range_text.textContent = `${range.value}/5`;
+                                const difficultyText = card.querySelector(".difficulty-text");
+                                range_text.textContent = `${range.value}/10`;
+                                difficultyText.textContent = getDifficultyText(range.value);
                             })
 
                             deleteCardIcons.forEach((deleteCardIcon) => {
@@ -344,9 +405,6 @@
                             // Add an event listener to listen for changes in the select box
                             select.addEventListener("change", handleSelectChange);
 
-                            // Set the question number
-                            // counter.textContent = index + 1;
-
                             const cardId = generateUniqueId(); // Generate a unique ID for the card
                             card.setAttribute("data-card-id", cardId);
 
@@ -358,6 +416,10 @@
                             deleteCardIcon.addEventListener("click", (event) => {
                                 event.stopPropagation();
                                 card.remove();
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: 'Error'
+                                })
                                 updateQuizzes();
                             });
                         });
@@ -444,10 +506,10 @@
 
                         <div class="d-flex justify-content-between p-2">
                         <div class="difficulty-container d-flex flex-column gap-1">
-                            <label for="difficulty" class="form-label m-0">Difficulty</label>
+                            <label for="difficulty" class="form-label difficulty-text m-0">Difficulty</label>
                             <div class="d-flex flex-row align-items-center gap-2 ">
-                                <input type="range" class="difficulty form-range" value="1" min="1" max="5" step="1">
-                                <p class="range_text m-0 fw-bolder" style="font-size: 15px;">1/5</p>
+                                <input type="range" class="difficulty form-range" value="1" min="1" max="10" step="1">
+                                <p class="range_text m-0 fw-bolder" style="font-size: 15px;">1/10</p>
                             </div>
                         </div>
 
@@ -461,6 +523,8 @@
 
                             cardsContainer.appendChild(newCard)
                             updateQuizzes()
+                            // scroll into the screen to show the new card  
+                            window.scrollTo(0, document.body.scrollHeight);
                         }
                     });
 
@@ -469,6 +533,11 @@
                         const cardClone = card.cloneNode(true); // Clone the card including its children
                         const cardId = generateUniqueId(); // Generate a unique ID for the card
                         cardClone.setAttribute("data-card-id", cardId);
+
+                        const quizTypeSelect = cardClone.querySelector(".quizTypeSelect");
+                        quizTypeSelect.value = card.getAttribute("data-quiz-type");
+
+                        updateOptions(quizTypeSelect, cardClone.querySelector(".optionsGroup"));
 
                         const image_upload_input = cardClone.querySelector('.upload-image-input');
                         image_upload_input.id = cardId;
@@ -492,13 +561,16 @@
                         });
                     }
 
+
                     // Event listener for duplicating a card
                     document.addEventListener("click", function(event) {
                         if (event.target.classList.contains("fa-copy")) {
                             const card = event.target.closest(".quiz-card"); // Find the closest card element
                             if (card) {
                                 duplicateCard(card); // Call the duplicateCard function when the icon is clicked
-                                updateQuizzes()
+                                updateQuizzes();
+                                // scroll into the screen to show the new card  
+                                window.scrollTo(0, document.body.scrollHeight);
                             }
                         }
                     });
@@ -532,20 +604,13 @@
                                 });
                             } else if (cardType === "2") { // True/False
                                 card.querySelectorAll(".option-card").forEach((option) => {
-                                    const optionId = option.getAttribute("data-option-id");
-                                    const radioButton = option.querySelector("input[type='radio']");
-                                    const optionTitle = option.querySelector("input[type='text']").value;
+                                    const optionId = option.querySelector("div").getAttribute("data-option-id");
+                                    const answer = option.getAttribute("data-trueFalse-answer");
 
-                                    let optionValue = null; // Initialize optionValue to null
-
-                                    if (radioButton.checked) {
-                                        // Set optionValue to the selected option's text
-                                        optionValue = optionTitle;
-                                        options.push({
-                                            optionId,
-                                            optionValue
-                                        });
-                                    }
+                                    options.push({
+                                        optionId,
+                                        answer
+                                    });
                                 });
                             } else { // Short answer
                                 card.querySelectorAll(".option-card").forEach((option) => {
@@ -570,7 +635,6 @@
                     }
 
                     save_button.addEventListener("click", () => {
-
                         const extractedData = extractQuizCardValues();
                         console.log(extractedData); // This will log the extracted data as an array of objects
 
@@ -592,7 +656,7 @@
                         //             var toast = document.createElement("div");
                         //             toast.style = "z-index:1000; right: 10px; bottom: 10px";
                         //             toast.className =
-                        //                 "position-fixed p-2 px-4 bg-success border rounded-2";
+                        //                 "position-fixed p-4 bg-success border rounded-2";
                         //             toast.innerHTML = `
                         //                     <p class="m-0 fw-bold text-xs text-white">
                         //                     New survey has been added successfully!

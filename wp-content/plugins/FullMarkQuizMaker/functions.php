@@ -5,7 +5,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class FullQuizMaker
 {
-    private $version = 3.3;
+    private $version = 3.5;
 
     // Constructor for class includes all hooks
     public function __construct()
@@ -33,6 +33,7 @@ class FullQuizMaker
         wp_enqueue_script('jquery');
         wp_enqueue_script('bootstrap', plugin_dir_url(__FILE__) . '/js/bootstrap.min.js', array('jquery'), $this->version, true);
         wp_enqueue_script('popper', plugin_dir_url(__FILE__) . '/js/popper.min.js', array('jquery'), $this->version, true);
+        wp_enqueue_script('sweatAlert', plugin_dir_url(__FILE__) . '/js/sweatAlert.js', array('jquery'), $this->version, true);
         wp_enqueue_script('plugin-custom', plugin_dir_url(__FILE__) . '/js/main.js', array('jquery'), $this->version, true);
 
         wp_localize_script('plugin-custom', 'my_ajax_object', array(
@@ -61,6 +62,7 @@ class FullQuizMaker
             wp_enqueue_script('jquery');
             wp_enqueue_script('plugin-custom', plugin_dir_url(__FILE__) . '/js/main.js', array('jquery'), $this->version, true);
             wp_enqueue_script('popper', plugin_dir_url(__FILE__) . '/js/popper.min.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('sweatAlert', plugin_dir_url(__FILE__) . '/js/sweatAlert.js', array('jquery'), $this->version, true);
             wp_enqueue_script('bootstrap', plugin_dir_url(__FILE__) . '/js/bootstrap.min.js', array('jquery'), $this->version, true);
             wp_enqueue_script('media-upload');
 
