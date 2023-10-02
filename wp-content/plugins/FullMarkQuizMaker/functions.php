@@ -5,7 +5,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class FullQuizMaker
 {
-    private $version = 3.5;
+    private $version = 3.7;
 
     // Constructor for class includes all hooks
     public function __construct()

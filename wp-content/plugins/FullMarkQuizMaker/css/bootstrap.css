@@ -5286,7 +5286,6 @@ fieldset:disabled .btn {
   color: #2c3e50;
 }
 
-
 .navbar-dark .navbar-brand {
   color: #fff;
 }
@@ -5326,7 +5325,6 @@ fieldset:disabled .btn {
 .navbar-dark .navbar-text {
   color: rgba(255, 255, 255, 0.85);
 }
-
 
 .card {
   position: relative;
@@ -19348,7 +19346,6 @@ fieldset:disabled .btn {
 .breadcrumb-dark .breadcrumb-item a {
   color: #f8f9fa;
 }
-
 
 .breadcrumb-dark .breadcrumb-item + .breadcrumb-item::before {
   color: #adb5bd;

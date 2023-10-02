@@ -102,6 +102,8 @@
                                     <i title="Delete question card" class="fas fa-trash-can fa-lg text-danger cursor-pointer"></i>
                                 </div>
                             </div>
+                            <div style="background-color: #f8d7da; font-size: 13px;" class="alert error-message d-none fw-bold mt-2" role="alert">
+                            </div>
                         </div>
                     </div>
 
@@ -202,11 +204,10 @@
 
             <script>
                 jQuery(document).ready(function(jQuery) {
-
                     const Toast = Swal.mixin({
                         toast: true,
-                        position: 'top-right',
-                        iconColor: 'white',
+                        position: 'bottom-right',
+                        iconColor: 'red',
                         customClass: {
                             popup: 'colored-toast'
                         },
@@ -264,9 +265,9 @@
                             const optionId_2 = generateUniqueId();
 
                             trueFalseContainer.innerHTML = `
-                                <div data-option-id="${optionId_1}" class="true-false-option d-flex align-items-center justify-content-center p-3 border border-2 rounded-1 cursor-pointer"> <i class="fa-solid fa-check fa-lg text-success"></i> </div>
-                                <div data-option-id="${optionId_2}" class="true-false-option d-flex align-items-center justify-content-center p-3 border border-2 rounded-1 cursor-pointer"><i class="fa-solid fa-xmark fa-lg text-danger"></i></div>
-                            `;
+                        <div data-option-id="${optionId_1}" class="true-false-option d-flex align-items-center justify-content-center p-3 border border-2 rounded-1 cursor-pointer"> <i class="fa-solid fa-check fa-lg text-success"></i> </div>
+                        <div data-option-id="${optionId_2}" class="true-false-option d-flex align-items-center justify-content-center p-3 border border-2 rounded-1 cursor-pointer"><i class="fa-solid fa-xmark fa-lg text-danger"></i></div>
+                    `;
 
                             optionsGroup.appendChild(trueFalseContainer);
 
@@ -320,11 +321,11 @@
                         const optionId = generateUniqueId();
                         optionCard.setAttribute("data-option-id", optionId);
                         optionCard.innerHTML = `
-                        <div class="d-flex align-items-center gap-2 w-100">
-                            <input name="option-${cardId}" type="radio" value="value-${optionId}" />
-                            <input readonly type="text" class="form-control border bg-transparent p-2" placeholder="Option title" value="${optionText}" />
-                        </div>
-                        `;
+                <div class="d-flex align-items-center gap-2 w-100">
+                    <input name="option-${cardId}" type="radio" value="value-${optionId}" />
+                    <input readonly type="text" class="form-control border bg-transparent p-2" placeholder="Option title" value="${optionText}" />
+                </div>
+                `;
                         return optionCard;
                     }
 
@@ -418,7 +419,8 @@
                                 card.remove();
                                 Toast.fire({
                                     icon: 'error',
-                                    title: 'Error'
+                                    title: 'Your question has been deleted successfully!',
+                                    position: 'bottom-right',
                                 })
                                 updateQuizzes();
                             });
@@ -453,7 +455,7 @@
                         optionCard.innerHTML = `
                     <div class="d-flex align-items-center gap-2 w-100">
                         <input type="radio" name="option-${cardId}" value="value-${optionId}">
-                        <input type="text" class="form-control border p-2" placeholder="Option title" value="Option title" />
+                        <input type="text" class="form-control border p-2" placeholder="Option title" value="" />
                     </div>
                     <i class="cursor-pointer fa-regular fa-circle-xmark fa-lg text-danger" data-option-id="${optionId}"></i>
                 `;
@@ -518,7 +520,9 @@
                             <i title="Duplicate question card" class="fa-regular fa-copy fa-lg text-dark cursor-pointer"></i>
                             <i title="Delete question card" class="fas fa-trash-can fa-lg text-danger cursor-pointer"></i>
                         </div>
-                    </div>              
+                    </div> 
+                    <div style="background-color: #f8d7da; font-size: 13px;" class="alert error-message d-none fw-bold mt-2" role="alert">
+                    </div>             
                 </div>`
 
                             cardsContainer.appendChild(newCard)
@@ -560,7 +564,6 @@
                             });
                         });
                     }
-
 
                     // Event listener for duplicating a card
                     document.addEventListener("click", function(event) {
@@ -634,53 +637,202 @@
                         return quizData;
                     }
 
+                    // MCQ validation question
+                    function validateMCQ(card) {
+                        const questionTitle = card.querySelector('.questionTitle');
+                        const options = card.querySelectorAll('.option-card div');
+                        const selectedOption = card.querySelector('input[type="radio"]:checked');
+                        const errorMessage = card.querySelector('.error-message');
+                        let errorMessages = []; // Store error messages in an array
+
+                        if (questionTitle.value.trim() === '') {
+                            errorMessages.push('Question title cannot be empty.');
+                            questionTitle.classList.add('border-danger');
+                            card.classList.add('border-danger');
+                        } else {
+                            questionTitle.classList.remove('border-danger');
+                            card.classList.remove('border-danger');
+                        }
+
+                        if (options.length < 2) {
+                            errorMessages.push('You need at least 2 options for MCQ.');
+                            card.classList.add('border-danger');
+                        } else {
+                            card.classList.remove('border-danger');
+                        }
+
+                        for (const option of options) {
+                            const optionTitle = option.querySelector('input[type="text"]').value.trim();
+                            const optionInput = option.querySelector('input[type="text"]');
+
+                            if (optionTitle === '') {
+                                errorMessages.push('Option titles cannot be empty.');
+                                optionInput.classList.add('border-danger');
+                                card.classList.add('border-danger');
+                            } else {
+                                optionInput.classList.remove('border-danger');
+                            }
+                        }
+
+                        if (!selectedOption) {
+                            errorMessages.push('Select one answer for the question.');
+                            card.classList.add('border-danger');
+                        } else {
+                            card.classList.remove('border-danger');
+                        }
+
+                        if (errorMessages.length > 0) {
+                            errorMessage.textContent = errorMessages[0]; // Display the first error message
+                            errorMessage.classList.remove('d-none');
+                            return false; // Validation error(s) found
+                        } else {
+                            errorMessage.classList.add('d-none');
+                            return true; // No validation error
+                        }
+                    }
+
+                    // True/ False validation question
+                    function validateTrueFalse(card) {
+                        const questionTitle = card.querySelector('.questionTitle');
+                        const answer = card.querySelector('.option-card').getAttribute("data-trueFalse-answer");
+                        const errorMessage = card.querySelector('.error-message');
+                        let errorMessages = []; // Store error messages in an array
+
+                        if (questionTitle.value.trim() === '') {
+                            errorMessages.push('Question title cannot be empty.');
+                            questionTitle.classList.add('border-danger');
+                            card.classList.add('border-danger');
+                        } else {
+                            questionTitle.classList.remove('border-danger');
+                            card.classList.remove('border-danger');
+                        }
+
+                        if (answer === "") {
+                            errorMessages.push('Select either True or False.');
+                            card.classList.add('border-danger');
+                        } else {
+                            card.classList.remove('border-danger');
+                        }
+
+                        if (errorMessages.length > 0) {
+                            errorMessage.textContent = errorMessages[0]; // Display the first error message
+                            errorMessage.classList.remove('d-none');
+                            return false; // Validation error(s) found
+                        } else {
+                            errorMessage.classList.add('d-none');
+                            return true; // No validation error
+                        }
+                    }
+
+
+                    // Short answer validation question
+                    function validateShortAnswer(card) {
+                        const questionTitle = card.querySelector('.questionTitle');
+                        const shortAnswerText = card.querySelector('.option-card textarea');
+                        const errorMessage = card.querySelector('.error-message');
+                        let errorMessages = []; // Store error messages in an array
+
+                        if (questionTitle.value.trim() === '') {
+                            errorMessages.push('Question title cannot be empty.');
+                            questionTitle.classList.add('border-danger');
+                            card.classList.add('border-danger');
+                        } else {
+                            questionTitle.classList.remove('border-danger');
+                            card.classList.remove('border-danger');
+                        }
+
+                        if (shortAnswerText.value.trim() === "") {
+                            errorMessages.push('Short answer text cannot be empty.');
+                            card.classList.add('border-danger');
+                            shortAnswerText.classList.add('border-danger');
+                        } else {
+                            shortAnswerText.classList.remove('border-danger');
+                            card.classList.remove('border-danger');
+                        }
+
+                        if (errorMessages.length > 0) {
+                            errorMessage.textContent = errorMessages[0]; // Display the first error message
+                            errorMessage.classList.remove('d-none');
+                            return false; // Validation error(s) found
+                        } else {
+                            errorMessage.classList.add('d-none');
+                            return true; // No validation error
+                        }
+                    }
+
+                    // Validate the card
+                    function validateCard(card) {
+                        const quizType = card.getAttribute('data-quiz-type');
+
+                        if (quizType === '1') {
+                            validateMCQ(card);
+                        } else if (quizType === '2') {
+                            validateTrueFalse(card);
+                        } else if (quizType === '3') {
+                            validateShortAnswer(card);
+                        }
+                    }
+
+                    // Save button event listener
                     save_button.addEventListener("click", () => {
                         const extractedData = extractQuizCardValues();
                         console.log(extractedData); // This will log the extracted data as an array of objects
 
-                        // if (pollsCardsArray.length > 0) {
-                        //     jQuery.ajax({
-                        //         type: "POST",
-                        //         url: my_ajax_object.ajaxurl,
-                        //         data: {
-                        //             action: "PSX_save_poll_Multiple_data",
-                        //             nonce: nonce, // Pass the nonce
-                        //             poll_data: JSON.stringify(finalObj),
-                        //         },
-                        //         success: function(shortcode) {
-                        //             console.log("Done");
-                        //             save_button.textContent = "Save";
-                        //             save_button.disabled = false;
+                        const cards = document.querySelectorAll('.quiz-card');
+                        let isValid = true;
 
-                        //             // Create a new toast element
-                        //             var toast = document.createElement("div");
-                        //             toast.style = "z-index:1000; right: 10px; bottom: 10px";
-                        //             toast.className =
-                        //                 "position-fixed p-4 bg-success border rounded-2";
-                        //             toast.innerHTML = `
-                        //                     <p class="m-0 fw-bold text-xs text-white">
-                        //                     New survey has been added successfully!
-                        //                     </p>
-                        //                 `;
-                        //             // Append the toast to the document
-                        //             document.body.appendChild(toast);
-
-                        //             // Initialize the Bootstrap toast
-                        //             var bootstrapToast = new bootstrap.Toast(toast);
-                        //             bootstrapToast.show();
-
-                        //             setTimeout(() => {
-                        //                 window.location.reload();
-                        //             }, 500)
-                        //         },
-                        //         error: function(error) {
-                        //             console.error("Error:", error);
-                        //             save_button.textContent = "Save";
-                        //             save_button.disabled = false;
-                        //         },
-                        //     });
-                        // }
+                        for (const card of cards) {
+                            if (!validateCard(card)) {
+                                // scroll into the card view
+                                card.scrollIntoView({
+                                    behavior: 'smooth',
+                                });
+                            };
+                        }
                     });
+
+                    // if (pollsCardsArray.length > 0) {
+                    //     jQuery.ajax({
+                    //         type: "POST",
+                    //         url: my_ajax_object.ajaxurl,
+                    //         data: {
+                    //             action: "PSX_save_poll_Multiple_data",
+                    //             nonce: nonce, // Pass the nonce
+                    //             poll_data: JSON.stringify(finalObj),
+                    //         },
+                    //         success: function(shortcode) {
+                    //             console.log("Done");
+                    //             save_button.textContent = "Save";
+                    //             save_button.disabled = false;
+
+                    //             // Create a new toast element
+                    //             var toast = document.createElement("div");
+                    //             toast.style = "z-index:1000; right: 10px; bottom: 10px";
+                    //             toast.className =
+                    //                 "position-fixed p-4 bg-success border rounded-2";
+                    //             toast.innerHTML = `
+                    //                     <p class="m-0 fw-bold text-xs text-white">
+                    //                     New survey has been added successfully!
+                    //                     </p>
+                    //                 `;
+                    //             // Append the toast to the document
+                    //             document.body.appendChild(toast);
+
+                    //             // Initialize the Bootstrap toast
+                    //             var bootstrapToast = new bootstrap.Toast(toast);
+                    //             bootstrapToast.show();
+
+                    //             setTimeout(() => {
+                    //                 window.location.reload();
+                    //             }, 500)
+                    //         },
+                    //         error: function(error) {
+                    //             console.error("Error:", error);
+                    //             save_button.textContent = "Save";
+                    //             save_button.disabled = false;
+                    //         },
+                    //     });
+                    // }
                 });
             </script>
 

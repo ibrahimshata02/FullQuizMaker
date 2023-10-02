@@ -9,7 +9,7 @@
 
 <body class="main-content position-relative max-height-vh-100 h-100">
 
-    <div class="position-relative col-lg-8 col-md-10 col-12 mx-auto mt-4">
+    <div class="position-relative col-lg-7 col-md-10 col-12 mx-auto mt-4">
 
         <!-- Timer container -->
         <div style="width: fit-content; z-index: 10;" id="quiz_timer" class="bg-dark text-white border p-2 px-3 rounded-1 position-sticky top-5">
@@ -24,14 +24,14 @@
                 <span id="questions_count" style="font-size: 14px;" class="text-gray fw-bold opacity-6">10</span>
             </div>
             <div style="height: 5px;" class="progress p-0 m-0 rounded-3 overflow-hidden w-100">
-                <div class="progress-bar rounded-3 m-0 p-0" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="10" style="width: 10%; height: 100%;"></div>
+                <div class="progress-bar rounded-3 m-0 p-0" role="progressbar" aria-valuenow="10" aria-valuemin="1" aria-valuemax="10" style="width: 10%; height: 100%;"></div>
             </div>
         </div>
 
         <!-- Question card -->
         <div class="question-card position-relative bg-white rounded-top-0 rounded-bottom-3 border d-flex flex-wrap flex-column p-4 mt-2 rounded-1">
             <!-- Question title -->
-            <h4 class="question-title text-break mt-2">1) This is Question title </h4>
+            <h4 class="question-title text-break mt-2"></h4>
 
             <!-- Questions container -->
             <div class="questions-container d-flex flex-column gap-2 mt-3">
@@ -63,7 +63,7 @@
     </div>
 
     <script>
-        var timer = localStorage.getItem("quiz_timer") || 9000; // 1 minute (60 seconds)
+        var timer = localStorage.getItem("quiz_timer") || 30;
         const PercentOfTimer = timer * 0.3;
         const quiz_timer = document.getElementById('quiz_timer');
         const quiz_timer_text = quiz_timer.querySelector('span');
@@ -71,20 +71,38 @@
         var interval;
         let answers_array = [];
 
-        function showAlert() {
+        function showConfirmationAlert() {
             Swal.fire({
                 title: 'Are you sure you want ot submit answers?',
                 text: "You won't be able to revert this!",
-                icon: 'warning',
+                icon: 'info',
                 showCancelButton: true,
                 confirmButtonColor: '#125b50',
                 cancelButtonColor: '#c0392b',
                 confirmButtonText: 'Submit'
             }).then((result) => {
                 if (result.isConfirmed) {
+                    clearInterval(interval);
                     localStorage.removeItem("quiz_timer");
+                    localStorage.removeItem("quiz_progress");
                     window.location.reload()
                 }
+            })
+        }
+
+        function timeOutAlert() {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Your answers have been submitted successfully',
+                showConfirmButton: false,
+                timer: 2500,
+                timerProgressBar: true,
+                iconSize: '1rem'
+            }).then(() => {
+                localStorage.removeItem("quiz_timer");
+                localStorage.removeItem("quiz_progress");
+                window.location.reload()
             })
         }
 
@@ -104,13 +122,11 @@
                 quiz_timer_icon.className = "fa-regular fa-hourglass-half me-2 text-white";
             }
             if (timer < 0) {
-                localStorage.removeItem("quiz_timer");
-                localStorage.removeItem("quiz_timer");
                 clearInterval(interval);
-                showAlert()
                 quiz_timer.className = "bg-danger border p-2 px-3 rounded-1 text-white position-sticky top-5";
                 quiz_timer_text.textContent = '00:00 Timed out';
                 quiz_timer_icon.className = "fa-solid fa-stopwatch me-2 text-white shake";
+                timeOutAlert()
             }
         }
 
@@ -381,7 +397,7 @@
                 localStorage.setItem("quiz_progress", current_question_count.textContent);
 
                 // Show the alert to confirm submitting the answers 
-                showAlert()
+                showConfirmationAlert()
             } else {
                 // Increasing the question card count by 1
                 question_card.setAttribute('data-question-id', questionCards[parseInt(current_question_count.textContent)].id)

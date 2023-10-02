@@ -193,7 +193,7 @@ input[type="radio"] {
 
 /* Apply the animation to the element with the "shake" class */
 .shake {
-  animation: shake 1s 3 linear !important;
+  animation: shake 1s infinite linear !important;
 }
 
 /* Apply the animation to the element with the "pulse" class */
