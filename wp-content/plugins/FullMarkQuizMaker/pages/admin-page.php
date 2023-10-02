@@ -63,7 +63,7 @@
             <div class="d-flex flex-row  align-items-center gap-3 mt-4">
                 <button class="btn btn-dark shadow-none text-white border m-0" id="submit" type="button" name="import_data" data-bs-toggle="modal" data-bs-target="#add-teacher-modal">
                     Add new teacher
-                    <i class="fa-solid fa-add fa-md ms-2"></i>
+                    <i class="fa-solid fa-add text-white fa-md ms-2"></i>
                 </button>
 
                 <div class="d-flex flex-row align-items-center gap-2">

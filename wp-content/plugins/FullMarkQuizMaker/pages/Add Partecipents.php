@@ -14,51 +14,64 @@
         <form method="post" enctype="multipart/form-data">
             <input type="hidden" id="my-ajax-nonce" value="<?php echo wp_create_nonce('my_ajax_nonce'); ?>" />
 
-            <div class="col mt-3">
-                <label class="form-label">Study Level</label>
-                <select id="studyLevel" class="form-control border bg-white p-2" aria-label="Study level select">
-                    <option selected value="1">A </option>
-                    <option value="2">B</option>
-                </select>
-                <span class="error_message fw-bold text-danger d-none"></span>
-            </div>
+            <div class="d-flex flex-column gap-3 mt-4">
+                <div>
+                    <label class="form-label">Student name</label>
+                    <input type="text" class="form-control border p-2" placeholder="Enter student name" />
+                </div>
 
-            <div class="col mt-3">
-                <label class="form-label"> Select Template File</label>
-                <select id="studyLevel" class="form-control border bg-white p-2" aria-label="Template File select">
-                    <option value="Defult">Defult</option>
-                    <option value="Unrwa">Unrwa</option>
-                </select>
-                <span class="error_message fw-bold text-danger d-none"></span>
+                <div>
+                    <label class="form-label">Student email</label>
+                    <input type="email" class="form-control border p-2" placeholder="Enter student email " />
+                </div>
 
-            </div>
+                <div>
+                    <label class="form-label">Study Level</label>
+                    <select id="level" class="form-control border bg-white p-2" aria-label="Study level select">
+                        <option selected value="1">First </option>
+                        <option value="2">Second</option>
+                        <option value="3">Third</option>
+                    </select>
+                    <span class="error_message fw-bold text-danger d-none"></span>
+                </div>
 
-            <div class="mt-3 col-6">
-                <label for="file">Add students using File</label>
-                <input class="form-control border p-2" type="file" name="file" accept=".xlsx, .xls">
-                <span class="error_message fw-bold text-danger d-none"></span>
-
-            </div>
-
-
-            <div class="d-flex flex-row  align-items-center gap-3 mt-4">
-                <button class="btn btn-dark shadow-none border m-0" id="import_data" type="button" name="import_data">
-                    Import data
-                    <i class="fa-solid fa-file-import fa-lg ms-2 text-white"></i>
-                </button>
-
-                <div class="d-flex flex-row align-items-center gap-2">
-                    or you can just <a class="text-primary fw-bolder" id="download" type="button" name="import_data">download</a> the Excel file template
+                <div>
+                    <label class="form-label">Study Class</label>
+                    <select id="class" class="form-control border bg-white p-2" aria-label="Study level select">
+                        <option selected value="a">A </option>
+                        <option value="b">B</option>
+                        <option value="c">C</option>
+                    </select>
+                    <span class="error_message fw-bold text-danger d-none"></span>
                 </div>
             </div>
-            <button id="save_button" class="btn btn-primary mt-6 w-25 p-3">Save </button>
+
+            <button id="save_button" type="button" data-bs-dismiss="modal" class="btn btn-primary w-100 mt-4">ADD <i class="fas fa-add fa-md ms-1 text-white"></i> </button>
+
+            <div class="d-flex flex-row align-items-center gap-2">
+                You can just <a id="import_data" class="text-dark fw-bolder" type="button" data-bs-toggle="modal" data-bs-target="#upload-file-modal">Import</a> the students Excel file.
+            </div>
         </form>
+
+        <div class="modal fade " id="upload-file-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content p-4">
+
+                    <h4>Upload Excel file</h4>
+
+                    <div class="d-flex flex-column gap-3 mt-2">
+                        <input class="form-control p-2" type="file" id="formFile">
+                    </div>
+
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-primary w-100 mt-4">ADD <i class="fas fa-add fa-md ms-1 text-white"></i> </button>
+                </div>
+            </div>
+        </div>
 
         <script>
             const nonce = document.querySelector("#my-ajax-nonce").value;
             const form = document.querySelector("form");
             const save_button = document.getElementById("save_button");
-            const download = document.getElementById("download");
             const import_data_button = document.getElementById("import_data");
 
             form.addEventListener("submit", (e) => {
@@ -81,8 +94,6 @@
                     },
                 });
             })
-
-
 
             save_button.click(function() {
                 var formData = new FormData();
