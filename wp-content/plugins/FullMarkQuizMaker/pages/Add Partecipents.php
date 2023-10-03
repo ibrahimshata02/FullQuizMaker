@@ -46,10 +46,10 @@
                 </div>
             </div>
 
-            <button id="save_button" type="button" data-bs-dismiss="modal" class="btn btn-primary w-100 mt-4">ADD <i class="fas fa-add fa-md ms-1 text-white"></i> </button>
+            <button id="save_button" type="button" data-bs-dismiss="modal" class="btn btn-primary col-lg-4 col-md-5 col-8 mt-4 p-3">ADD student <i class="fas fa-add fa-md ms-1 text-white"></i> </button>
 
-            <div class="d-flex flex-row align-items-center gap-2">
-                You can just <a id="import_data" class="text-dark fw-bolder" type="button" data-bs-toggle="modal" data-bs-target="#upload-file-modal">Import</a> the students Excel file.
+            <div class="d-flex flex-row align-items-center gap-1">
+                To add multiple students, you can <a id="import_data" class="text-dark fw-bolder" type="button" data-bs-toggle="modal" data-bs-target="#upload-file-modal">Import</a> an Excel file.
             </div>
         </form>
 
@@ -59,11 +59,41 @@
 
                     <h4>Upload Excel file</h4>
 
-                    <div class="d-flex flex-column gap-3 mt-2">
-                        <input class="form-control p-2" type="file" id="formFile">
+                    <div class="d-flex flex-column gap-3 mt-3">
+                        <input class="form-control p-2" type="file" id="formFile" accept=".xls, .xlsx">
+
+                        <div class="row row row-cols-1 row-cols-lg-2 g-2">
+
+                            <div class="col">
+                                <label class="form-label">ID column</label>
+                                <input type="text" class="form-control border p-2" placeholder="ID column" />
+                            </div>
+
+                            <div class="col">
+                                <label class="form-label">Name column</label>
+                                <input type="text" class="form-control border p-2" placeholder="Name column" />
+                            </div>
+                        </div>
+
+                        <div class="row row row-cols-1 row-cols-lg-2 g-2">
+                            <div class="col">
+                                <label class="form-label">Level column</label>
+                                <input type="text" class="form-control border p-2" placeholder="Level column" />
+                            </div>
+
+                            <div class="col">
+                                <label class="form-label">Class ID column</label>
+                                <input type="text" class="form-control border p-2" placeholder="Class ID column" />
+                            </div>
+                        </div>
+
+                        <div style="font-size: 11px;" class="d-flex flex-column">
+                            <b>Notice: add the column values according to your Excel file data. </b>
+                            <b>For example: If the ID in your Excel file is in the A column, then write A in the ID column input </b>
+                        </div>
                     </div>
 
-                    <button type="button" data-bs-dismiss="modal" class="btn btn-primary w-100 mt-4">ADD <i class="fas fa-add fa-md ms-1 text-white"></i> </button>
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-primary w-100 mt-4">Upload <i class="fas fa-file-excel fa-lg ms-1 text-white"></i> </button>
                 </div>
             </div>
         </div>

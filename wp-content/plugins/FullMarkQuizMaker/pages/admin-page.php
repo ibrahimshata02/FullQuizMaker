@@ -60,14 +60,14 @@
             </div>
 
 
-            <div class="d-flex flex-row  align-items-center gap-3 mt-4">
+            <div class="d-flex flex-row flex-wrap align-items-center gap-2 mt-4">
                 <button class="btn btn-dark shadow-none text-white border m-0" id="submit" type="button" name="import_data" data-bs-toggle="modal" data-bs-target="#add-teacher-modal">
-                    Add new teacher
+                    Add teacher
                     <i class="fa-solid fa-add text-white fa-md ms-2"></i>
                 </button>
 
-                <div class="d-flex flex-row align-items-center gap-2">
-                    or you can just <a class="text-dark fw-bolder" id="download" type="button" name="import_data">Import</a> Excel file
+                <div class="d-flex flex-row align-items-center gap-1">
+                    or you can add multiple teachers by <a id="import_data" class="text-dark fw-bolder" type="button" data-bs-toggle="modal" data-bs-target="#upload-file-modal">Importing</a> an Excel file.
                 </div>
             </div>
             <button id="save_btn" class="btn btn-primary mt-6 w-25 p-3">Save </button>
@@ -83,6 +83,51 @@
                     <input type="text" class="form-control border p-2 mt-4" placeholder="Enter the teacher email" />
 
                     <button type="button" data-bs-dismiss="modal" class="btn btn-primary w-100 mt-2">ADD <i class="fas fa-add fa-md ms-1 text-white"></i> </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade " id="upload-file-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content p-4">
+
+                    <h4>Upload Excel file</h4>
+
+                    <div class="d-flex flex-column gap-3 mt-3">
+                        <input class="form-control p-2" type="file" id="formFile" accept=".xls, .xlsx">
+
+                        <div class="row row row-cols-1 row-cols-lg-2 g-2">
+
+                            <div class="col">
+                                <label class="form-label">ID column</label>
+                                <input type="text" class="form-control border p-2" placeholder="ID column" />
+                            </div>
+
+                            <div class="col">
+                                <label class="form-label">Name column</label>
+                                <input type="text" class="form-control border p-2" placeholder="Name column" />
+                            </div>
+                        </div>
+
+                        <div class="row row row-cols-1 row-cols-lg-2 g-2">
+                            <div class="col">
+                                <label class="form-label">Level column</label>
+                                <input type="text" class="form-control border p-2" placeholder="Level column" />
+                            </div>
+
+                            <div class="col">
+                                <label class="form-label">Class ID column</label>
+                                <input type="text" class="form-control border p-2" placeholder="Class ID column" />
+                            </div>
+                        </div>
+
+                        <div style="font-size: 11px;" class="d-flex flex-column">
+                            <b>Notice: add the column values according to your Excel file data. </b>
+                            <b>For example: If the ID in your Excel file is in the A column, then write A in the ID column input </b>
+                        </div>
+                    </div>
+
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-primary w-100 mt-4">Upload <i class="fas fa-file-excel fa-lg ms-1 text-white"></i> </button>
                 </div>
             </div>
         </div>

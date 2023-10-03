@@ -149,7 +149,6 @@
 
                     const trueFalseOptions = trueFalseContainer.querySelectorAll(".true-false-option");
                     trueFalseOptions.forEach((option) => {
-
                         option.addEventListener("click", () => {
                             const icon = option.querySelector("i");
                             if (icon.classList.contains("fa-check")) {
@@ -417,8 +416,6 @@
                 const quizTypeSelect = cardClone.querySelector(".quizTypeSelect");
                 quizTypeSelect.value = card.getAttribute("data-quiz-type");
 
-                updateOptions(quizTypeSelect, cardClone.querySelector(".optionsGroup"));
-
                 const image_upload_input = cardClone.querySelector('.upload-image-input');
                 image_upload_input.id = cardId;
 
@@ -426,6 +423,9 @@
                 upload_icon_label.setAttribute("for", cardId);
 
                 cardsContainer.appendChild(cardClone);
+
+                // Resets the options and the cards content when duplicating
+                // updateOptions(quizTypeSelect, cardClone.querySelector(".optionsGroup"));
 
                 // Add event listeners for the cloned card's options
                 cardClone.querySelectorAll(".fa-circle-xmark").forEach((deleteOptionIcon) => {
