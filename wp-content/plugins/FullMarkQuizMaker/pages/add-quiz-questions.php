@@ -10,14 +10,14 @@
 <body>
     <main class="col-lg-8 col-md-10 col-11 mx-auto main-content position-relative max-height-vh-100 h-100 mt-4 border-radius-lg">
         <div class="d-flex flex-column justify-content-center align-items-center mt-5">
-            <div class="border colored-border-div-top w-100 p-4 border-top bg-white mb-4 rounded-3">
+            <!-- <div class="border colored-border-div-top w-100 p-4 border-top bg-white mb-4 rounded-3">
                 <input style="font-size: 30px;" type="text" class="form-control border mb-2" placeholder="Untitled quiz" id="quiz_title_value" value="" />
                 <input type="text" class="form-control border mb-3 p-2" placeholder="Quiz description" id="quiz_description_value" value="" />
-            </div>
+            </div> -->
 
             <!-- Final output cards [Cards container] -->
             <div id="cardsContainer" class="w-100 d-flex flex-column gap-3">
-                <div class="quiz-card position-relative d-flex w-100 flex-column border colored-border-div-left w-100 p-4 border-top bg-white mb-2 rounded-3" data-quiz-type="1">
+                <div class="quiz-card position-relative d-flex w-100 flex-column border colored-border-div-left w-100 p-4 border-top bg-white mb-2 rounded-3" data-quiz-type="1" data-card-id="<?php echo date("Y-m-d H:i:s") ?>">
                     <div class="d-flex align-items-center gap-4 mb-2 mt-4">
                         <input style="font-size: 23px;" type="text" class="questionTitle form-control border" placeholder="Untitled question" value="" />
 
@@ -53,10 +53,10 @@
 
                     <div class="d-flex justify-content-between p-2">
                         <div class="difficulty-container d-flex flex-column gap-1">
-                            <label for="difficulty" class="difficulty-text form-label m-0">Very easy</label>
+                            <label for="difficulty" class="difficulty-text form-label m-0">Medium</label>
                             <div class="d-flex flex-row align-items-center gap-2 ">
-                                <input type="range" class="difficulty form-range" value="1" min="1" max="10" step="1">
-                                <p class="range_text m-0 fw-bolder" style="font-size: 15px;">1/10</p>
+                                <input type="range" class="difficulty form-range" value="5" min="1" max="10" step="1">
+                                <p class="range_text m-0 fw-bolder" style="font-size: 15px;">5/10</p>
                             </div>
                         </div>
 
@@ -71,12 +71,11 @@
                 </div>
             </div>
 
-            <button type="submit" id="save_button" class="align-self-start text-white btn bg-primary col-lg-4 col-md-6 col-7 text-sm font-weight-bold mb-5 mt-4">
+            <button type="submit" id="save_button" class="align-self-start text-white btn bg-primary col-lg-4 col-md-6 col-7 text-sm font-weight-bold mb-5 mt-2">
                 Save
             </button>
         </div>
     </main>
-
 
     <script>
         jQuery(document).ready(function(jQuery) {
@@ -149,6 +148,7 @@
 
                     const trueFalseOptions = trueFalseContainer.querySelectorAll(".true-false-option");
                     trueFalseOptions.forEach((option) => {
+
                         option.addEventListener("click", () => {
                             const icon = option.querySelector("i");
                             if (icon.classList.contains("fa-check")) {
@@ -188,22 +188,6 @@
                     optionsGroup.appendChild(optionCard);
                 }
             }
-
-            function createOption(optionText, card) {
-                const optionCard = document.createElement("div");
-                optionCard.className = "option-card d-flex justify-content-between align-items-center gap-2";
-                const cardId = card.getAttribute("data-card-id");
-                const optionId = generateUniqueId();
-                optionCard.setAttribute("data-option-id", optionId);
-                optionCard.innerHTML = `
-                <div class="d-flex align-items-center gap-2 w-100">
-                    <input name="option-${cardId}" type="radio" value="value-${optionId}" />
-                    <input readonly type="text" class="form-control border bg-transparent p-2" placeholder="Option title" value="${optionText}" />
-                </div>
-                `;
-                return optionCard;
-            }
-
 
             // Add new option event listener
             function updateQuizzes() {
@@ -281,8 +265,8 @@
                     // Add an event listener to listen for changes in the select box
                     select.addEventListener("change", handleSelectChange);
 
-                    const cardId = generateUniqueId(); // Generate a unique ID for the card
-                    card.setAttribute("data-card-id", cardId);
+                    // const cardId = generateUniqueId(); // Generate a unique ID for the card
+                    // card.setAttribute("data-card-id", cardId);
 
                     // Add event listener for adding a new option
                     add_new_option.addEventListener("click", handleAddOptionClick);
@@ -319,6 +303,7 @@
                 const add_new_option = event.target;
                 const card = add_new_option.closest(".quiz-card");
                 const optionsGroup = card.querySelector(".optionsGroup");
+                console.log("Card", card);
 
                 const optionCard = document.createElement("div");
                 optionCard.className =
@@ -327,35 +312,38 @@
                 const cardId = card.getAttribute("data-card-id"); // Get the unique card ID
 
                 optionCard.setAttribute("data-option-id", optionId);
+
                 optionCard.innerHTML = `
-                    <div class="d-flex align-items-center gap-2 w-100">
-                        <input type="radio" name="option-${cardId}" value="value-${optionId}">
-                        <input type="text" class="form-control border p-2" placeholder="Option title" value="" />
-                    </div>
-                    <i class="cursor-pointer fa-regular fa-circle-xmark fa-lg text-danger" data-option-id="${optionId}"></i>
+                <div class="d-flex align-items-center gap-2 w-100">
+                    <input type="radio" name="option_${cardId}" value="value_${optionId}" />
+                    <input type="text" class="form-control border p-2" placeholder="Option title" />
+                </div>
+                <i class="cursor-pointer fa-regular fa-circle-xmark fa-lg text-danger" data-option-id="${optionId}"></i>
                 `;
                 optionsGroup.appendChild(optionCard);
+                updateQuizzes()
 
                 // Add event listener for deleting this option
                 const deleteOptionIcon = optionCard.querySelector(`[data-option-id="${optionId}"]`);
                 deleteOptionIcon.addEventListener("click", (event) => {
                     event.stopPropagation();
                     optionCard.remove();
+                    updateQuizzes()
                 });
             }
+
 
             document.addEventListener("click", function(event) {
                 if (event.target.classList.contains("fa-circle-plus")) {
                     const newCard = document.createElement("div");
                     const cardId = generateUniqueId(); // Generate a unique ID for the card
-                    newCard.setAttribute("data-card-id", cardId);
-                    newCard.innerHTML = `<div class="quiz-card position-relative d-flex w-100 flex-column border colored-border-div-left w-100 p-4 border-top bg-white mb-2 rounded-3" data-quiz-type="1">
+                    newCard.innerHTML = `<div class="quiz-card position-relative d-flex w-100 flex-column border colored-border-div-left w-100 p-4 border-top bg-white mb-2 rounded-3" data-quiz-type="1" data-card-id="${cardId}">
                     <div class="d-flex align-items-center gap-4 mb-2 mt-4">
                         <input style="font-size: 23px;" type="text" class="questionTitle form-control border" placeholder="Untitled question" value="">
 
                         <div class="d-flex align-items-center gap-3 w-50">
                             <select class="quizTypeSelect w-100 border bg-transparent p-2 " aria-label="Default select example">
-                                <option selected="" value="1">Multiple choice </option>
+                                <option selected="1" value="1">Multiple choice </option>
                                 <option value="2">True/False</option>
                                 <option value="3">Short answer</option>
                             </select>
@@ -385,8 +373,8 @@
                         <div class="difficulty-container d-flex flex-column gap-1">
                             <label for="difficulty" class="form-label difficulty-text m-0">Difficulty</label>
                             <div class="d-flex flex-row align-items-center gap-2 ">
-                                <input type="range" class="difficulty form-range" value="1" min="1" max="10" step="1">
-                                <p class="range_text m-0 fw-bolder" style="font-size: 15px;">1/10</p>
+                                <input type="range" class="difficulty form-range" value="5" min="1" max="10" step="1">
+                                <p class="range_text m-0 fw-bolder" style="font-size: 15px;">5/10</p>
                             </div>
                         </div>
 
@@ -410,6 +398,7 @@
             // Duplication card function
             function duplicateCard(card) {
                 const cardClone = card.cloneNode(true); // Clone the card including its children
+
                 const cardId = generateUniqueId(); // Generate a unique ID for the card
                 cardClone.setAttribute("data-card-id", cardId);
 
@@ -422,10 +411,49 @@
                 const upload_icon_label = cardClone.querySelector('.upload-icon');
                 upload_icon_label.setAttribute("for", cardId);
 
-                cardsContainer.appendChild(cardClone);
+                if (quizTypeSelect.value == "1") {
+                    const optionsGroup = cardClone.querySelector(".optionsGroup");
+                    const options = optionsGroup.querySelectorAll(".option-card");
 
-                // Resets the options and the cards content when duplicating
-                // updateOptions(quizTypeSelect, cardClone.querySelector(".optionsGroup"));
+                    console.log("optionsGroup", optionsGroup);
+                    console.log("options", options);
+
+                    options.forEach((option) => {
+                        const optionId = generateUniqueId(); // Generate a unique ID for the option
+                        const radioButton = option.querySelector("input[type='radio']");
+                        radioButton.name = `option_${cardId}`;
+                        radioButton.value = `value_${optionId}`;
+                    });
+                }
+
+                if (quizTypeSelect.value == "2") {
+                    const trueFalseContainer = cardClone.querySelector(".option-card")
+                    const trueFalseOptions = trueFalseContainer.querySelectorAll(".true-false-option");
+
+                    trueFalseOptions.forEach((option) => {
+                        option.addEventListener("click", () => {
+                            const icon = option.querySelector("i");
+                            if (icon.classList.contains("fa-check")) {
+                                trueFalseContainer.setAttribute("data-trueFalse-answer", "True");
+                            } else {
+                                trueFalseContainer.setAttribute("data-trueFalse-answer", "False");
+                            }
+
+                            const trueFalseAnswer = trueFalseContainer.getAttribute("data-trueFalse-answer");
+
+                            console.log(trueFalseAnswer);
+                            if (trueFalseAnswer == "True") {
+                                trueFalseOptions[0].classList.add("text-success", "border-success");
+                                trueFalseOptions[1].classList.remove("text-danger", "text-dark", "border-danger");
+                            } else {
+                                trueFalseOptions[1].classList.add("text-danger", "border-danger");
+                                trueFalseOptions[0].classList.remove("text-success", "text-dark", "border-success");
+                            }
+                        });
+                    });
+                }
+
+                cardsContainer.appendChild(cardClone);
 
                 // Add event listeners for the cloned card's options
                 cardClone.querySelectorAll(".fa-circle-xmark").forEach((deleteOptionIcon) => {
@@ -464,13 +492,14 @@
                 const quizData = [];
 
                 quizCards.forEach((card) => {
-                    const cardType = card.getAttribute("data-quiz-type");
+                    const quizType = card.getAttribute("data-quiz-type");
                     const cardId = card.getAttribute("data-card-id");
                     const questionTitle = card.querySelector(".questionTitle").value;
+                    const difficulty = card.querySelector(".difficulty").value;
 
                     // Extract options data based on the card type
                     let options = [];
-                    if (cardType === "1") { // Multiple choice or True/False
+                    if (quizType === "1") { // Multiple choice or True/False
                         card.querySelectorAll(".option-card").forEach((option) => {
                             const optionId = option.getAttribute("data-option-id");
                             const optionTitle = option.querySelector("input[type='text']").value;
@@ -481,7 +510,7 @@
                                 optionValue
                             });
                         });
-                    } else if (cardType === "2") { // True/False
+                    } else if (quizType === "2") { // True/False
                         card.querySelectorAll(".option-card").forEach((option) => {
                             const optionId = option.querySelector("div").getAttribute("data-option-id");
                             const answer = option.getAttribute("data-trueFalse-answer");
@@ -503,13 +532,13 @@
                     }
 
                     quizData.push({
-                        cardType,
                         cardId,
                         questionTitle,
                         options,
+                        difficulty,
+                        quizType,
                     });
                 });
-
                 return quizData;
             }
 
@@ -639,13 +668,12 @@
             // Validate the card
             function validateCard(card) {
                 const quizType = card.getAttribute('data-quiz-type');
-
                 if (quizType === '1') {
-                    validateMCQ(card);
+                    return (validateMCQ(card));
                 } else if (quizType === '2') {
-                    validateTrueFalse(card);
+                    return (validateTrueFalse(card));
                 } else if (quizType === '3') {
-                    validateShortAnswer(card);
+                    return (validateShortAnswer(card));
                 }
             }
 
@@ -659,6 +687,7 @@
 
                 for (const card of cards) {
                     if (!validateCard(card)) {
+                        console.log("Card", validateCard(card));
                         // scroll into the card view
                         card.scrollIntoView({
                             behavior: 'smooth',
