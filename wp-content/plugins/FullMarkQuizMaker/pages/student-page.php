@@ -50,7 +50,7 @@ $polls = $wpdb->get_results("SELECT * FROM $table_name WHERE status IN ('" . imp
                     </a>
                 </div>
 
-                <div class="row row row-cols-1 row-cols-lg-2 g-2">
+                <div class="row row-cols-1 row-cols-lg-2 g-2">
                     <!-- Quiz card -->
                     <div class="col">
                         <div class="bg-white d-flex flex-column border rounded-3 p-4 gap-1">

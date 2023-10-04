@@ -61,20 +61,15 @@
                                 <p class="range_text m-0 fw-bolder" style="font-size: 15px;">5/10</p>
                             </div>
                         </div>
-
-                        <div class="d-flex align-items-center gap-3">
-                            <i title="Add new question card" class="fa-solid fa-circle-plus fa-lg text-dark cursor-pointer"></i>
-                            <i title="Duplicate question card" class="fa-regular fa-copy fa-lg text-dark cursor-pointer"></i>
-                            <i title="Delete question card" class="fas fa-trash-can fa-lg text-danger cursor-pointer"></i>
-                        </div>
                     </div>
+
                     <div style="background-color: #f8d7da; font-size: 13px;" class="alert error-message d-none fw-bold mt-2" role="alert">
                     </div>
                 </div>
             </div>
 
             <button type="submit" id="save_button" class="align-self-start text-white btn bg-primary col-lg-4 col-md-6 col-7 text-sm font-weight-bold mb-5 mt-2">
-                Save
+                Edit <i class="fas fa-pen ms-2 text-white"></i>
             </button>
         </div>
     </main>
@@ -129,9 +124,6 @@
                     });
                 });
             }
-
-
-
 
             function updateOptions(select, optionsGroup) {
                 const selectedValue = select.value;
@@ -285,24 +277,9 @@
                     // Add an event listener to listen for changes in the select box
                     select.addEventListener("change", handleSelectChange);
 
-                    // const cardId = generateUniqueId(); // Generate a unique ID for the card
-                    // card.setAttribute("data-card-id", cardId);
-
                     // Add event listener for adding a new option
                     add_new_option.addEventListener("click", handleAddOptionClick);
 
-                    // Add event listener for deleting the card
-                    const deleteCardIcon = card.querySelector(".fa-trash-can");
-                    deleteCardIcon.addEventListener("click", (event) => {
-                        event.stopPropagation();
-                        card.remove();
-                        Toast.fire({
-                            icon: 'error',
-                            title: 'Your question has been deleted successfully!',
-                            position: 'bottom-right',
-                        })
-                        updateQuizzes();
-                    });
                 });
             };
 
@@ -351,156 +328,6 @@
                     updateQuizzes()
                 });
             }
-
-
-            document.addEventListener("click", function(event) {
-                if (event.target.classList.contains("fa-circle-plus")) {
-                    const newCard = document.createElement("div");
-                    const cardId = generateUniqueId(); // Generate a unique ID for the card
-                    newCard.innerHTML = `<div class="quiz-card position-relative d-flex w-100 flex-column border colored-border-div-left w-100 p-4 border-top bg-white mb-2 rounded-3" data-quiz-type="1" data-card-id="${cardId}">
-                    <div class="d-flex align-items-center gap-4 mb-2 mt-4">
-                        <input style="font-size: 23px;" type="text" class="questionTitle form-control border" placeholder="Untitled question" value="">
-
-                        <div class="d-flex align-items-center gap-3 w-50">
-                            <select class="quizTypeSelect w-100 border bg-transparent p-2 " aria-label="Default select example">
-                                <option selected="1" value="1">Multiple choice </option>
-                                <option value="2">True/False</option>
-                                <option value="3">Short answer</option>
-                            </select>
-                                <label for="${cardId}" class="upload-icon file-input-label cursor-pointer m-0">
-                                <i title="Add new image" class="cursor-pointer fas fa-image text-dark fa-xl"></i>
-                                <input class="upload-image-input m-0" type="file" id="${cardId}">
-                            </label>                     
-                            </div>
-                    </div>
-
-                    <div class="image-container">
-
-                    </div>
-
-                    <div class="optionsGroup d-flex flex-column gap-2 my-3">
-
-                    </div>
-
-                    <div class="addNewOptionContainer d-flex align-items-center gap-3">
-                        <input disabled type="radio">
-                        <a class="add_new_option cursor-pointer opacity-80 text-primary text-sm m-0" title="Add new option">Add new option</a>
-                    </div>
-
-                        <hr class="mt-4">
-
-                        <div class="d-flex justify-content-between p-2">
-                        <div class="difficulty-container d-flex flex-column gap-1">
-                            <label for="difficulty" class="form-label difficulty-text m-0">Difficulty</label>
-                            <div class="d-flex flex-row align-items-center gap-2 ">
-                                <input type="range" class="difficulty form-range" value="5" min="1" max="10" step="1">
-                                <p class="range_text m-0 fw-bolder" style="font-size: 15px;">5/10</p>
-                            </div>
-                        </div>
-
-                        <div class="d-flex align-items-center gap-3">
-                            <i title="Add new question card" class="fa-solid fa-circle-plus fa-lg text-dark cursor-pointer"></i>
-                            <i title="Duplicate question card" class="fa-regular fa-copy fa-lg text-dark cursor-pointer"></i>
-                            <i title="Delete question card" class="fas fa-trash-can fa-lg text-danger cursor-pointer"></i>
-                        </div>
-                    </div> 
-                    <div style="background-color: #f8d7da; font-size: 13px;" class="alert error-message d-none fw-bold mt-2" role="alert">
-                    </div>             
-                </div>`
-
-                    cardsContainer.appendChild(newCard)
-                    updateQuizzes()
-                    // scroll into the screen to show the new card  
-                    window.scrollTo(0, document.body.scrollHeight);
-                }
-            });
-
-            // Duplication card function
-            function duplicateCard(card) {
-                const cardClone = card.cloneNode(true); // Clone the card including its children
-
-                const cardId = generateUniqueId(); // Generate a unique ID for the card
-                cardClone.setAttribute("data-card-id", cardId);
-
-                const quizTypeSelect = cardClone.querySelector(".quizTypeSelect");
-                quizTypeSelect.value = card.getAttribute("data-quiz-type");
-
-                const image_upload_input = cardClone.querySelector('.upload-image-input');
-                image_upload_input.id = cardId;
-
-                const upload_icon_label = cardClone.querySelector('.upload-icon');
-                upload_icon_label.setAttribute("for", cardId);
-
-                if (quizTypeSelect.value == "1") {
-                    const optionsGroup = cardClone.querySelector(".optionsGroup");
-                    const options = optionsGroup.querySelectorAll(".option-card");
-
-                    console.log("optionsGroup", optionsGroup);
-                    console.log("options", options);
-
-                    options.forEach((option) => {
-                        const optionId = generateUniqueId(); // Generate a unique ID for the option
-                        const radioButton = option.querySelector("input[type='radio']");
-                        radioButton.name = `option_${cardId}`;
-                        radioButton.value = `value_${optionId}`;
-                    });
-                }
-
-                if (quizTypeSelect.value == "2") {
-                    const trueFalseContainer = cardClone.querySelector(".option-card")
-                    const trueFalseOptions = trueFalseContainer.querySelectorAll(".true-false-option");
-
-                    trueFalseOptions.forEach((option) => {
-                        option.addEventListener("click", () => {
-                            const icon = option.querySelector("i");
-                            if (icon.classList.contains("fa-check")) {
-                                trueFalseContainer.setAttribute("data-trueFalse-answer", "True");
-                            } else {
-                                trueFalseContainer.setAttribute("data-trueFalse-answer", "False");
-                            }
-
-                            const trueFalseAnswer = trueFalseContainer.getAttribute("data-trueFalse-answer");
-
-                            console.log(trueFalseAnswer);
-                            if (trueFalseAnswer == "True") {
-                                trueFalseOptions[0].classList.add("text-success", "border-success");
-                                trueFalseOptions[1].classList.remove("text-danger", "text-dark", "border-danger");
-                            } else {
-                                trueFalseOptions[1].classList.add("text-danger", "border-danger");
-                                trueFalseOptions[0].classList.remove("text-success", "text-dark", "border-success");
-                            }
-                        });
-                    });
-                }
-
-                cardsContainer.appendChild(cardClone);
-
-                // Add event listeners for the cloned card's options
-                cardClone.querySelectorAll(".fa-minus").forEach((deleteOptionIcon) => {
-                    const optionId = deleteOptionIcon.getAttribute("data-option-id");
-                    deleteOptionIcon.addEventListener("click", (event) => {
-                        event.stopPropagation();
-                        const optionContainer = cardClone.querySelector(
-                            `[data-option-id="${optionId}"]`);
-                        if (optionContainer) {
-                            optionContainer.remove();
-                        }
-                    });
-                });
-            }
-
-            // Event listener for duplicating a card
-            document.addEventListener("click", function(event) {
-                if (event.target.classList.contains("fa-copy")) {
-                    const card = event.target.closest(".quiz-card"); // Find the closest card element
-                    if (card) {
-                        duplicateCard(card); // Call the duplicateCard function when the icon is clicked
-                        updateQuizzes();
-                        // scroll into the screen to show the new card  
-                        window.scrollTo(0, document.body.scrollHeight);
-                    }
-                }
-            });
 
             // Initial setup
             updateQuizzes();
@@ -716,48 +543,7 @@
                 }
             });
 
-            // if (pollsCardsArray.length > 0) {
-            //     jQuery.ajax({
-            //         type: "POST",
-            //         url: my_ajax_object.ajaxurl,
-            //         data: {
-            //             action: "PSX_save_poll_Multiple_data",
-            //             nonce: nonce, // Pass the nonce
-            //             poll_data: JSON.stringify(finalObj),
-            //         },
-            //         success: function(shortcode) {
-            //             console.log("Done");
-            //             save_button.textContent = "Save";
-            //             save_button.disabled = false;
 
-            //             // Create a new toast element
-            //             var toast = document.createElement("div");
-            //             toast.style = "z-index:1000; right: 10px; bottom: 10px";
-            //             toast.className =
-            //                 "position-fixed p-4 bg-success border rounded-2";
-            //             toast.innerHTML = `
-            //                     <p class="m-0 fw-bold text-xs text-white">
-            //                     New survey has been added successfully!
-            //                     </p>
-            //                 `;
-            //             // Append the toast to the document
-            //             document.body.appendChild(toast);
-
-            //             // Initialize the Bootstrap toast
-            //             var bootstrapToast = new bootstrap.Toast(toast);
-            //             bootstrapToast.show();
-
-            //             setTimeout(() => {
-            //                 window.location.reload();
-            //             }, 500)
-            //         },
-            //         error: function(error) {
-            //             console.error("Error:", error);
-            //             save_button.textContent = "Save";
-            //             save_button.disabled = false;
-            //         },
-            //     });
-            // }
         });
     </script>
 

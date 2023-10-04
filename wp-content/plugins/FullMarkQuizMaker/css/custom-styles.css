@@ -48,6 +48,10 @@ input[type="radio"] {
   font-size: 25px !important;
 }
 
+i {
+  cursor: pointer !important;
+}
+
 input,
 textarea,
 select {
@@ -146,6 +150,20 @@ input[type="radio"] {
   color: #125b50 !important;
   transition: all 0.1s linear !important;
   border: 0 !important;
+}
+
+.alphabet-list {
+  list-style-type: upper-alpha !important;
+  padding: 0 !important;
+}
+
+.question-card {
+  transition: all 0.3s linear !important;
+}
+
+.question-card:hover {
+  box-shadow: 3px 3px 25px 0px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.3s linear !important;
 }
 
 @keyframes pulse {
