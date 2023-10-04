@@ -17,7 +17,7 @@
 
             <!-- Final output cards [Cards container] -->
             <div id="cardsContainer" class="w-100 d-flex flex-column gap-3">
-                <div class="quiz-card position-relative d-flex w-100 flex-column border colored-border-div-left w-100 p-4 border-top bg-white mb-2 rounded-3" data-quiz-type="1" data-card-id="1">
+                <div class="quiz-card position-relative d-flex w-100 flex-column border colored-border-div-left w-100 p-4 border-top bg-white mb-2 rounded-3" data-quiz-type="1" data-card-id="<?php echo date("Y-m-d H:i:s") ?>">
                     <div class="d-flex align-items-center gap-4 mb-2 mt-4">
                         <input style="font-size: 23px;" type="text" class="questionTitle form-control border" placeholder="Untitled question" value="" />
 
@@ -53,10 +53,10 @@
 
                     <div class="d-flex justify-content-between p-2">
                         <div class="difficulty-container d-flex flex-column gap-1">
-                            <label for="difficulty" class="difficulty-text form-label m-0">Very easy</label>
+                            <label for="difficulty" class="difficulty-text form-label m-0">Medium</label>
                             <div class="d-flex flex-row align-items-center gap-2 ">
-                                <input type="range" class="difficulty form-range" value="1" min="1" max="10" step="1">
-                                <p class="range_text m-0 fw-bolder" style="font-size: 15px;">1/10</p>
+                                <input type="range" class="difficulty form-range" value="5" min="1" max="10" step="1">
+                                <p class="range_text m-0 fw-bolder" style="font-size: 15px;">5/10</p>
                             </div>
                         </div>
 
@@ -71,12 +71,11 @@
                 </div>
             </div>
 
-            <button type="submit" id="save_button" class="align-self-start text-white btn bg-primary col-lg-4 col-md-6 col-7 text-sm font-weight-bold mb-5 mt-4">
+            <button type="submit" id="save_button" class="align-self-start text-white btn bg-primary col-lg-4 col-md-6 col-7 text-sm font-weight-bold mb-5 mt-2">
                 Save
             </button>
         </div>
     </main>
-
 
     <script>
         jQuery(document).ready(function(jQuery) {
@@ -316,7 +315,7 @@
 
                 optionCard.innerHTML = `
                 <div class="d-flex align-items-center gap-2 w-100">
-                    <input type="radio" name="option_${cardId}" value="value_${cardId}_${optionId}" />
+                    <input type="radio" name="option_${cardId}" value="value_${optionId}" />
                     <input type="text" class="form-control border p-2" placeholder="Option title" />
                 </div>
                 <i class="cursor-pointer fa-regular fa-circle-xmark fa-lg text-danger" data-option-id="${optionId}"></i>
@@ -374,8 +373,8 @@
                         <div class="difficulty-container d-flex flex-column gap-1">
                             <label for="difficulty" class="form-label difficulty-text m-0">Difficulty</label>
                             <div class="d-flex flex-row align-items-center gap-2 ">
-                                <input type="range" class="difficulty form-range" value="1" min="1" max="10" step="1">
-                                <p class="range_text m-0 fw-bolder" style="font-size: 15px;">1/10</p>
+                                <input type="range" class="difficulty form-range" value="5" min="1" max="10" step="1">
+                                <p class="range_text m-0 fw-bolder" style="font-size: 15px;">5/10</p>
                             </div>
                         </div>
 
@@ -399,8 +398,8 @@
             // Duplication card function
             function duplicateCard(card) {
                 const cardClone = card.cloneNode(true); // Clone the card including its children
+
                 const cardId = generateUniqueId(); // Generate a unique ID for the card
-                cardsContainer.appendChild(cardClone);
                 cardClone.setAttribute("data-card-id", cardId);
 
                 const quizTypeSelect = cardClone.querySelector(".quizTypeSelect");
@@ -414,13 +413,16 @@
 
                 if (quizTypeSelect.value == "1") {
                     const optionsGroup = cardClone.querySelector(".optionsGroup");
-                    const options = card.querySelectorAll(".option-card");
-                    const optionId = generateUniqueId(); // Generate a unique ID for the option
+                    const options = optionsGroup.querySelectorAll(".option-card");
+
+                    console.log("optionsGroup", optionsGroup);
+                    console.log("options", options);
 
                     options.forEach((option) => {
+                        const optionId = generateUniqueId(); // Generate a unique ID for the option
                         const radioButton = option.querySelector("input[type='radio']");
                         radioButton.name = `option_${cardId}`;
-                        radioButton.value = `value_${cardId}_${optionId}`;
+                        radioButton.value = `value_${optionId}`;
                     });
                 }
 
@@ -450,6 +452,8 @@
                         });
                     });
                 }
+
+                cardsContainer.appendChild(cardClone);
 
                 // Add event listeners for the cloned card's options
                 cardClone.querySelectorAll(".fa-circle-xmark").forEach((deleteOptionIcon) => {
@@ -488,13 +492,14 @@
                 const quizData = [];
 
                 quizCards.forEach((card) => {
-                    const cardType = card.getAttribute("data-quiz-type");
+                    const quizType = card.getAttribute("data-quiz-type");
                     const cardId = card.getAttribute("data-card-id");
                     const questionTitle = card.querySelector(".questionTitle").value;
+                    const difficulty = card.querySelector(".difficulty").value;
 
                     // Extract options data based on the card type
                     let options = [];
-                    if (cardType === "1") { // Multiple choice or True/False
+                    if (quizType === "1") { // Multiple choice or True/False
                         card.querySelectorAll(".option-card").forEach((option) => {
                             const optionId = option.getAttribute("data-option-id");
                             const optionTitle = option.querySelector("input[type='text']").value;
@@ -505,7 +510,7 @@
                                 optionValue
                             });
                         });
-                    } else if (cardType === "2") { // True/False
+                    } else if (quizType === "2") { // True/False
                         card.querySelectorAll(".option-card").forEach((option) => {
                             const optionId = option.querySelector("div").getAttribute("data-option-id");
                             const answer = option.getAttribute("data-trueFalse-answer");
@@ -527,13 +532,13 @@
                     }
 
                     quizData.push({
-                        cardType,
                         cardId,
                         questionTitle,
                         options,
+                        difficulty,
+                        quizType,
                     });
                 });
-
                 return quizData;
             }
 
@@ -663,13 +668,12 @@
             // Validate the card
             function validateCard(card) {
                 const quizType = card.getAttribute('data-quiz-type');
-
                 if (quizType === '1') {
-                    validateMCQ(card);
+                    return (validateMCQ(card));
                 } else if (quizType === '2') {
-                    validateTrueFalse(card);
+                    return (validateTrueFalse(card));
                 } else if (quizType === '3') {
-                    validateShortAnswer(card);
+                    return (validateShortAnswer(card));
                 }
             }
 
@@ -683,6 +687,7 @@
 
                 for (const card of cards) {
                     if (!validateCard(card)) {
+                        console.log("Card", validateCard(card));
                         // scroll into the card view
                         card.scrollIntoView({
                             behavior: 'smooth',
