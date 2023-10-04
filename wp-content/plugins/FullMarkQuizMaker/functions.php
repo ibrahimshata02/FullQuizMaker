@@ -88,36 +88,44 @@ class FullQuizMaker
             'FullQuizMaker',                    // the Title that appears in the menu bar
             'manage_options',                   // permissions that can see the menu (admin OR higher) => capability
             'full-quiz-maker',                 // unique menu slug
-            array($this, 'FQM_Quizzes_callback'),    // method for output
+            array($this, 'FQM_Profile_callback'),    // method for output
             'dashicons-text-page',               // You can add the link of a custom icon 
             70
         );
         add_submenu_page(
             'full-quiz-maker',                 // parent menu slug
-            'Quizzes',                    // page title
-            'Quizzes',                    // menu title
+            'Profile',                    // page title
+            'Profile',                    // menu title
             'manage_options',                  // capability required to access
-            'quizzes',                    // menu slug
-            array($this, 'FQM_Quizzes_callback')  // callback function for the page
+            'teacher-profile',                    // menu slug
+            array($this, 'FQM_Profile_callback')  // callback function for the page
         );
         // Add a submenu page for "Add New Quiz"
         add_submenu_page(
             'full-quiz-maker',                 // parent menu slug
-            'Add Quiz Questions',                    // page title
-            'Add Quiz Questions',                    // menu title
+            'Add New',                    // page title
+            'Add New',                    // menu title
             'manage_options',                  // capability required to access
             'add-quiz-questions',                    // menu slug
-            array($this, 'FQM_addQuizQuestions_callback')  // callback function for the page
-        );
-
-        add_submenu_page(
-            'full-quiz-maker',                 // parent menu slug
-            'single quiz',                    // page title
-            'single quiz',                    // menu title
-            'manage_options',                  // capability required to access
-            'single-quiz',                    // menu slug
             array($this, 'FQM_singleQuiz_callback')  // callback function for the page
         );
+        add_submenu_page(
+            'full-quiz-maker',                 // parent menu slug
+            'Questions Bank',                    // page title
+            'Questions Bank',                    // menu title
+            'manage_options',                  // capability required to access
+            'questions-bank',                    // menu slug
+            array($this, 'FQM_addQuizQuestions_callback')  // callback function for the page
+        );
+        add_submenu_page(
+            'full-quiz-maker',                 // parent menu slug
+            'Settings',                    // page title
+            'Settings',                    // menu title
+            'manage_options',                  // capability required to access
+            'settings',                    // menu slug
+            array($this, 'FQM_settings_callback')  // callback function for the page
+        );
+
         add_submenu_page(
             'full-quiz-maker',                 // parent menu slug
             'Add Partecipents',                    // page title
@@ -127,14 +135,7 @@ class FullQuizMaker
             array($this, 'FQM_Add_Partecipents_callback')  // callback function for the page
         );
 
-        add_submenu_page(
-            'full-quiz-maker',                 // parent menu slug
-            'Admin page',                    // page title
-            'Admin page',                    // menu title
-            'manage_options',                  // capability required to access
-            'Admin page',                    // menu slug
-            array($this, 'FQM_Add_AdminPage_callback')  // callback function for the page
-        );
+
 
         add_submenu_page(
             'full-quiz-maker',                 // parent menu slug
@@ -195,9 +196,13 @@ class FullQuizMaker
     }
 
     // Callback method for the Quizzes page
-    public function FQM_Quizzes_callback()
+    public function FQM_Profile_callback()
     {
-        include 'pages/Quizzes.php';
+        include 'Profile.php';
+    }
+    public function FQM_settings_callback()
+    {
+        include 'Settings.php';
     }
 
     public  function FQM_Add_Partecipents_callback()

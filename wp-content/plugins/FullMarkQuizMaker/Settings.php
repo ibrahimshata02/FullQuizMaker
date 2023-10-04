@@ -9,19 +9,19 @@
 
 <body>
     <main class="col-lg-7 col-md-8 col-11 main-content position-relative max-height-vh-100 h-100 mt-4 border-radius-lg">
-        <h3 class="mb-4">Initial data</h3>
+        <h3 class="mb-4"> <?php _e('Initial data', 'Full-Mark-Quiz-Maker'); ?></h3>
 
         <form method="post" enctype="multipart/form-data">
             <input type="hidden" id="my-ajax-nonce" value="<?php echo wp_create_nonce('my_ajax_nonce'); ?>" />
 
             <div class="col mt-3">
-                <label class="form-label">Current study year</label>
+                <label class="form-label"><?php _e('Current study year', 'Full-Mark-Quiz-Maker'); ?></label>
                 <select id="study_year_input" class="form-control border bg-white p-2" aria-label="study year select">
-                    <option selected disabled value="">Select study year</option>
+                    <option selected disabled value=""><?php _e('Select study year', 'Full-Mark-Quiz-Maker'); ?></option>
                     <?php
                     // Define a range of years, such as from 2000 to the current year
                     $currentYear = date("Y");
-                    $startYear = 2010;
+                    $startYear = 2022;
 
                     // Loop to generate options for each year in the range
                     for ($year = $startYear; $year <= $currentYear; $year++) {
@@ -34,14 +34,14 @@
 
             <!-- Adding the study level card when the user press enter - must at least two levels -->
             <div class="col mt-3">
-                <label class="form-label">Add study Levels for this year</label>
+                <label class="form-label"><?php _e('Add study Levels for this year', 'Full-Mark-Quiz-Maker'); ?></label>
                 <input id="study_level_input" type="text" class="form-control border p-2" placeholder="Add study levels fot the current year | press enter to add" />
                 <span class="error_message fw-bold text-danger d-none"></span>
             </div>
 
             <div class="d-flex align-items-center flex-wrap gap-2 mt-2">
-                Example: <div id="study_level_card" class="position-relative bg-dark rounded-3 p-1 px-3 border">
-                    <p class="m-0 text-white" style="font-size: 12px;">Class A</p>
+            <?php _e('Example:', 'Full-Mark-Quiz-Maker'); ?> <div id="study_level_card" class="position-relative bg-dark rounded-3 p-1 px-3 border">
+                    <p class="m-0 text-white" style="font-size: 12px;"><?php _e('Class A', 'Full-Mark-Quiz-Maker'); ?></p>
                 </div>
 
                 <div id="study_levels_container" style="width: fit-content;" class="d-flex align-items-center flex-wrap gap-2">
@@ -49,28 +49,18 @@
                 </div>
             </div>
 
-            <div class="col mt-3">
-                <label class="form-label"> Select Template File</label>
-                <select id="template_select" class="form-control border bg-white p-2" aria-label="Template File select">
-                    <option selected disabled value="">Select Template File</option>
-                    <option value="Default">Default</option>
-                    <option value="Unrwa">Unrwa</option>
-                </select>
-                <span class="error_message fw-bold text-danger d-none"></span>
-            </div>
-
 
             <div class="d-flex flex-row flex-wrap align-items-center gap-2 mt-4">
                 <button class="btn btn-dark shadow-none text-white border m-0" id="submit" type="button" name="import_data" data-bs-toggle="modal" data-bs-target="#add-teacher-modal">
-                    Add teacher
+                    <?php _e('Add teacher', 'Full-Mark-Quiz-Maker'); ?>
                     <i class="fa-solid fa-add text-white fa-md ms-2"></i>
                 </button>
 
                 <div class="d-flex flex-row align-items-center gap-1">
-                    or you can add multiple teachers by <a id="import_data" class="text-dark fw-bolder" type="button" data-bs-toggle="modal" data-bs-target="#upload-file-modal">Importing</a> an Excel file.
+                <?php _e('or you can add multiple teachers by', 'Full-Mark-Quiz-Maker'); ?> <a id="import_data" class="text-dark fw-bolder" type="button" data-bs-toggle="modal" data-bs-target="#upload-file-modal"><?php _e('Importing', 'Full-Mark-Quiz-Maker'); ?></a> <?php _e('an Excel file.', 'Full-Mark-Quiz-Maker'); ?>
                 </div>
             </div>
-            <button id="save_btn" class="btn btn-primary mt-6 w-25 p-3">Save </button>
+            <button id="save_btn" class="btn btn-primary mt-6 w-25 p-3"><?php _e('Save', 'Full-Mark-Quiz-Maker'); ?> </button>
         </form>
 
         <!-- Modal -->
@@ -80,9 +70,10 @@
                     <i class="fa-solid fa-book-bookmark text-center text-dark" style="font-size:35px"></i>
                     <h4 class="modal-title text-center mt-2" id="exampleModalLabel">Add new teacher</h4>
 
-                    <input type="text" class="form-control border p-2 mt-4" placeholder="Enter the teacher email" />
+                    <input type="text" class="form-control border p-2 mt-4" placeholder="<?php _e('Enter the teacher Name', 'Full-Mark-Quiz-Maker'); ?>" />
+                    <input type="text" class="form-control border p-2 mt-4" placeholder="<?php _e('Enter the teacher Email', 'Full-Mark-Quiz-Maker'); ?>" />
 
-                    <button type="button" data-bs-dismiss="modal" class="btn btn-primary w-100 mt-2">ADD <i class="fas fa-add fa-md ms-1 text-white"></i> </button>
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-primary w-100 mt-2"><?php _e('ADD', 'Full-Mark-Quiz-Maker'); ?> <i class="fas fa-add fa-md ms-1 text-white"></i> </button>
                 </div>
             </div>
         </div>
@@ -91,39 +82,28 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content p-4">
 
-                    <h4>Upload Excel file</h4>
+                    <h4><?php _e('Upload Excel file', 'Full-Mark-Quiz-Maker'); ?></h4>
 
                     <div class="d-flex flex-column gap-3 mt-3">
                         <input class="form-control p-2" type="file" id="formFile" accept=".xls, .xlsx">
 
                         <div class="row row row-cols-1 row-cols-lg-2 g-2">
-
-                            <div class="col">
-                                <label class="form-label">ID column</label>
-                                <input type="text" class="form-control border p-2" placeholder="ID column" />
+                        <div class="col">
+                                <label class="form-label"><?php _e('Name column', 'Full-Mark-Quiz-Maker'); ?></label>
+                                <input type="text" class="form-control border p-2" placeholder="<?php _e('Name column', 'Full-Mark-Quiz-Maker'); ?>" />
                             </div>
 
                             <div class="col">
-                                <label class="form-label">Name column</label>
-                                <input type="text" class="form-control border p-2" placeholder="Name column" />
-                            </div>
-                        </div>
-
-                        <div class="row row row-cols-1 row-cols-lg-2 g-2">
-                            <div class="col">
-                                <label class="form-label">Level column</label>
-                                <input type="text" class="form-control border p-2" placeholder="Level column" />
-                            </div>
-
-                            <div class="col">
-                                <label class="form-label">Class ID column</label>
-                                <input type="text" class="form-control border p-2" placeholder="Class ID column" />
+                                <label class="form-label"><?php _e('Email column', 'Full-Mark-Quiz-Maker'); ?></label>
+                                <input type="text" class="form-control border p-2" placeholder="<?php _e('Email column', 'Full-Mark-Quiz-Maker'); ?>" />
                             </div>
                         </div>
+
+                      
 
                         <div style="font-size: 11px;" class="d-flex flex-column">
-                            <b>Notice: add the column values according to your Excel file data. </b>
-                            <b>For example: If the ID in your Excel file is in the A column, then write A in the ID column input </b>
+                            <b><?php _e('Notice: add the column values according to your Excel file data.', 'Full-Mark-Quiz-Maker'); ?> </b>
+                            <b><?php _e('For example: If the Name in your Excel file is in the A column, then write A in the Name column input', 'Full-Mark-Quiz-Maker'); ?>  </b>
                         </div>
                     </div>
 
