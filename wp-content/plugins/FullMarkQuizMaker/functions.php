@@ -5,7 +5,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class FullQuizMaker
 {
-    private $version = 3.7;
+    private $version = 3.1;
 
     // Constructor for class includes all hooks
     public function __construct()
@@ -191,6 +191,33 @@ class FullQuizMaker
             array($this, 'FQM_Add_AttemptQuiz_callback')  // callback function for the page
         );
 
+        add_submenu_page(
+            'full-quiz-maker',                 // parent menu slug
+            'QuestionsBank page',                    // page title
+            'QuestionsBank page',                    // menu title
+            'manage_options',                  // capability required to access
+            'questions-bank',                    // menu slug
+            array($this, 'FQM_Add_QuestionsBank_callback')  // callback function for the page
+        );
+
+        add_submenu_page(
+            'full-quiz-maker',                 // parent menu slug
+            'EditQuestion page',                    // page title
+            'EditQuestion page',                    // menu title
+            'manage_options',                  // capability required to access
+            'edit-question',                    // menu slug
+            array($this, 'FQM_Add_EditQuestion_callback')  // callback function for the page
+        );
+
+        add_submenu_page(
+            'full-quiz-maker',                 // parent menu slug
+            'SingleQuizQuestions page',                    // page title
+            'SingleQuizQuestions page',                    // menu title
+            'manage_options',                  // capability required to access
+            'single-quiz-questions',                    // menu slug
+            array($this, 'FQM_SingleQuizQuestion_callback')  // callback function for the page
+        );
+
         // Remove the submenu page that you want to hide
         remove_submenu_page('full-quiz-maker', 'full-quiz-maker');
     }
@@ -262,6 +289,24 @@ class FullQuizMaker
     public function FQM_Add_AttemptQuiz_callback()
     {
         include 'pages/attempt-quiz.php';
+    }
+
+    // Callback method for the questions bank page
+    public function FQM_Add_QuestionsBank_callback()
+    {
+        include 'pages/questions-bank.php';
+    }
+
+    // Callback method for the Edit quiz page
+    public function FQM_Add_EditQuestion_callback()
+    {
+        include 'pages/edit-question.php';
+    }
+
+    // Callback method for the single quiz questions page
+    public function FQM_SingleQuizQuestion_callback()
+    {
+        include 'pages/single-quiz-questions.php';
     }
 
     // Add menu link in top bar (FullQuizMaker)

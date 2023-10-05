@@ -2682,7 +2682,7 @@ progress {
 
 .form-control:focus {
   color: #495057;
-  background-color: #fff !important;
+  background-color: transparent !important;
   border: 1px solid #125b50 !important;
   outline: 0 !important;
 }
@@ -19984,6 +19984,7 @@ fieldset:disabled .btn {
   background-color: #fff;
   opacity: 0;
 }
+
 
 .form-check:not(.form-switch) .form-check-input[type="radio"]:checked {
   padding: 6px;
