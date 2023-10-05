@@ -4,6 +4,7 @@ global $wpdb;
 $table_name = $wpdb->prefix . 'polls_psx_polls';
 $statuses = array('active', 'inactive'); // List of statuses to display
 $polls = $wpdb->get_results("SELECT * FROM $table_name WHERE status IN ('" . implode("','", $statuses) . "')");
+if ( !current_user_can( 'teacher' ) ) {
 
 
 ?>
@@ -38,8 +39,8 @@ $polls = $wpdb->get_results("SELECT * FROM $table_name WHERE status IN ('" . imp
             <!-- Recent Quizzes -->
             <div class="tab-pane show active fade mt-5" id="nav-quizzes" role="tabpanel" aria-labelledby="nav-quizzes-tab">
                 <div class="d-flex justify-content-between align-items-center mt-2 mb-4">
-                    <h4 class="m-0">Recent quizzes</h4>
-                    <a href="<?php echo admin_url('admin.php?page=add-new-quiz'); ?>" class="btn btn-primary m-0">New Quiz
+                    <h4 class="m-0"><?php _e('Recent quizzes', 'Full-Mark-Quiz-Maker'); ?> </h4>
+                    <a href="<?php echo admin_url('admin.php?page=add-new-quiz'); ?>" class="btn btn-primary m-0"><?php _e('New Quiz', 'Full-Mark-Quiz-Maker'); ?>
                         <i style="cursor: pointer" class="fas fa-add text-white ms-2"></i>
                     </a>
                 </div>
@@ -174,20 +175,20 @@ $polls = $wpdb->get_results("SELECT * FROM $table_name WHERE status IN ('" . imp
                 <!-- Classes row -->
                 <div class="row row-cols-1 row-cols-lg-2 g-3 mt-3">
                     <div class="position-relative col">
-                        <a href="<?php echo admin_url('admin.php?page=Class&Class_id=' . ($class_id)); ?>">
+                        <a href="<?php echo admin_url('admin.php?page=Class&Class_id=') ?>">
                             <div class="quiz-class p-4 bg-white border-2 rounded-3 p-4 border rounded-3 cursor-pointer ">
-                                <h5>Class name</h5> <!-- variable -->
-                                <p>Find quick answers to your questions and get the most out of Font Awesome with our step-by-step docs and troubleshooting tips.  </p> <!-- variable -->
+                                <h5><?php _e('Class name', 'Full-Mark-Quiz-Maker'); ?></h5> <!-- variable -->
+                                <p><?php _e('Find quick answers to your questions and get the most out of Font Awesome with our step-by-step docs and troubleshooting tips.', 'Full-Mark-Quiz-Maker'); ?>  </p> <!-- variable -->
 
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="d-flex text-primary align-items-center gap-2">
                                         <i class="fa-regular fa-user fa-sm"></i>
-                                        <p class="m-0" style="font-size: 13px;"> +187</p> <!-- variable -->
+                                        <p class="m-0" style="font-size: 13px;">+187</p> <!-- variable -->
                                     </div>
 
                                     <div class="d-flex text-primary align-items-center gap-2">
                                         <i class="fa-solid fa-award"></i>
-                                        <p class="m-0" style="font-size: 13px;">Excellent</p><!-- variable -->
+                                        <p class="m-0" style="font-size: 13px;"><?php _e('Excellent', 'Full-Mark-Quiz-Maker'); ?></p><!-- variable -->
                                     </div>
                                 </div>
                             </div>
@@ -248,3 +249,4 @@ $polls = $wpdb->get_results("SELECT * FROM $table_name WHERE status IN ('" . imp
         });
     </script>
 </body>
+<?php }?>

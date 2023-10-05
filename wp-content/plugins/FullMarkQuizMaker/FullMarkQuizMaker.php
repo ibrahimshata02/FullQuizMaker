@@ -13,7 +13,6 @@ add_action('init', 'FMQ_load_textdomain');
 function FMQ_load_textdomain()
 {
     load_plugin_textdomain('Full-Mark-Quiz-Maker', false, dirname(plugin_basename(__FILE__)) . '/languages');
-
 }
 
 
@@ -56,20 +55,46 @@ function FMQ_add_database_tables()
         add_option($option_name, $current_time);
     }
 
-    $table_year = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}FQM_year (
-        year_id int(11) NOT NULL AUTO_INCREMENT,
-        year_title varchar(255) NOT NULL,
+    global $wpdb;
+
+    $charset_collate = $wpdb->get_charset_collate();
+
+    // Create FQM_year table
+    $table_FQM_year = $wpdb->prefix . 'FQM_year';
+    $sql_FQM_year = "CREATE TABLE IF NOT EXISTS $table_FQM_year (
+        year_id INT(11) NOT NULL AUTO_INCREMENT,
+        year_title VARCHAR(255) NOT NULL,
         PRIMARY KEY (year_id)
     ) $charset_collate;";
 
-    $table_level = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}FQM_level (
-        level_id int(11) NOT NULL AUTO_INCREMENT,
-        level varchar(255) NOT NULL,
-        year_id int(11) NOT NULL,
+    // Create FQM_level table
+    $table_FQM_level = $wpdb->prefix . 'FQM_level';
+    $sql_FQM_level = "CREATE TABLE IF NOT EXISTS $table_FQM_level (
+        level_id INT(11) NOT NULL AUTO_INCREMENT,
+        level VARCHAR(255) NOT NULL,
+        year_id INT(11) NOT NULL,
         PRIMARY KEY (level_id),
-        FOREIGN KEY (year_id) REFERENCES {$wpdb->prefix}FQM_year(year_id)
+        FOREIGN KEY (year_id) REFERENCES $table_FQM_year(year_id)
     ) $charset_collate;";
-   
+
+    // Create FQM_user_years table
+    $table_FQM_user_years = $wpdb->prefix . 'FQM_user_years';
+    $sql_FQM_user_years = "CREATE TABLE IF NOT EXISTS $table_FQM_user_years (
+        year_id INT(11),
+        user_reference INT,
+        PRIMARY KEY (year_id, user_reference),
+        FOREIGN KEY (year_id) REFERENCES $table_FQM_year(year_id)
+    ) $charset_collate;";
+
+    $table_FQM_user_levels = $wpdb->prefix . 'FQM_user_levels';
+    $sql_FQM_user_levels = "CREATE TABLE IF NOT EXISTS $table_FQM_user_levels (
+        level_id INT(11),
+        user_reference INT,
+        PRIMARY KEY (level_id, user_reference),
+        FOREIGN KEY (level_id) REFERENCES $table_FQM_level(level_id)
+    ) $charset_collate;";
+
+
     $table_classes = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}FQM_classes (
         class_id int(11) NOT NULL AUTO_INCREMENT,
         class_name varchar(255) NOT NULL,
@@ -91,7 +116,7 @@ function FMQ_add_database_tables()
         FOREIGN KEY (class_id) REFERENCES {$wpdb->prefix}FQM_classes(class_id),
         PRIMARY KEY (temp_id)
     ) $charset_collate;";
-    
+
     $table_Quizzes = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}FQM_Quizzes (
         quiz_id int(11) NOT NULL AUTO_INCREMENT,
         quiz_name varchar(255) NOT NULL,
@@ -142,8 +167,8 @@ function FMQ_add_database_tables()
         FOREIGN KEY (question_id) REFERENCES {$wpdb->prefix}FQM_questions(question_id),
         PRIMARY KEY  (answer_id)
     ) $charset_collate;";
-    
-    
+
+
     $table_StudentQuizAttempts = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}FQM_StudentQuizAttempts (
         attempt_id int(11) NOT NULL AUTO_INCREMENT,
         ID bigint(20) unsigned NOT NULL,
@@ -158,8 +183,8 @@ function FMQ_add_database_tables()
         PRIMARY KEY  (attempt_id)
     ) $charset_collate;";
 
-    
-   $table_StudentAnswers = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}FQM_StudentAnswers (
+
+    $table_StudentAnswers = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}FQM_StudentAnswers (
         temp_id int(11) NOT NULL AUTO_INCREMENT,
         attempt_id int(11) NOT NULL,
         question_id int(11) NOT NULL,
@@ -172,9 +197,11 @@ function FMQ_add_database_tables()
     ) $charset_collate;";
 
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($table_year);
-    dbDelta($table_level);
+    dbDelta($sql_FQM_year);
+    dbDelta($sql_FQM_level);
+    dbDelta($sql_FQM_user_years);
     dbDelta($table_classes);
+    dbDelta($sql_FQM_user_levels);
     dbDelta($table_studentinGroups);
     dbDelta($table_Quizzes);
     dbDelta($table_questions);
@@ -183,6 +210,8 @@ function FMQ_add_database_tables()
     dbDelta($table_StudentQuizAttempts);
     dbDelta($table_StudentAnswers);
 
+
+    update_option('FQM_current_year', 2023);
     $existing_student_role = get_role('student');
 
     if (!$existing_student_role) {
@@ -193,10 +222,10 @@ function FMQ_add_database_tables()
             'delete_posts' => false,
         ));
     }
-    
+
     // Check if the 'teacher' role already exists
     $existing_teacher_role = get_role('teacher');
-    
+
     if (!$existing_teacher_role) {
         // Create the 'teacher' role
         add_role('teacher', 'Teacher', array(
@@ -205,9 +234,8 @@ function FMQ_add_database_tables()
             'delete_posts' => true,
         ));
     }
-
 }
- register_activation_hook(__FILE__, 'FMQ_add_database_tables'); 
+register_activation_hook(__FILE__, 'FMQ_add_database_tables');
 global $wpdb;
 $year_table = $wpdb->prefix . 'FQM_year';
 
@@ -220,11 +248,8 @@ if ($wpdb->get_var("SHOW TABLES LIKE '$year_table'") !== $year_table) {
 if ($allowed_to_run) {
     require_once(plugin_dir_path(__FILE__) . 'functions.php');
     require_once 'vendor/autoload.php';
-
-
 } else {
     add_action('after_plugin_row', 'FMQ_custom_after_plugin_row_content', 10, 3);
-
 }
 // Add custom content after a plugin's row in plugin settings page
 function FMQ_custom_after_plugin_row_content($plugin_file, $plugin_data, $status)
