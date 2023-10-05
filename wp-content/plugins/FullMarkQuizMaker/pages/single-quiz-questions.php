@@ -7,6 +7,16 @@
     <title>FQM plugin</title>
 </head>
 
+<style>
+    .question-card:hover {
+        border: 2px solid #125b50 !important;
+    }
+
+    .question-card:hover .select-box {
+        opacity: 1 !important;
+    }
+</style>
+
 <body>
     <main class="container-fluid w-100 position-relative max-height-vh-100 h-100 mt-4">
         <h3 class="mb-4">Select Quiz questions</h3>
@@ -17,18 +27,19 @@
                 <div class="col">
                     <div class="question-card position-relative bg-white border border-2 d-flex flex-column rounded-3">
                         <div class="select-container cursor-pointer p-3">
+                            <div style="transition: all 0.1s linear; left: 50%; top: -15px; transform: translateX(-50%); min-width: 30px; height: 30px; font-size: 12px;" class="select-box position-absolute bg-success text-white d-flex align-items-center justify-content-center rounded-3 p-1 px-2 opacity-0 ">
+                                selected
+                            </div>
+
                             <div class="d-flex align-items-center justify-content-between ">
                                 <!-- Question number  -->
-                                <span style="font-size: 20px;" class="d-flex justify-content-center align-items-center text-primary fw-bold">
+                                <span style="font-size: 20px;" class="d-flex justify-content-center align-items-center text-dark fw-bold">
                                     #1
                                 </span>
 
-                                <!-- Question select box -->
-                                <div style="width: 40px; height: 40px;" class="select-box d-flex justify-content-center align-items-center border border-2 rounded-2 bg-white">
-                                    <i style="font-size: 25px;" class="fas fa-check text-success opacity-0"></i>
+                                <div class="d-flex align-items-center gap-2" title="Add question weight">
+                                    <input type="tel" style="width: 60px; height: 40px; font-size: 14px;" class="border rounded-2" placeholder="Grade" value="1">
                                 </div>
-
-
                             </div>
 
                             <p class="mt-3 mb-0">This is question title This is question This is question title This is question...</p>
@@ -38,7 +49,6 @@
 
                     </div>
                 </div>
-
             </div>
         </div>
 
@@ -68,7 +78,6 @@
                         <hr class="mb-4">
 
                         <div class="d-flex justify-content-between align-items-center">
-                            <b>(5 marks)</b>
                             <div class="badge bg-primary px-3 py-2 rounded-3">Easy</div>
                         </div>
                     </div>
@@ -89,23 +98,29 @@
 
         const selectContainers = document.querySelectorAll('.select-container');
         selectContainers.forEach((container) => {
-            container.addEventListener('click', () => {
+            container.addEventListener('click', (event) => {
                 const parentCard = container.closest('.question-card');
-                const selectBox = container.querySelector(".select-box")
-                parentCard.classList.toggle('active-group');
-                selectBox.classList.toggle('border-primary');
+                const selectBox = container.querySelector(".select-box");
+                const gradeInput = container.querySelector('input[type="tel"]');
 
-                const icon = parentCard.querySelector('i');
-
-                if (parentCard.classList.contains('active-group')) {
-                    icon.classList.add('opacity-100');
-                    icon.classList.remove('opacity-0');
+                // Check if the clicked element is the grade input
+                if (event.target === gradeInput) {
+                    // Prevent the click event from propagating to the parent card
+                    event.stopPropagation();
                 } else {
-                    icon.classList.add('opacity-0');
-                    icon.classList.remove('opacity-100');
+                    // Toggle the active-group class for the card
+                    parentCard.classList.toggle('active-group');
+
+                    if (parentCard.classList.contains('active-group')) {
+                        selectBox.classList.add('opacity-100');
+                        selectBox.classList.remove('opacity-0');
+                    } else {
+                        selectBox.classList.add('opacity-0');
+                        selectBox.classList.remove('opacity-100');
+                    }
                 }
-            })
-        })
+            });
+        });
     </script>
 
 </body>

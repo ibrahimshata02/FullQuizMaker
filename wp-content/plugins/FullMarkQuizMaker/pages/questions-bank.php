@@ -12,105 +12,28 @@
         <h3 class="mb-4">Questions bank</h3>
 
         <!-- cards container  -->
-        <div class="position-relative mt-4 w-100">
-            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2 mb-2">
+        <div class="position-relative py-4 w-100">
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
                 <div class="col">
-                    <div class="question-card position-relative bg-white border d-flex flex-column rounded-3 p-3">
-                        <p>This is question title This is question This is question title This is question</p>
+                    <div class="question-card position-relative bg-white border d-flex flex-column rounded-3">
+                        <div class="p-3 cursor-pointer" data-bs-toggle="modal" data-bs-target="#preview-question-modal" title="Preview question">
+                            <div class="d-flex align-items-center justify-content-between ">
+                                <!-- Question number  -->
+                                <span style="font-size: 20px;" class="d-flex justify-content-center align-items-center text-dark fw-bold">
+                                    #1
+                                </span>
 
-                        <div class="d-flex align-items-center gap-2 mt-1">
-                            <button style="font-size: 12px;" class="bg-primary text-white p-2 px-3 border-0 rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#preview-question-modal"><i class="fas fa-eye fa-md text-white"></i></button>
-                            <a class="w-100" href="admin.php?page=edit-question">
-                                <button style="font-size: 12px;" class="bg-dark text-white p-2 px-3 border-0 rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#edit-question-modal"><i class="fas fa-eye fa-pen text-white"></i></button>
-                            </a>
+                                <span style="font-size: 10px;" class="badge bg-success p-2 rounded-3">easy</span>
+                            </div>
+
+                            <p class="mt-3 mb-0">This is question title This is question This is question title This is question...</p>
                         </div>
+
+                        <a class="w-100 overflow-hidden" style="font-size: 14px; border-radius: 0.50rem; border-top-left-radius: 0; border-top-right-radius:0;" href="admin.php?page=edit-question">
+                            <button title="Edit question" class="bg-primary text-white p-2 border-0 w-100" type="button" data-bs-toggle="modal" data-bs-target="#edit-question-modal">Edit<i class="fas fa-eye fa-pen fa-lg text-white ms-2"></i></button>
+                        </a>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="question-card position-relative bg-white border d-flex flex-column rounded-3 p-3">
-                        <p>This is question title This is question This is question title This is question</p>
-
-                        <div class="d-flex align-items-center gap-2 mt-1">
-                            <button style="font-size: 12px;" class="bg-primary text-white p-2 px-3 border-0 rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#preview-question-modal"><i class="fas fa-eye fa-md text-white"></i></button>
-                            <a class="w-100" href="admin.php?page=edit-question">
-                                <button style="font-size: 12px;" class="bg-dark text-white p-2 px-3 border-0 rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#edit-question-modal"><i class="fas fa-eye fa-pen text-white"></i></button>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="question-card position-relative bg-white border d-flex flex-column rounded-3 p-3">
-                        <p>This is question title This is question This is question title This is question</p>
-
-                        <div class="d-flex align-items-center gap-2 mt-1">
-                            <button style="font-size: 12px;" class="bg-primary text-white p-2 px-3 border-0 rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#preview-question-modal"><i class="fas fa-eye fa-md text-white"></i></button>
-                            <a class="w-100" href="admin.php?page=edit-question">
-                                <button style="font-size: 12px;" class="bg-dark text-white p-2 px-3 border-0 rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#edit-question-modal"><i class="fas fa-eye fa-pen text-white"></i></button>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="question-card position-relative bg-white border d-flex flex-column rounded-3 p-3">
-                        <p>This is question title This is question This is question title This is question</p>
-
-                        <div class="d-flex align-items-center gap-2 mt-1">
-                            <button style="font-size: 12px;" class="bg-primary text-white p-2 px-3 border-0 rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#preview-question-modal"><i class="fas fa-eye fa-md text-white"></i></button>
-                            <a class="w-100" href="admin.php?page=edit-question">
-                                <button style="font-size: 12px;" class="bg-dark text-white p-2 px-3 border-0 rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#edit-question-modal"><i class="fas fa-eye fa-pen text-white"></i></button>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="question-card position-relative bg-white border d-flex flex-column rounded-3 p-3">
-                        <p>This is question title This is question This is question title This is question</p>
-
-                        <div class="d-flex align-items-center gap-2 mt-1">
-                            <button style="font-size: 12px;" class="bg-primary text-white p-2 px-3 border-0 rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#preview-question-modal"><i class="fas fa-eye fa-md text-white"></i></button>
-                            <a class="w-100" href="admin.php?page=edit-question">
-                                <button style="font-size: 12px;" class="bg-dark text-white p-2 px-3 border-0 rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#edit-question-modal"><i class="fas fa-eye fa-pen text-white"></i></button>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="question-card position-relative bg-white border d-flex flex-column rounded-3 p-3">
-                        <p>This is question title This is question This is question title This is question</p>
-
-                        <div class="d-flex align-items-center gap-2 mt-1">
-                            <button style="font-size: 12px;" class="bg-primary text-white p-2 px-3 border-0 rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#preview-question-modal"><i class="fas fa-eye fa-md text-white"></i></button>
-                            <a class="w-100" href="admin.php?page=edit-question">
-                                <button style="font-size: 12px;" class="bg-dark text-white p-2 px-3 border-0 rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#edit-question-modal"><i class="fas fa-eye fa-pen text-white"></i></button>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="question-card position-relative bg-white border d-flex flex-column rounded-3 p-3">
-                        <p>This is question title This is question This is question title This is question</p>
-
-                        <div class="d-flex align-items-center gap-2 mt-1">
-                            <button style="font-size: 12px;" class="bg-primary text-white p-2 px-3 border-0 rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#preview-question-modal"><i class="fas fa-eye fa-md text-white"></i></button>
-                            <a class="w-100" href="admin.php?page=edit-question">
-                                <button style="font-size: 12px;" class="bg-dark text-white p-2 px-3 border-0 rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#edit-question-modal"><i class="fas fa-eye fa-pen text-white"></i></button>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="question-card position-relative bg-white border d-flex flex-column rounded-3 p-3">
-                        <p>This is question title This is question This is question title This is question</p>
-
-                        <div class="d-flex align-items-center gap-2 mt-1">
-                            <button style="font-size: 12px;" class="bg-primary text-white p-2 px-3 border-0 rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#preview-question-modal"><i class="fas fa-eye fa-md text-white"></i></button>
-                            <a class="w-100" href="admin.php?page=edit-question">
-                                <button style="font-size: 12px;" class="bg-dark text-white p-2 px-3 border-0 rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#edit-question-modal"><i class="fas fa-eye fa-pen text-white"></i></button>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
 
@@ -136,19 +59,37 @@
                                 <li>This is question optionThis is question optionThis is question optionThis is question optionThis is question optionThis is question optionThis is question optionThis is question option</li>
                             </ul>
                         </div>
-
-                        <hr class="mb-4">
-
-                        <div class="d-flex justify-content-between align-items-center">
-                            <b>(5 marks)</b>
-
-                            <div class="badge bg-primary px-3 py-2 rounded-3">Easy</div>
-
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <script>
+            function getBadgeColor(difficulty) {
+                switch (difficulty.toLowerCase()) {
+                    case 'very easy':
+                        return '#5cb85c'; // Green
+                    case 'easy':
+                        return '#125b50'; // Teal & Blue
+                    case 'medium':
+                        return '#f0ad4e'; // Yellow
+                    case 'hard':
+                        return '#d9534f'; // Red
+                    case 'very hard':
+                        return '#343a40'; // Dark Gray
+                    default:
+                        return '#0275d8'; // Blue (default)
+                }
+            }
+
+            const row = document.querySelector('.row');
+            for (let i = 0; i < 30; i++) {
+                const question_card = document.querySelector('.col');
+                const duplicate_question_card = question_card.cloneNode(true);
+                row.appendChild(duplicate_question_card);
+                const badge = duplicate_question_card.querySelector('.badge');
+                badge.style.cssText = `background-color: ${getBadgeColor(badge.textContent)} !important; font-size:10px !important;`;
+            }
+        </script>
     </main>
 </body>
