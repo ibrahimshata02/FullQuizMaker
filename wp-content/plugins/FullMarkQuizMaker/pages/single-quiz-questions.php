@@ -12,18 +12,33 @@
         <h3 class="mb-4">Select Quiz questions</h3>
 
         <!-- cards container  -->
-        <div class="position-relative mt-4 w-100">
-            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2 mb-2">
+        <div class="position-relative py-4 w-100">
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
                 <div class="col">
-                    <div class="question-card position-relative bg-white border d-flex flex-column rounded-3 p-3">
-                        <div class="mb-3">
-                            <button style="font-size: 12px;" class="select-box p-2 px-3 border rounded-2 bg-white "><i style="font-size: 22px;" class="fas fa-check text-success opacity-0"></i></button>
+                    <div class="question-card position-relative bg-white border border-2 d-flex flex-column rounded-3">
+                        <div class="select-container cursor-pointer p-3">
+                            <div class="d-flex align-items-center justify-content-between ">
+                                <!-- Question number  -->
+                                <span style="font-size: 20px;" class="d-flex justify-content-center align-items-center text-primary fw-bold">
+                                    #1
+                                </span>
+
+                                <!-- Question select box -->
+                                <div style="width: 40px; height: 40px;" class="select-box d-flex justify-content-center align-items-center border border-2 rounded-2 bg-white">
+                                    <i style="font-size: 25px;" class="fas fa-check text-success opacity-0"></i>
+                                </div>
+
+
+                            </div>
+
+                            <p class="mt-3 mb-0">This is question title This is question This is question title This is question...</p>
                         </div>
 
-                        <p>This is question title This is question This is question title This is question</p>
-                        <button style="font-size: 14px;" class="bg-primary text-white p-2 px-3 border-0 rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#preview-question-modal">Preview<i class="fas fa-eye fa-md text-white ms-2"></i></button>
+                        <button style="font-size: 14px; border-radius: 0.50rem; border-top-left-radius: 0; border-top-right-radius:0 ;" class="bg-primary text-white p-2 px-3 border-0" type="button" data-bs-toggle="modal" data-bs-target="#preview-question-modal">Preview<i class="fas fa-eye fa-md text-white ms-2"></i></button>
+
                     </div>
                 </div>
+
             </div>
         </div>
 
@@ -64,12 +79,21 @@
     </main>
 
     <script>
-        const quizClasses = document.querySelectorAll('.select-box');
-        quizClasses.forEach((group) => {
-            group.addEventListener('click', () => {
-                const parentCard = group.closest('.question-card');
+        const row = document.querySelector('.row');
+
+        for (let i = 0; i < 30; i++) {
+            const question_card = document.querySelector('.col');
+            const duplicate_question_card = question_card.cloneNode(true);
+            row.appendChild(duplicate_question_card);
+        }
+
+        const selectContainers = document.querySelectorAll('.select-container');
+        selectContainers.forEach((container) => {
+            container.addEventListener('click', () => {
+                const parentCard = container.closest('.question-card');
+                const selectBox = container.querySelector(".select-box")
                 parentCard.classList.toggle('active-group');
-                group.classList.toggle('border-primary');
+                selectBox.classList.toggle('border-primary');
 
                 const icon = parentCard.querySelector('i');
 
